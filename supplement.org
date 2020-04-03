@@ -78,7 +78,21 @@
 #+LATEX_HEADER: \input{\string~/.emacs.d/misc/GrandMacros}
 # ############################################################################ #
 
-* Introduction
+* Brief description of the causal mediation analysis
+** Decomposition
+
+\begin{align*}
+TE = E[Y_{a_{1}} - E[Y_{a_{0}} | C = c]
+\end{align*}
+
+More in general, we can consider the effect on the link function scale cite:starkopfComparisonFiveSoftware2017.
+
+
+* Methods implemented
+Here we describe the formulas using the notational convention in cite:vanderweeleExplanationCausalInference2015.
+
+* Software
+The detailed explanation of the software implementation is given on its website (https://kaz-yos.github.io/regmedint/index.html).
 
 * Bibliography
 \renewcommand{\section}[2]{}
