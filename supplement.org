@@ -38,7 +38,7 @@
 #+LATEX_HEADER: \pagestyle{fancy}
 #+LATEX_HEADER: \fancyhf{} % Erase first to supress section names
 #+LATEX_HEADER: \fancyhead[L]{K Yoshida, et al.} % LEFT
-#+LATEX_HEADER: \fancyhead[C]{Supplement for } % CENTER
+#+LATEX_HEADER: \fancyhead[C]{Supplement} % CENTER
 #+LATEX_HEADER: \fancyhead[R]{\today} % RIGHT
 #+LATEX_HEADER: \fancyfoot[C]{\thepage}
 #+LATEX_HEADER: %% \fancyfoot[R]{Page \thepage\ of \pageref{LastPage}}
@@ -81,15 +81,56 @@
 * Brief description of the causal mediation analysis
 ** Decomposition
 
+Let $Y$ be the outcome variable of interest, $A$ be the treatment variable of interest, $M$ be the mediator variable of interest, and $C$ be the potentially vector-valued pre-treatment baseline covariates necessary for exchangeability. The treatment contrast of interest is $a_{1}$ vs $a_{0}$, the second being the reference level. At the covariate level $\bC = \bc$ and the mediator level $M = m$ (only for CDE), the effects are defined as follows.
+
 \begin{align*}
-TE = E[Y_{a_{1}} - E[Y_{a_{0}} | C = c]
+TE &= E[Y_{a_{1}} | C = c] - E[Y_{a_{0}} | C = c]\\
+\\
+CDE(m) &= E[Y_{a_{1},m} | C = c] - E[Y_{a_{0},m} | C = c]\\
+\\
+TNIE &= E[Y_{a_{1},M_{a_{1}}} | C = c] - E[Y_{a_{1},M_{a_{0}}} | C = c]\\
+PNDE &= E[Y_{a_{1},M_{a_{0}}} | C = c] - E[Y_{a_{0},M_{a_{0}}} | C = c]\\
+\\
+TNDE &= E[Y_{a_{1},M_{a_{1}}} | C = c] - E[Y_{a_{0},M_{a_{1}}} | C = c]\\
+PNIE &= E[Y_{a_{0},M_{a_{1}}} | C = c] - E[Y_{a_{0},M_{a_{0}}} | C = c]\\
 \end{align*}
 
+The total effect (TE) can be decomposed into the direct (non-mediated) effect and indirect (mediated) effect in two different ways cite:robinsIdentifiabilityExchangeabilityDirect1992,vanderweeleThreewayDecompositionTotal2013.\\
+
+ The decomposition of TE into the pure (natural) direct effect (PNDE) and the total (natural) indirect effect (TNIE) is the usual decomposition cite:pearlDirectIndirectEffects2001.
+
+\begin{align*}
+TNIE &= E[Y_{a_{1},M_{a_{1}}} | C = c] - E[Y_{a_{1},M_{a_{0}}} | C = c]\\
+PNDE &= E[Y_{a_{1},M_{a_{0}}} | C = c] - E[Y_{a_{0},M_{a_{0}}} | C = c]\\
+\end{align*}
+
+ The other decomposition of TE is into the pure (natural) indirect effect (PNIE) and the total (natural) direct effect (TNDE) cite:robinsIdentifiabilityExchangeabilityDirect1992.
+
+\begin{align*}
+TNDE &= E[Y_{a_{1},M_{a_{1}}} | C = c] - E[Y_{a_{0},M_{a_{1}}} | C = c]\\
+PNIE &= E[Y_{a_{0},M_{a_{1}}} | C = c] - E[Y_{a_{0},M_{a_{0}}} | C = c]\\
+\end{align*}
+
+ These decomposition differs in the cross-world counterfactual state. The PNDE+TNIE decomposition uses $Y_{a_{1},M_{a_{0}}}$ (treatment exerting on the outcome only changes first), whereas the PNIE+TNDE decomposition uses $Y_{a_{0},M_{a_{1}}}$ (treatment exerting on the mediator changes first).  \\
+
 More in general, we can consider the effect on the link function scale cite:starkopfComparisonFiveSoftware2017.
+
+\begin{align*}
+TE &= g(E[Y_{a_{1}} | C = c]) - g(E[Y_{a_{0}} | C = c])\\
+\end{align*}
 
 
 * Methods implemented
 Here we describe the formulas using the notational convention in cite:vanderweeleExplanationCausalInference2015.
+
+* Understanding the approach
+** Parametrizing the mediation formulas
+
+** Obtaining standard errors via multivariate delta method
+\begin{align*}
+\Gamma_{PM} &= \frac{\partial PM}{\partial (\bbeta^{T},\btheta^{T})^{T}}
+\end{align*}
+
 
 * Software
 The detailed explanation of the software implementation is given on its website (https://kaz-yos.github.io/regmedint/index.html).
