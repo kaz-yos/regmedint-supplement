@@ -79,9 +79,13 @@
 # ############################################################################ #
 
 * Brief description of the causal mediation analysis
-** Decomposition
 
-Let $Y$ be the outcome variable of interest, $A$ be the treatment variable of interest, $M$ be the mediator variable of interest, and $C$ be the potentially vector-valued pre-treatment baseline covariates necessary for exchangeability. The treatment contrast of interest is $a_{1}$ vs $a_{0}$, the second being the reference level. At the covariate level $\bC = \bc$ and the mediator level $M = m$ (only for CDE), the effects are defined as follows.
+The literature on the causal mediation is vast cite:vanderweeleExplanationCausalInference2015 and evolving, thus, only the pieces relevant for the current software are reviewed here.
+
+** Decomposition of total effect
+Let $Y$ be the outcome variable of interest, $A$ be the treatment variable of interest, $M$ be the mediator variable of interest, and $C$ be the potentially vector-valued pre-treatment baseline covariates necessary for exchangeability. The treatment contrast of interest is $a_{1}$ vs $a_{0}$, the second being the reference level. The counterfactual $Y_{a,m}$ is the value of $Y$ for an individual when, possibly contrary to the fact, the treatment level $a$ and mediator level $m$ are assigned.\\
+
+Given these notations, the effects are defined as follows at the covariate level $\bC = \bc$ and the mediator level $M = m$ (only for CDE).
 
 \begin{align*}
 TE &= E[Y_{a_{1}} | C = c] - E[Y_{a_{0}} | C = c]\\
@@ -111,12 +115,20 @@ TNDE &= E[Y_{a_{1},M_{a_{1}}} | C = c] - E[Y_{a_{0},M_{a_{1}}} | C = c]\\
 PNIE &= E[Y_{a_{0},M_{a_{1}}} | C = c] - E[Y_{a_{0},M_{a_{0}}} | C = c]\\
 \end{align*}
 
- These decomposition differs in the cross-world counterfactual state. The PNDE+TNIE decomposition uses $Y_{a_{1},M_{a_{0}}}$ (treatment exerting on the outcome only changes first), whereas the PNIE+TNDE decomposition uses $Y_{a_{0},M_{a_{1}}}$ (treatment exerting on the mediator changes first).  \\
+ These decomposition differs in the cross-world counterfactual state that is used as the partition. The PNDE+TNIE decomposition uses $Y_{a_{1},M_{a_{0}}}$ (treatment exerting on the outcome changes first), whereas the PNIE+TNDE decomposition uses $Y_{a_{0},M_{a_{1}}}$ (treatment exerting on the mediator changes first). In either case, the effect that has the reference counterfactual outcome $Y_{a_{0}} Y_{a_{0},M_{0}}$ is the "pure" effect.\\
 
 More in general, we can consider the effect on the link function scale cite:starkopfComparisonFiveSoftware2017.
 
 \begin{align*}
 TE &= g(E[Y_{a_{1}} | C = c]) - g(E[Y_{a_{0}} | C = c])\\
+\\
+CDE(m) &= g(E[Y_{a_{1},m} | C = c]) - g(E[Y_{a_{0},m} | C = c])\\
+\\
+TNIE &= g(E[Y_{a_{1},M_{a_{1}}} | C = c]) - g(E[Y_{a_{1},M_{a_{0}}} | C = c])\\
+PNDE &= g(E[Y_{a_{1},M_{a_{0}}} | C = c]) - g(E[Y_{a_{0},M_{a_{0}}} | C = c])\\
+\\
+TNDE &= g(E[Y_{a_{1},M_{a_{1}}} | C = c]) - g(E[Y_{a_{0},M_{a_{1}}} | C = c])\\
+PNIE &= g(E[Y_{a_{0},M_{a_{1}}} | C = c]) - g(E[Y_{a_{0},M_{a_{0}}} | C = c])\\
 \end{align*}
 
 
