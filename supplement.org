@@ -137,7 +137,7 @@ Here we describe the formulas using the notational convention in cite:vanderweel
 
 * Understanding the approach
 ** Parametrizing the mediation formulas
-The method directly parametrize the effects with the coefficients of the mediator model ($\beta$) and the outcome model ($\theta$). The maximum likelihood estimates (MLE) are the ones with these parameters replaced with their respective MLEs of the parameters.
+The method directly parametrize the effects with the coefficients of the mediator model ($\beta$) and the outcome model ($\theta$). The maximum likelihood estimates (MLE) are the ones with these parameters replaced with their respective MLEs of the parameters.\\
 
 *** Linear mediator model, linear outcome model
 The function =calc_myreg_mreg_linear_yreg_linear_est()= implements the effect formulas in cite:vanderweeleExplanationCausalInference2015 (p466).
@@ -167,7 +167,31 @@ The function =calc_myreg_mreg_linear_yreg_linear_est()= implements the effect fo
 
 ** Obtaining standard errors via multivariate delta method
 
-As seen above, each effects of interest is estimated as a scalar-valued, non-linear function of estiamted coefficients for the mediator model and the outcome model. Thus, we can obtain the standard error of each effect estimate using the variance covariance matrix for the coefficients and multivariate delta method cite:wassermanAllStatisticsConcise2010 (p79).
+As seen above, each effects of interest is estimated as a scalar-valued, non-linear function of estiamted coefficients for the mediator model and the outcome model. Thus, we can obtain the standard error of each effect estimate using the variance covariance matrix for the coefficients and multivariate delta method cite:wassermanAllStatisticsConcise2010 (p79).\\
+
+Let the scalar quantity of interest $Q$, a function of parameter vector $(\bbeta^{T},\btheta^{T})^{T}$, and its gradient (vector of partial derivatives) with respect to the parameter vector $(\bbeta^{T},\btheta^{T})^{T}$.\\
+
+\begin{align*}
+\nabla Q &= \frac{\partial Q}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+         &= \begin{bmatrix}
+           \frac{\partial Q}{\partial \beta_{0}}\\
+           \vdots\\
+           \frac{\partial Q}{\partial \beta_{2}}\\
+           \frac{\partial Q}{\partial \theta_{0}}\\
+           \vdots\\
+           \frac{\partial Q}{\partial \theta_{4}}\\
+         \end{bmatrix}\\
+\end{align*}
+
+
+\begin{align*}
+  Var \left[ Q\left\{ (\bbetahat^{T},\bthetahat^{T})^{T} \right\} \right]
+  &\approx
+  \left[ \nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right) \right]^{T}
+  Var((\bbetahat^{T},\bthetahat^{T})^{T})
+  \left[ \nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right) \right]\\
+\end{align*}
+
 
 *** Linear mediator model, linear outcome model
 The function =calc_myreg_mreg_linear_yreg_linear_se()= implements the standard error formulas in cite:vanderweeleExplanationCausalInference2015 (p466).
