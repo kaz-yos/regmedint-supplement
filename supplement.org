@@ -1,8 +1,8 @@
 \sloppy
+\newpage
 * Meta-data                                                        :noexport:
 #+TITLE:
 #+AUTHOR:
-#+OPTIONS: toc:nil
 #+OPTIONS: ^:{}
 # LATEX configurations
 #+LATEX_CLASS_OPTIONS: [dvipdfmx,10pt]
@@ -115,7 +115,7 @@ TNDE &= E[Y_{a_{1},M_{a_{1}}} | C = c] - E[Y_{a_{0},M_{a_{1}}} | C = c]\\
 PNIE &= E[Y_{a_{0},M_{a_{1}}} | C = c] - E[Y_{a_{0},M_{a_{0}}} | C = c]\\
 \end{align*}
 
- These decomposition differs in the cross-world counterfactual state that is used as the partition. The PNDE+TNIE decomposition uses $Y_{a_{1},M_{a_{0}}}$ (treatment exerting on the outcome changes first), whereas the PNIE+TNDE decomposition uses $Y_{a_{0},M_{a_{1}}}$ (treatment exerting on the mediator changes first). In either case, the effect that has the reference counterfactual outcome $Y_{a_{0}} Y_{a_{0},M_{0}}$ is the "pure" effect.\\
+ These decomposition differs in the cross-world counterfactual state that is used as the partition. The PNDE+TNIE decomposition uses $Y_{a_{1},M_{a_{0}}}$ (treatment exerting on the outcome changes first), whereas the PNIE+TNDE decomposition uses $Y_{a_{0},M_{a_{1}}}$ (treatment exerting on the mediator changes first). In either case, the effect that has the reference counterfactual outcome $Y_{a_{0}} = Y_{a_{0},M_{0}}$ is the "pure" effect.\\
 
 More in general, we can consider the effect on the link function scale cite:starkopfComparisonFiveSoftware2017.
 
@@ -137,8 +137,41 @@ Here we describe the formulas using the notational convention in cite:vanderweel
 
 * Understanding the approach
 ** Parametrizing the mediation formulas
+The method directly parametrize the effects with the coefficients of the mediator model ($\beta$) and the outcome model ($\theta$). The maximum likelihood estimates (MLE) are the ones with these parameters replaced with their respective MLEs of the parameters.
+
+*** Linear mediator model, linear outcome model
+The function =calc_myreg_mreg_linear_yreg_linear_est()= implements the effect formulas in cite:vanderweeleExplanationCausalInference2015 (p466).
+
+\begin{align*}
+  &\text{Models}\\
+  E[Y|A=a,M=m,C=c] &= \theta_{0} + \theta_{1}a + \theta_{2}m + \theta_{3}am + \btheta_{4}^{T}\bc\\
+  E[M|A=a,C=c] &= \beta_{0} + \beta_{1}a + \bbeta_{2}^{T}\bc\\
+  \\
+  &\text{Effects}\\
+  CDE(m) &= E[Y_{a_{1},m} - Y_{a_{0},m} | C = c]\\
+  &= (\theta_{1} + \theta_{3}m)(a_{1} - a_{0})\\
+  \\
+  PNDE &= E[Y_{a_{1},M_{a_{0}}} - Y_{a_{0},M_{a_{0}}} | C = c]\\
+  &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc) \right\} (a_{1} - a_{0})\\
+  TNIE &= E[Y_{a_{1},M_{a_{1}}} - Y_{a_{1},M_{a_{0}}} | C = c]\\
+  &= \beta_{1}(\theta_{2} + \theta_{3}a_{1})(a_{1} - a_{0})\\
+  \\
+  TNDE &= E[Y_{a_{1},M_{a_{1}}} - Y_{a_{0},M_{a_{1}}} | C = c]\\
+  &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc) \right\} (a_{1} - a_{0})\\
+  PNIE &= E[Y_{a_{0},M_{a_{1}}} - Y_{a_{0},M_{a_{0}}} | C = c]\\
+  &= \beta_{1}(\theta_{2} + \theta_{3}a_{0})(a_{1} - a_{0})\\
+  \\
+  TE &= PNDE + TNIE\\
+  PM &= \frac{TNIE}{TE}\\
+\end{align*}
 
 ** Obtaining standard errors via multivariate delta method
+
+As seen above, each effects of interest is estimated as a scalar-valued, non-linear function of estiamted coefficients for the mediator model and the outcome model. Thus, we can obtain the standard error of each effect estimate using the variance covariance matrix for the coefficients and multivariate delta method cite:wassermanAllStatisticsConcise2010 (p79).
+
+*** Linear mediator model, linear outcome model
+The function =calc_myreg_mreg_linear_yreg_linear_se()= implements the standard error formulas in cite:vanderweeleExplanationCausalInference2015 (p466).
+
 \begin{align*}
 \Gamma_{PM} &= \frac{\partial PM}{\partial (\bbeta^{T},\btheta^{T})^{T}}
 \end{align*}
