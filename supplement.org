@@ -178,17 +178,17 @@ The function =calc_myreg_mreg_linear_yreg_linear_est()= implements the effect fo
   E[M|A=a,\bC=\bc] &= \beta_{0} + \beta_{1}a + \bbeta_{2}^{T}\bc\\
   \\
   &\text{Effects}\\
-  CDE(m) &= E[Y_{a_{1},m} - Y_{a_{0},m} | \bC = \bc]\\
+  CDE(m) &= E[Y_{a_{1},m} | \bC = \bc] - E[Y_{a_{0},m} | \bC = \bc]\\
   &= (\theta_{1} + \theta_{3}m)(a_{1} - a_{0})\\
   \\
-  PNDE &= E[Y_{a_{1},M_{a_{0}}} - Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+  PNDE &= E[Y_{a_{1},M_{a_{0}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
   &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc) \right\} (a_{1} - a_{0})\\
-  TNIE &= E[Y_{a_{1},M_{a_{1}}} - Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
+  TNIE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
   &= \beta_{1}(\theta_{2} + \theta_{3}a_{1})(a_{1} - a_{0})\\
   \\
-  TNDE &= E[Y_{a_{1},M_{a_{1}}} - Y_{a_{0},M_{a_{1}}} | \bC = \bc]\\
+  TNDE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]\\
   &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc) \right\} (a_{1} - a_{0})\\
-  PNIE &= E[Y_{a_{0},M_{a_{1}}} - Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+  PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
   &= \beta_{1}(\theta_{2} + \theta_{3}a_{0})(a_{1} - a_{0})\\
   \\
   TE &= PNDE + TNIE\\
