@@ -115,7 +115,7 @@ TNDE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]\
 PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
 \end{align*}
 
- These decomposition differs in the cross-world counterfactual state that is used as the partition. The PNDE+TNIE decomposition uses $Y_{a_{1},M_{a_{0}}}$ (treatment exerting on the outcome changes first), whereas the PNIE+TNDE decomposition uses $Y_{a_{0},M_{a_{1}}}$ (treatment exerting on the mediator changes first). In either case, the effect that has the reference counterfactual outcome $Y_{a_{0}} = Y_{a_{0},M_{0}}$ is the "pure" effect.\\
+ These decomposition differs in the cross-world counterfactual state that is used as the partition. The PNDE+TNIE decomposition uses $Y_{a_{1},M_{a_{0}}}$ (treatment exerting on the outcome changes first), whereas the PNIE+TNDE decomposition uses $Y_{a_{0},M_{a_{1}}}$ (treatment exerting on the mediator changes first). In either case, the effect that has the reference counterfactual outcome $Y_{a_{0}} = Y_{a_{0},M_{0}}$ is the "pure" effect and the effect that has $Y_{a_{1}} = Y_{a_{1},M_{1}}$ is the total effect. See cite:vanderweeleThreewayDecompositionTotal2013 for the meaning of these two decompositions.\\
 
 More in general, we can consider the effects on the link function scale as follows cite:starkopfComparisonFiveSoftware2017.
 
