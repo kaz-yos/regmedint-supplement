@@ -161,7 +161,7 @@ The function =calc_myreg_mreg_linear_yreg_linear_est()= implements the effect fo
   &= \beta_{1}(\theta_{2} + \theta_{3}a_{0})(a_{1} - a_{0})\\
   \\
   TE &= PNDE + TNIE\\
-  PM &= \frac{TNIE}{TE}\\
+  PM &= \frac{TNIE}{PNDE + TNIE}\\
 \end{align*}
 
 ** Obtaining standard errors via multivariate delta method
@@ -199,7 +199,85 @@ This expression is abbreviated as $\Gamma\Sigma\Gamma'$ in cite:vanderweeleExpla
 The function =calc_myreg_mreg_linear_yreg_linear_se()= implements the standard error formulas in cite:vanderweeleExplanationCausalInference2015 (p466).
 
 \begin{align*}
-\Gamma_{PM} &= \frac{\partial PM}{\partial (\bbeta^{T},\btheta^{T})^{T}}
+  (a_{1}-a_{0})\Gamma_{CDE(m)}
+  &= \frac{\partial CDE(m)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      0\\
+      0\\
+      \b0\\
+      0\\
+      1\\
+      0\\
+      m\\
+      \b0\\
+    \end{bmatrix}\\
+  \\
+  (a_{1}-a_{0})\Gamma_{PNDE}
+  &= \frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      \theta_{3}\\
+      \theta_{3}a_{0}\\
+      \theta_{3}\bc\\
+      0\\
+      1\\
+      0\\
+      \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc\\
+      \b0\\
+    \end{bmatrix}\\
+  (a_{1}-a_{0})\Gamma_{TNIE}
+  &= \frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      0\\
+      \theta_{2} + \theta_{3}a_{1}\\
+      \b0\\
+      0\\
+      0\\
+      \beta_{1}\\
+      \beta_{1}a_{1}\\
+      \b0\\
+    \end{bmatrix}\\
+  \\
+  (a_{1}-a_{0})\Gamma_{TNDE}
+  &= \frac{\partial TNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      \theta_{3}\\
+      \theta_{3}a_{1}\\
+      \theta_{3}\bc\\
+      0\\
+      1\\
+      0\\
+      \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc\\
+      \b0\\
+    \end{bmatrix}\\
+  (a_{1}-a_{0})\Gamma_{PNIE}
+  &= \frac{\partial PNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      0\\
+      \theta_{2} + \theta_{3}a_{0}\\
+      \b0\\
+      0\\
+      0\\
+      \beta_{1}\\
+      \beta_{1}a_{0}\\
+      \b0\\
+    \end{bmatrix}\\
+  \\
+  (a_{1}-a_{0})\Gamma_{TE}
+  &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T})^{T}} = \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})(\Gamma_{PNDE} + \Gamma_{TNIE})\\
+  \\
+  (a_{1}-a_{0})\Gamma_{PM}
+  &= \frac{\partial PM}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &~~~\text{By multivariate chain rule}\\
+  &= \frac{\partial PM}{\partial PNDE}\frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}} + \frac{\partial PM}{\partial TNIE}\frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial PM}{\partial PNDE}(a_{1}-a_{0})\Gamma_{PNDE} + \frac{\partial PM}{\partial TNIE}(a_{1}-a_{0})\Gamma_{TNIE}\\
+  &= \frac{-TNIE}{(PNDE+TNIE)^{2}}(a_{1}-a_{0})\Gamma_{PNDE} + \frac{PNDE}{(PNDE+TNIE)^{2}}(a_{1}-a_{0})\Gamma_{TNIE}\\
+  &= (a_{1}-a_{0}) \frac{-TNIE~\Gamma_{PNDE} + PNDE~\Gamma_{TNIE}}{(PNDE+TNIE)^{2}}\\
 \end{align*}
 
 
