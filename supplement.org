@@ -313,7 +313,7 @@ The function =calc_myreg_mreg_linear_yreg_logistic_se()= implements the standard
 
 \begin{align*}
   (a_{1}-a_{0})\Gamma_{CDE(m)}
-  &= \frac{\partial CDE(m)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial CDE(m)}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
   &= (a_{1}-a_{0})
     \begin{bmatrix}
       0\\
@@ -324,10 +324,11 @@ The function =calc_myreg_mreg_linear_yreg_logistic_se()= implements the standard
       0\\
       m\\
       \b0\\
+      0\\
     \end{bmatrix}\\
   \\
   (a_{1}-a_{0})\Gamma_{PNDE}
-  &= \frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
   &= (a_{1}-a_{0})
     \begin{bmatrix}
       \theta_{3}\\
@@ -338,9 +339,10 @@ The function =calc_myreg_mreg_linear_yreg_logistic_se()= implements the standard
       \theta_{3}\sigma^{2}\\
       \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc + \theta_{2}\sigma^{2} + \theta_{3}\sigma^{2}(a_{0} + a_{1})\\
       \b0\\
+      \theta_{3}\theta_{2} + \frac{1}{2}\theta_{3}^{2}(a_{1} + a_{0})\\
     \end{bmatrix}\\
   (a_{1}-a_{0})\Gamma_{TNIE}
-  &= \frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
   &= (a_{1}-a_{0})
     \begin{bmatrix}
       0\\
@@ -351,10 +353,11 @@ The function =calc_myreg_mreg_linear_yreg_logistic_se()= implements the standard
       \beta_{1}\\
       \beta_{1}a_{1}\\
       \b0\\
+      0\\
     \end{bmatrix}\\
   \\
   (a_{1}-a_{0})\Gamma_{TNDE}
-  &= \frac{\partial TNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial TNDE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
   &= (a_{1}-a_{0})
     \begin{bmatrix}
       \theta_{3}\\
@@ -365,9 +368,10 @@ The function =calc_myreg_mreg_linear_yreg_logistic_se()= implements the standard
       \theta_{3}\sigma^{2}\\
       \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc + \theta_{2}\sigma^{2} + \theta_{3}\sigma^{2}(a_{0} + a_{1})\\
       \b0\\
+      \theta_{3}\theta_{2} + \frac{1}{2}\theta_{3}^{2}(a_{1} + a_{0})\\
     \end{bmatrix}\\
   (a_{1}-a_{0})\Gamma_{PNIE}
-  &= \frac{\partial PNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial PNIE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
   &= (a_{1}-a_{0})
     \begin{bmatrix}
       0\\
@@ -378,16 +382,17 @@ The function =calc_myreg_mreg_linear_yreg_logistic_se()= implements the standard
       \beta_{1}\\
       \beta_{1}a_{0}\\
       \b0\\
+      0\\
     \end{bmatrix}\\
   \\
   (a_{1}-a_{0})\Gamma_{TE}
-  &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T})^{T}} = \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}} = \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
   &= (a_{1}-a_{0})(\Gamma_{PNDE} + \Gamma_{TNIE})\\
   \\
   (a_{1}-a_{0})\Gamma_{PM}
-  &= \frac{\partial PM}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial PM}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
   &~~~\text{By multivariate chain rule}\\
-  &= \frac{\partial PM}{\partial PNDE}\frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}} + \frac{\partial PM}{\partial TNIE}\frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial PM}{\partial PNDE}\frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}} + \frac{\partial PM}{\partial TNIE}\frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
   &= \frac{\partial PM}{\partial PNDE}(a_{1}-a_{0})\Gamma_{PNDE} + \frac{\partial PM}{\partial TNIE}(a_{1}-a_{0})\Gamma_{TNIE}\\
   &= \frac{-TNIE}{(PNDE+TNIE)^{2}}(a_{1}-a_{0})\Gamma_{PNDE} + \frac{PNDE}{(PNDE+TNIE)^{2}}(a_{1}-a_{0})\Gamma_{TNIE}\\
   &= (a_{1}-a_{0}) \frac{-TNIE~\Gamma_{PNDE} + PNDE~\Gamma_{TNIE}}{(PNDE+TNIE)^{2}}\\
