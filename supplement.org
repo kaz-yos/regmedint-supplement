@@ -132,12 +132,11 @@ PNIE &= g(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]) - g(E[Y_{a_{0},M_{a_{0}}} | \bC = 
 \end{align*}
 
 
-* Methods implemented
-Here we describe the formulas using the notational convention in cite:vanderweeleExplanationCausalInference2015.
-
 * Understanding the approach
+Here we describe the formulas implemented in =regmendint=, using the notational convention in cite:vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015.
+
 ** Parametrizing the mediation formulas
-The method directly parametrize the effects with the coefficients of the mediator model ($\beta$) and the outcome model ($\theta$). The maximum likelihood estimates (MLE) are the ones with these parameters replaced with their respective MLEs of the parameters.\\
+The method directly parametrize the effects with the coefficients of the mediator model ($\beta$) and the outcome model ($\theta$). The maximum likelihood estimates (MLE) of these effects are the ones with these parameters replaced with their respective MLEs. See XYZ for derivation of these formulas.\\
 
 *** Linear mediator model, linear outcome model
 The function =calc_myreg_mreg_linear_yreg_linear_est()= implements the effect formulas in cite:vanderweeleExplanationCausalInference2015 (p466).
@@ -167,9 +166,9 @@ The function =calc_myreg_mreg_linear_yreg_linear_est()= implements the effect fo
 
 ** Obtaining standard errors via multivariate delta method
 
-As seen above, each effects of interest is estimated as a scalar-valued, non-linear function of estiamted coefficients for the mediator model and the outcome model. Thus, we can obtain the standard error of each effect estimate using the variance covariance matrix for the coefficients and multivariate delta method cite:wassermanAllStatisticsConcise2010 (p79).\\
+As seen above, each effects of interest is estimated as a scalar-valued, non-linear function of estiamted coefficients for the mediator model and the outcome model. Thus, we can obtain the standard error of each effect estimate using the variance covariance matrix for the coefficients and multivariate delta method cite:hoefWhoInventedDelta2012.\\
 
-Let the scalar quantity of interest $Q$, a function of parameter vector $(\bbeta^{T},\btheta^{T})^{T}$, and its gradient (vector of partial derivatives) with respect to the parameter vector $(\bbeta^{T},\btheta^{T})^{T}$.\\
+Let the scalar quantity of interest be $Q$, a function of parameter vector $(\bbeta^{T},\btheta^{T})^{T}$. Then, its gradient (vector of partial derivatives) with respect to the parameter vector $(\bbeta^{T},\btheta^{T})^{T}$ is the following.\\
 
 \begin{align*}
 \nabla Q &= \frac{\partial Q}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
@@ -183,14 +182,17 @@ Let the scalar quantity of interest $Q$, a function of parameter vector $(\bbeta
          \end{bmatrix}\\
 \end{align*}
 
+By the large sample approximation using the multivariate delta method, the variance of the quantity of interest evaluated at the MLEs $(\bbetahat^{T},\bthetahat^{T})^{T}$ is the following.
 
 \begin{align*}
-  Var \left[ Q\left\{ (\bbetahat^{T},\bthetahat^{T})^{T} \right\} \right]
+  \underbrace{Var \left[ Q\left\{ (\bbetahat^{T},\bthetahat^{T})^{T} \right\} \right]}_{\text{scalar}}
   &\approx
-  \left[ \nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right) \right]^{T}
-  Var((\bbetahat^{T},\bthetahat^{T})^{T})
-  \left[ \nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right) \right]\\
+  \underbrace{\left[ \nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right) \right]^{T}}_{\text{row vector}}
+  \underbrace{Var((\bbetahat^{T},\bthetahat^{T})^{T})}_{\text{matrix}}
+  \underbrace{\left[ \nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right) \right]}_{\text{column vector}}
 \end{align*}
+
+This expression is abbreviated as $\Gamma\Sigma\Gamma'$ in cite:vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015. In these references, the treatment contrast ($a_{1}-a_{0}$) is factored out from $\nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right)$ when possible.
 
 
 *** Linear mediator model, linear outcome model
