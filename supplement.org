@@ -449,7 +449,7 @@ The function =calc_myreg_mreg_logistic_yreg_linear_est()= implements the effect 
 \end{align*}
 
 *** Variance formulas
-The function =calc_myreg_mreg_linear_yreg_linear_se()= implements the standard error formulas in cite:vanderweeleExplanationCausalInference2015 (p466).
+The function =calc_myreg_mreg_logistic_yreg_linear_se()= implements the standard error formulas in cite:vanderweeleExplanationCausalInference2015 (p471).
 
 \begin{align*}
   (a_{1}-a_{0})\Gamma_{CDE(m)}
@@ -466,71 +466,147 @@ The function =calc_myreg_mreg_linear_yreg_linear_se()= implements the standard e
       \b0\\
     \end{bmatrix}\\
   \\
+  d_{1,PNDE} &= \theta_{3} \frac
+               {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  d_{2,PNDE} &= a_{0} \theta_{3} \frac
+               {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  d_{3,PNDE} &= \bc \theta_{3} \frac
+               {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  d_{4,PNDE} &= 0\\
+  d_{5,PNDE} &= 1\\
+  d_{6,PNDE} &= 0\\
+  d_{7,PNDE} &= \frac
+               {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  d_{8,PNDE} &= \b0\\
   (a_{1}-a_{0})\Gamma_{PNDE}
   &= \frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
   &= (a_{1}-a_{0})
     \begin{bmatrix}
-      \theta_{3}\\
-      \theta_{3}a_{0}\\
-      \theta_{3}\bc\\
-      0\\
-      1\\
-      0\\
-      \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc\\
-      \b0\\
-    \end{bmatrix}\\
-  (a_{1}-a_{0})\Gamma_{TNIE}
-  &= \frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
-  &= (a_{1}-a_{0})
-    \begin{bmatrix}
-      0\\
-      \theta_{2} + \theta_{3}a_{1}\\
-      \b0\\
-      0\\
-      0\\
-      \beta_{1}\\
-      \beta_{1}a_{1}\\
-      \b0\\
+      d_{1,PNDE}\\
+      d_{2,PNDE}\\
+      d_{3,PNDE}\\
+      d_{4,PNDE}\\
+      d_{5,PNDE}\\
+      d_{6,PNDE}\\
+      d_{7,PNDE}\\
+      d_{8,PNDE}\\
     \end{bmatrix}\\
   \\
+  Q_{TNIE} &= \frac
+      {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {\left\{ 1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc) \right\}^{2}}\\
+  B_{TNIE} &= \frac
+      {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {\left\{ 1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc) \right\}^{2}}\\
+  K_{TNIE} &= \frac
+      {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  D_{TNIE} &= \theta_{3} \frac
+      {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  d_{1,TNIE} &= (\theta_{2} + \theta_{3}a_{1}) (Q_{TNIE} - B_{TNIE})\\
+  d_{2,TNIE} &= (\theta_{2} + \theta_{3}a_{1}) (a_{1}Q_{TNIE} - a_{0}B_{TNIE})\\
+  d_{3,TNIE} &= (\theta_{2} + \theta_{3}a_{1})\bc (Q_{TNIE} - B_{TNIE})\\
+  d_{4,TNIE} &= 0\\
+  d_{5,TNIE} &= 0\\
+  d_{6,TNIE} &= K_{TNIE} - D_{TNIE}\\
+  d_{7,TNIE} &= a_{1} (K_{TNIE} - D_{TNIE})\\
+  d_{8,TNIE} &= \b0\\
+  &\text{Note the lack of the common factor }(a_{1} - a_{0})\\
+  \Gamma_{TNIE}
+  &= \frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \begin{bmatrix}
+      d_{1,TNIE}\\
+      d_{2,TNIE}\\
+      d_{3,TNIE}\\
+      d_{4,TNIE}\\
+      d_{5,TNIE}\\
+      d_{6,TNIE}\\
+      d_{7,TNIE}\\
+      d_{8,TNIE}\\
+    \end{bmatrix}\\
+  \\
+  d_{1,TNDE} &= \theta_{3} \frac
+               {\exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  d_{2,TNDE} &= a_{1} \theta_{3} \frac
+               {\exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  d_{3,TNDE} &= \bc \theta_{3} \frac
+               {\exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  d_{4,TNDE} &= 0\\
+  d_{5,TNDE} &= 1\\
+  d_{6,TNDE} &= 0\\
+  d_{7,TNDE} &= \frac
+               {\exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  d_{8,TNDE} &= \b0\\
   (a_{1}-a_{0})\Gamma_{TNDE}
   &= \frac{\partial TNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
   &= (a_{1}-a_{0})
     \begin{bmatrix}
-      \theta_{3}\\
-      \theta_{3}a_{1}\\
-      \theta_{3}\bc\\
-      0\\
-      1\\
-      0\\
-      \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc\\
-      \b0\\
+      d_{1,TNDE}\\
+      d_{2,TNDE}\\
+      d_{3,TNDE}\\
+      d_{4,TNDE}\\
+      d_{5,TNDE}\\
+      d_{6,TNDE}\\
+      d_{7,TNDE}\\
+      d_{8,TNDE}\\
     \end{bmatrix}\\
-  (a_{1}-a_{0})\Gamma_{PNIE}
+  \\
+  Q_{PNIE} &= \frac
+      {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {\left\{ 1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc) \right\}^{2}}\\
+  B_{PNIE} &= \frac
+      {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {\left\{ 1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc) \right\}^{2}}\\
+  K_{PNIE} &= \frac
+      {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  D_{PNIE} &= \theta_{3} \frac
+      {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  d_{1,PNIE} &= (\theta_{2} + \theta_{3}a_{0}) (Q_{PNIE} - B_{PNIE})\\
+  d_{2,PNIE} &= (\theta_{2} + \theta_{3}a_{0}) (a_{1}Q_{PNIE} - a_{0}B_{PNIE})\\
+  d_{3,PNIE} &= (\theta_{2} + \theta_{3}a_{0})\bc (Q_{PNIE} - B_{PNIE})\\
+  d_{4,PNIE} &= 0\\
+  d_{5,PNIE} &= 0\\
+  d_{6,PNIE} &= K_{PNIE} - D_{PNIE}\\
+  d_{7,PNIE} &= a_{0} (K_{PNIE} - D_{PNIE})\\
+  d_{8,PNIE} &= \b0\\
+  &\text{Note the lack of the common factor }(a_{1} - a_{0})\\
+  \Gamma_{PNIE}
   &= \frac{\partial PNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
-  &= (a_{1}-a_{0})
-    \begin{bmatrix}
-      0\\
-      \theta_{2} + \theta_{3}a_{0}\\
-      \b0\\
-      0\\
-      0\\
-      \beta_{1}\\
-      \beta_{1}a_{0}\\
-      \b0\\
+  &= \begin{bmatrix}
+      d_{1,PNIE}\\
+      d_{2,PNIE}\\
+      d_{3,PNIE}\\
+      d_{4,PNIE}\\
+      d_{5,PNIE}\\
+      d_{6,PNIE}\\
+      d_{7,PNIE}\\
+      d_{8,PNIE}\\
     \end{bmatrix}\\
   \\
-  (a_{1}-a_{0})\Gamma_{TE}
+  &\text{Note the lack of the common factor }(a_{1} - a_{0})\\
+  \Gamma_{TE}
   &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T})^{T}} = \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
-  &= (a_{1}-a_{0})(\Gamma_{PNDE} + \Gamma_{TNIE})\\
+  &= (a_{1}-a_{0})\Gamma_{PNDE} + \Gamma_{TNIE}\\
   \\
-  (a_{1}-a_{0})\Gamma_{PM}
+  &\text{Note the lack of the common factor }(a_{1} - a_{0})\\
+  \Gamma_{PM}
   &= \frac{\partial PM}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
   &~~~\text{By multivariate chain rule}\\
   &= \frac{\partial PM}{\partial PNDE}\frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}} + \frac{\partial PM}{\partial TNIE}\frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
-  &= \frac{\partial PM}{\partial PNDE}(a_{1}-a_{0})\Gamma_{PNDE} + \frac{\partial PM}{\partial TNIE}(a_{1}-a_{0})\Gamma_{TNIE}\\
-  &= \frac{-TNIE}{(PNDE+TNIE)^{2}}(a_{1}-a_{0})\Gamma_{PNDE} + \frac{PNDE}{(PNDE+TNIE)^{2}}(a_{1}-a_{0})\Gamma_{TNIE}\\
-  &= (a_{1}-a_{0}) \frac{-TNIE~\Gamma_{PNDE} + PNDE~\Gamma_{TNIE}}{(PNDE+TNIE)^{2}}\\
+  &= \frac{\partial PM}{\partial PNDE}(a_{1}-a_{0})\Gamma_{PNDE} + \frac{\partial PM}{\partial TNIE}\Gamma_{TNIE}\\
+  &= \frac{-TNIE}{(PNDE+TNIE)^{2}}(a_{1}-a_{0})\Gamma_{PNDE} + \frac{PNDE}{(PNDE+TNIE)^{2}}\Gamma_{TNIE}\\
+  &= \frac{-TNIE~(a_{1}-a_{0})\Gamma_{PNDE} + PNDE~\Gamma_{TNIE}}{(PNDE+TNIE)^{2}}\\
 \end{align*}
 
 
