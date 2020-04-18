@@ -1,0 +1,857 @@
+% Created 2020-04-18 Sat 06:28
+% Intended LaTeX compiler: pdflatex
+\documentclass[dvipdfmx,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+%% Margin
+%% \usepackage[margin=1.5cm]{geometry}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm, headsep=4pt]{geometry}
+%% \addtolength{\topmargin}{0.3cm}
+%% \addtolength{\textheight}{1.75in}
+%% Math
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{wasysym}
+%% Allow new page within align
+\allowdisplaybreaks
+\usepackage{cancel}
+% % Code
+\usepackage{listings}
+\usepackage{courier}
+\lstset{basicstyle=\footnotesize\ttfamily, breaklines=true, frame=single}
+\usepackage[cache=false]{minted}
+\usemintedstyle{vs}
+%% Graphics
+\usepackage{graphicx}
+\usepackage{grffile}
+%% DAG
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric}
+%% Date
+\usepackage[yyyymmdd]{datetime}
+\renewcommand{\dateseparator}{--}
+%% Header
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % Erase first to supress section names
+\fancyhead[L]{K Yoshida, et al.} % LEFT
+\fancyhead[C]{Supplement} % CENTER
+\fancyhead[R]{\today} % RIGHT
+\fancyfoot[C]{\thepage}
+%% \fancyfoot[R]{Page \thepage\ of \pageref{LastPage}}
+%% Section font size
+\usepackage{sectsty}
+\sectionfont{\small}
+\subsectionfont{\small}
+\subsubsectionfont{\small}
+%% Section numbering
+%% http://tex.stackexchange.com/questions/3177/how-to-change-the-numbering-of-part-chapter-section-to-alphabetical-r
+%% \renewcommand\thesection{\alph{section}}
+%% \renewcommand\thesubsection{\thesection.\arabic{subsection}}
+%% \renewcommand{\thesubsubsection}{\thesubsection.\alph{subsubsection}}
+%%
+%% http://tex.stackexchange.com/questions/40067/numbering-sections-with-sequential-integers
+%% \usepackage{chngcntr}
+%% \counterwithout{subsection}{section}
+%% enumerate
+\usepackage{enumerate}
+%% double space
+%% \usepackage{setspace}
+%% \linespread{2}
+%% Paragraph Indentation
+\usepackage{indentfirst}
+\setlength{\parindent}{0em}
+%% Spacing after headings
+%% http://tex.stackexchange.com/questions/53338/reducing-spacing-after-headings
+\usepackage{titlesec}
+\titlespacing      \section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing   \subsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+%% Fix figures and tables by [H]
+\usepackage{float}
+%% Allow URL embedding
+\usepackage{url}
+\usepackage{fontawesome}
+\input{\string~/.emacs.d/misc/GrandMacros}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.3 (Org mode 9.3.6)}, 
+ pdflang={English}}
+\begin{document}
+
+\tableofcontents
+
+\sloppy
+\newpage
+\section{Brief description of the causal mediation analysis}
+\label{sec:org827734e}
+
+The literature on the causal mediation is vast \cite{vanderweeleExplanationCausalInference2015} and is evolving, thus, only the pieces relevant for the current software are reviewed here.
+
+\subsection{Decomposition of total effect}
+\label{sec:org2a5ec60}
+Let \(Y\) be the outcome variable of interest, \(A\) be the treatment variable of interest, \(M\) be the mediator variable of interest, and \(\bC\) be the potentially vector-valued pre-treatment baseline covariates necessary for exchangeability. The treatment contrast of interest is \(a_{1}\) vs \(a_{0}\), the second being the reference level. The counterfactual \(Y_{a,m}\) is the value of \(Y\) for an individual when, possibly contrary to the fact, the treatment level \(a\) and mediator level \(m\) are assigned.\\
+
+Given these notations, the effects are defined as follows at the covariate level \(\bC = \bc\) and the mediator level \(M = m\) (only for CDE).
+
+\begin{align*}
+TE &= E[Y_{a_{1}} | \bC = \bc] - E[Y_{a_{0}} | \bC = \bc]\\
+\\
+CDE(m) &= E[Y_{a_{1},m} | \bC = \bc] - E[Y_{a_{0},m} | \bC = \bc]\\
+\\
+TNIE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
+PNDE &= E[Y_{a_{1},M_{a_{0}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+\\
+TNDE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]\\
+PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+\end{align*}
+
+The total effect (TE) can be decomposed into the direct (non-mediated) effect and indirect (mediated) effect in two different ways \cite{robinsIdentifiabilityExchangeabilityDirect1992,vanderweeleThreewayDecompositionTotal2013}.\\
+
+The decomposition of TE into the pure (natural) direct effect (PNDE) and the total (natural) indirect effect (TNIE) is the usual decomposition \cite{pearlDirectIndirectEffects2001}.
+
+\begin{align*}
+TNIE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
+PNDE &= E[Y_{a_{1},M_{a_{0}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+\end{align*}
+
+The other decomposition of TE is into the pure (natural) indirect effect (PNIE) and the total (natural) direct effect (TNDE) \cite{robinsIdentifiabilityExchangeabilityDirect1992}.
+
+\begin{align*}
+TNDE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]\\
+PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+\end{align*}
+
+These decomposition differs in the cross-world counterfactual state that is used as the partition. The PNDE+TNIE decomposition uses \(Y_{a_{1},M_{a_{0}}}\) (treatment exerting on the outcome changes first), whereas the PNIE+TNDE decomposition uses \(Y_{a_{0},M_{a_{1}}}\) (treatment exerting on the mediator changes first). In either case, the effect that has the reference counterfactual outcome \(Y_{a_{0}} = Y_{a_{0},M_{0}}\) is the "pure" effect and the effect that has \(Y_{a_{1}} = Y_{a_{1},M_{1}}\) is the total effect. See \cite{vanderweeleThreewayDecompositionTotal2013} for the meaning of these two decompositions.\\
+
+More in general, we can consider the effects on the link function scale as follows \cite{starkopfComparisonFiveSoftware2017}.
+
+\begin{align*}
+TE &= g(E[Y_{a_{1}} | \bC = \bc]) - g(E[Y_{a_{0}} | \bC = \bc])\\
+\\
+CDE(m) &= g(E[Y_{a_{1},m} | \bC = \bc]) - g(E[Y_{a_{0},m} | \bC = \bc])\\
+\\
+TNIE &= g(E[Y_{a_{1},M_{a_{1}}} | \bC = \bc]) - g(E[Y_{a_{1},M_{a_{0}}} | \bC = \bc])\\
+PNDE &= g(E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]) - g(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
+\\
+TNDE &= g(E[Y_{a_{1},M_{a_{1}}} | \bC = \bc]) - g(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc])\\
+PNIE &= g(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]) - g(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
+\end{align*}
+
+
+\section{Understanding the approach}
+\label{sec:org85129df}
+Here we describe the formulas implemented in \texttt{regmendint}, using the notational convention in \cite{vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015}.
+
+\subsection{Parametrizing the mediation formulas}
+\label{sec:org2c5b2ac}
+The method directly parametrize the effects with the coefficients of the mediator model (\(\beta\)) and the outcome model (\(\theta\)). The maximum likelihood estimates (MLE) of these effects are the ones with these parameters replaced with their respective MLEs. See XYZ for derivation of these formulas.\\
+
+\subsection{Obtaining standard errors via multivariate delta method}
+\label{sec:org6f01426}
+
+As seen above, each effects of interest is estimated as a scalar-valued, non-linear function of estiamted coefficients for the mediator model and the outcome model. Thus, we can obtain the standard error of each effect estimate using the variance covariance matrix for the coefficients and multivariate delta method \cite{hoefWhoInventedDelta2012}.\\
+
+Let the scalar quantity of interest be \(Q\), a function of parameter vector \((\bbeta^{T},\btheta^{T})^{T}\). Then, its gradient (vector of partial derivatives) with respect to the parameter vector \((\bbeta^{T},\btheta^{T})^{T}\) is the following.\\
+
+\begin{align*}
+\nabla Q &= \frac{\partial Q}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+         &= \begin{bmatrix}
+           \frac{\partial Q}{\partial \beta_{0}}\\
+           \vdots\\
+           \frac{\partial Q}{\partial \beta_{2}}\\
+           \frac{\partial Q}{\partial \theta_{0}}\\
+           \vdots\\
+           \frac{\partial Q}{\partial \theta_{4}}\\
+         \end{bmatrix}\\
+\end{align*}
+
+By the large sample approximation using the multivariate delta method, the variance of the quantity of interest evaluated at the MLEs \((\bbetahat^{T},\bthetahat^{T})^{T}\) is the following.
+
+\begin{align*}
+  \underbrace{Var \left[ Q\left\{ (\bbetahat^{T},\bthetahat^{T})^{T} \right\} \right]}_{\text{scalar}}
+  &\approx
+  \underbrace{\left[ \nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right) \right]^{T}}_{\text{row vector}}
+  \underbrace{Var((\bbetahat^{T},\bthetahat^{T})^{T})}_{\text{matrix}}
+  \underbrace{\left[ \nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right) \right]}_{\text{column vector}}
+\end{align*}
+
+This expression is abbreviated as \(\Gamma\Sigma\Gamma'\) in \cite{vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015}. In these references, the treatment contrast (\(a_{1}-a_{0}\)) is factored out from \(\nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right)\) when possible.
+
+\subsection{Linear mediator model, linear outcome model}
+\label{sec:orgf9c21b1}
+\subsubsection{Effect formulas}
+\label{sec:orge2197d4}
+The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p466).
+
+\begin{align*}
+  &\text{Models}\\
+  E[Y|A=a,M=m,\bC=\bc] &= \theta_{0} + \theta_{1}a + \theta_{2}m + \theta_{3}am + \btheta_{4}^{T}\bc\\
+  E[M|A=a,\bC=\bc] &= \beta_{0} + \beta_{1}a + \bbeta_{2}^{T}\bc\\
+  \\
+  &\text{Effects}\\
+  CDE(m) &= E[Y_{a_{1},m} | \bC = \bc] - E[Y_{a_{0},m} | \bC = \bc]\\
+  &= (\theta_{1} + \theta_{3}m)(a_{1} - a_{0})\\
+  \\
+  PNDE &= E[Y_{a_{1},M_{a_{0}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+  &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc) \right\} (a_{1} - a_{0})\\
+  TNIE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
+  &= \beta_{1}(\theta_{2} + \theta_{3}a_{1})(a_{1} - a_{0})\\
+  \\
+  TNDE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]\\
+  &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc) \right\} (a_{1} - a_{0})\\
+  PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+  &= \beta_{1}(\theta_{2} + \theta_{3}a_{0})(a_{1} - a_{0})\\
+  \\
+  TE &= PNDE + TNIE\\
+  PM &= \frac{TNIE}{PNDE + TNIE}\\
+\end{align*}
+
+\subsubsection{Variance formulas}
+\label{sec:org5b22bae}
+The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p466).
+
+\begin{align*}
+  (a_{1}-a_{0})\Gamma_{CDE(m)}
+  &= \frac{\partial CDE(m)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      0\\
+      0\\
+      \b0\\
+      0\\
+      1\\
+      0\\
+      m\\
+      \b0\\
+    \end{bmatrix}\\
+  \\
+  (a_{1}-a_{0})\Gamma_{PNDE}
+  &= \frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      \theta_{3}\\
+      \theta_{3}a_{0}\\
+      \theta_{3}\bc\\
+      0\\
+      1\\
+      0\\
+      \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc\\
+      \b0\\
+    \end{bmatrix}\\
+  (a_{1}-a_{0})\Gamma_{TNIE}
+  &= \frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      0\\
+      \theta_{2} + \theta_{3}a_{1}\\
+      \b0\\
+      0\\
+      0\\
+      \beta_{1}\\
+      \beta_{1}a_{1}\\
+      \b0\\
+    \end{bmatrix}\\
+  \\
+  (a_{1}-a_{0})\Gamma_{TNDE}
+  &= \frac{\partial TNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      \theta_{3}\\
+      \theta_{3}a_{1}\\
+      \theta_{3}\bc\\
+      0\\
+      1\\
+      0\\
+      \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc\\
+      \b0\\
+    \end{bmatrix}\\
+  (a_{1}-a_{0})\Gamma_{PNIE}
+  &= \frac{\partial PNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      0\\
+      \theta_{2} + \theta_{3}a_{0}\\
+      \b0\\
+      0\\
+      0\\
+      \beta_{1}\\
+      \beta_{1}a_{0}\\
+      \b0\\
+    \end{bmatrix}\\
+  \\
+  (a_{1}-a_{0})\Gamma_{TE}
+  &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})(\Gamma_{PNDE} + \Gamma_{TNIE})\\
+  \\
+  (a_{1}-a_{0})\Gamma_{PM}
+  &= \frac{\partial PM}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &~~~\text{By multivariate chain rule}\\
+  &= \frac{\partial PM}{\partial PNDE}\frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}} + \frac{\partial PM}{\partial TNIE}\frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial PM}{\partial PNDE}(a_{1}-a_{0})\Gamma_{PNDE} + \frac{\partial PM}{\partial TNIE}(a_{1}-a_{0})\Gamma_{TNIE}\\
+  &= \frac{-TNIE}{(PNDE+TNIE)^{2}}(a_{1}-a_{0})\Gamma_{PNDE} + \frac{PNDE}{(PNDE+TNIE)^{2}}(a_{1}-a_{0})\Gamma_{TNIE}\\
+  &= (a_{1}-a_{0}) \frac{-TNIE~\Gamma_{PNDE} + PNDE~\Gamma_{TNIE}}{(PNDE+TNIE)^{2}}\\
+\end{align*}
+
+
+\subsection{Linear mediator model, non-linear outcome model}
+\label{sec:org24b2a96}
+\subsubsection{Effect formulas}
+\label{sec:org4c72bb3}
+The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p468).
+
+\begin{align*}
+  &\text{Models}\\
+  \logit(E[Y|A=a,M=m,\bC=\bc]) &= \theta_{0} + \theta_{1}a + \theta_{2}m + \theta_{3}am + \btheta_{4}^{T}\bc\\
+  E[M|A=a,\bC=\bc] &= \beta_{0} + \beta_{1}a + \bbeta_{2}^{T}\bc\\
+  \\
+  &\text{Effects on link function scale}\\
+  CDE(m) &= \logit(E[Y_{a_{1},m} | \bC = \bc]) - \logit(E[Y_{a_{0},m} | \bC = \bc])\\
+  &= (\theta_{1} + \theta_{3}m)(a_{1} - a_{0})\\
+  \\
+  PNDE &= \logit(E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]) - \logit(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
+  &\approx \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc + \theta_{2}\sigma^{2}) \right\} (a_{1} - a_{0}) + \frac{1}{2} \theta_{3}^{2}\sigma^{2}(a_{1}^{2} - a_{0}^{2})\\
+  TNIE &= \logit(E[Y_{a_{1},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{a_{1},M_{a_{0}}} | \bC = \bc])\\
+  &\approx \beta_{1}(\theta_{2} + \theta_{3}a_{1})(a_{1} - a_{0})\\
+  \\
+  TNDE &= \logit(E[Y_{a_{1},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc])\\
+  &\approx \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc + \theta_{2}\sigma^{2}) \right\} (a_{1} - a_{0}) + \frac{1}{2} \theta_{3}^{2}\sigma^{2}(a_{1}^{2} - a_{0}^{2})\\
+  PNIE &= \logit(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
+  &\approx \beta_{1}(\theta_{2} + \theta_{3}a_{0})(a_{1} - a_{0})\\
+  \\
+  TE &= PNDE + TNIE\\
+  PM &= \frac{\exp(PNDE)(\exp(TNIE) - 1)}{\exp(PNDE)\exp(TNIE) - 1}\\
+\end{align*}
+
+\subsubsection{Variance formulas}
+\label{sec:org8eeba94}
+The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p468).
+
+\begin{align*}
+  (a_{1}-a_{0})\Gamma_{CDE(m)}
+  &= \frac{\partial CDE(m)}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      0\\
+      0\\
+      \b0\\
+      0\\
+      1\\
+      0\\
+      m\\
+      \b0\\
+      0\\
+    \end{bmatrix}\\
+  \\
+  (a_{1}-a_{0})\Gamma_{PNDE}
+  &= \frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      \theta_{3}\\
+      \theta_{3}a_{0}\\
+      \theta_{3}\bc\\
+      0\\
+      1\\
+      \theta_{3}\sigma^{2}\\
+      \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc + \theta_{2}\sigma^{2} + \theta_{3}\sigma^{2}(a_{0} + a_{1})\\
+      \b0\\
+      \theta_{3}\theta_{2} + \frac{1}{2}\theta_{3}^{2}(a_{1} + a_{0})\\
+    \end{bmatrix}\\
+  (a_{1}-a_{0})\Gamma_{TNIE}
+  &= \frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      0\\
+      \theta_{2} + \theta_{3}a_{1}\\
+      \b0\\
+      0\\
+      0\\
+      \beta_{1}\\
+      \beta_{1}a_{1}\\
+      \b0\\
+      0\\
+    \end{bmatrix}\\
+  \\
+  (a_{1}-a_{0})\Gamma_{TNDE}
+  &= \frac{\partial TNDE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      \theta_{3}\\
+      \theta_{3}a_{0}\\
+      \theta_{3}\bc\\
+      0\\
+      1\\
+      \theta_{3}\sigma^{2}\\
+      \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc + \theta_{2}\sigma^{2} + \theta_{3}\sigma^{2}(a_{0} + a_{1})\\
+      \b0\\
+      \theta_{3}\theta_{2} + \frac{1}{2}\theta_{3}^{2}(a_{1} + a_{0})\\
+    \end{bmatrix}\\
+  (a_{1}-a_{0})\Gamma_{PNIE}
+  &= \frac{\partial PNIE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      0\\
+      \theta_{2} + \theta_{3}a_{0}\\
+      \b0\\
+      0\\
+      0\\
+      \beta_{1}\\
+      \beta_{1}a_{0}\\
+      \b0\\
+      0\\
+    \end{bmatrix}\\
+  \\
+  (a_{1}-a_{0})\Gamma_{TE}
+  &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
+  &= \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
+  &= (a_{1}-a_{0})(\Gamma_{PNDE} + \Gamma_{TNIE})\\
+  \\
+  (a_{1}-a_{0})\Gamma_{PM}
+  &= \frac{\partial PM}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
+  &~~~\text{By multivariate chain rule}\\
+  &= \frac{\partial PM}{\partial PNDE}\frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}} + \frac{\partial PM}{\partial TNIE}\frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
+  &= \frac{\partial PM}{\partial PNDE}(a_{1}-a_{0})\Gamma_{PNDE} + \frac{\partial PM}{\partial TNIE}(a_{1}-a_{0})\Gamma_{TNIE}\\
+  &= \frac{-TNIE}{(PNDE+TNIE)^{2}}(a_{1}-a_{0})\Gamma_{PNDE} + \frac{PNDE}{(PNDE+TNIE)^{2}}(a_{1}-a_{0})\Gamma_{TNIE}\\
+  &= (a_{1}-a_{0}) \frac{-TNIE~\Gamma_{PNDE} + PNDE~\Gamma_{TNIE}}{(PNDE+TNIE)^{2}}\\
+\end{align*}
+
+
+\subsection{Logistic mediator model, linear outcome model}
+\label{sec:org9ca5de7}
+\subsubsection{Effect formulas}
+\label{sec:orga48726b}
+The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p471).
+
+\begin{align*}
+  &\text{Models}\\
+  E[Y|A=a,M=m,\bC=\bc] &= \theta_{0} + \theta_{1}a + \theta_{2}m + \theta_{3}am + \btheta_{4}^{T}\bc\\
+  \logit(E[M|A=a,\bC=\bc]) &= \beta_{0} + \beta_{1}a + \bbeta_{2}^{T}\bc\\
+  \\
+  &\text{Effects}\\
+  CDE(m) &= E[Y_{a_{1},m} | \bC = \bc] - E[Y_{a_{0},m} | \bC = \bc]\\
+  &= (\theta_{1} + \theta_{3}m)(a_{1} - a_{0})\\
+  \\
+  PNDE &= E[Y_{a_{1},M_{a_{0}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+  &= \left\{\theta_{1}(a_{1} - a_{0}) \right\} + \left\{\theta_{3}(a_{1} - a_{0}) \right\}
+    \frac
+    {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  TNIE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
+  &= (\theta_{2} + \theta_{3}a_{1})\left\{
+    \frac
+    {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+    -
+    \frac
+    {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+    \right\}
+  \\
+  TNDE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]\\
+  &= \left\{\theta_{1}(a_{1} - a_{0}) \right\} + \left\{\theta_{3}(a_{1} - a_{0}) \right\}
+    \frac
+    {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+  &= (\theta_{2} + \theta_{3}a_{0})\left\{
+    \frac
+    {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+    -
+    \frac
+    {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+    \right\}
+  \\
+  TE &= PNDE + TNIE\\
+  PM &= \frac{TNIE}{PNDE + TNIE}\\
+\end{align*}
+
+\subsubsection{Variance formulas}
+\label{sec:orgf057afa}
+The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p471).
+
+\begin{align*}
+  (a_{1}-a_{0})\Gamma_{CDE(m)}
+  &= \frac{\partial CDE(m)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      0\\
+      0\\
+      \b0\\
+      0\\
+      1\\
+      0\\
+      m\\
+      \b0\\
+    \end{bmatrix}\\
+  \\
+  d_{1,PNDE} &= \theta_{3} \frac
+               {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  d_{2,PNDE} &= a_{0} \theta_{3} \frac
+               {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  d_{3,PNDE} &= \bc \theta_{3} \frac
+               {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  d_{4,PNDE} &= 0\\
+  d_{5,PNDE} &= 1\\
+  d_{6,PNDE} &= 0\\
+  d_{7,PNDE} &= \frac
+               {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  d_{8,PNDE} &= \b0\\
+  (a_{1}-a_{0})\Gamma_{PNDE}
+  &= \frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      d_{1,PNDE}\\
+      d_{2,PNDE}\\
+      d_{3,PNDE}\\
+      d_{4,PNDE}\\
+      d_{5,PNDE}\\
+      d_{6,PNDE}\\
+      d_{7,PNDE}\\
+      d_{8,PNDE}\\
+    \end{bmatrix}\\
+  \\
+  Q_{TNIE} &= \frac
+      {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {\left\{ 1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc) \right\}^{2}}\\
+  B_{TNIE} &= \frac
+      {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {\left\{ 1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc) \right\}^{2}}\\
+  K_{TNIE} &= \frac
+      {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  D_{TNIE} &= \theta_{3} \frac
+      {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  d_{1,TNIE} &= (\theta_{2} + \theta_{3}a_{1}) (Q_{TNIE} - B_{TNIE})\\
+  d_{2,TNIE} &= (\theta_{2} + \theta_{3}a_{1}) (a_{1}Q_{TNIE} - a_{0}B_{TNIE})\\
+  d_{3,TNIE} &= (\theta_{2} + \theta_{3}a_{1})\bc (Q_{TNIE} - B_{TNIE})\\
+  d_{4,TNIE} &= 0\\
+  d_{5,TNIE} &= 0\\
+  d_{6,TNIE} &= K_{TNIE} - D_{TNIE}\\
+  d_{7,TNIE} &= a_{1} (K_{TNIE} - D_{TNIE})\\
+  d_{8,TNIE} &= \b0\\
+  &\text{Note the lack of the common factor }(a_{1} - a_{0})\\
+  \Gamma_{TNIE}
+  &= \frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \begin{bmatrix}
+      d_{1,TNIE}\\
+      d_{2,TNIE}\\
+      d_{3,TNIE}\\
+      d_{4,TNIE}\\
+      d_{5,TNIE}\\
+      d_{6,TNIE}\\
+      d_{7,TNIE}\\
+      d_{8,TNIE}\\
+    \end{bmatrix}\\
+  \\
+  d_{1,TNDE} &= \theta_{3} \frac
+               {\exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  d_{2,TNDE} &= a_{1} \theta_{3} \frac
+               {\exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  d_{3,TNDE} &= \bc \theta_{3} \frac
+               {\exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  d_{4,TNDE} &= 0\\
+  d_{5,TNDE} &= 1\\
+  d_{6,TNDE} &= 0\\
+  d_{7,TNDE} &= \frac
+               {\exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  d_{8,TNDE} &= \b0\\
+  (a_{1}-a_{0})\Gamma_{TNDE}
+  &= \frac{\partial TNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      d_{1,TNDE}\\
+      d_{2,TNDE}\\
+      d_{3,TNDE}\\
+      d_{4,TNDE}\\
+      d_{5,TNDE}\\
+      d_{6,TNDE}\\
+      d_{7,TNDE}\\
+      d_{8,TNDE}\\
+    \end{bmatrix}\\
+  \\
+  Q_{PNIE} &= \frac
+      {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {\left\{ 1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc) \right\}^{2}}\\
+  B_{PNIE} &= \frac
+      {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {\left\{ 1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc) \right\}^{2}}\\
+  K_{PNIE} &= \frac
+      {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  D_{PNIE} &= \theta_{3} \frac
+      {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  d_{1,PNIE} &= (\theta_{2} + \theta_{3}a_{0}) (Q_{PNIE} - B_{PNIE})\\
+  d_{2,PNIE} &= (\theta_{2} + \theta_{3}a_{0}) (a_{1}Q_{PNIE} - a_{0}B_{PNIE})\\
+  d_{3,PNIE} &= (\theta_{2} + \theta_{3}a_{0})\bc (Q_{PNIE} - B_{PNIE})\\
+  d_{4,PNIE} &= 0\\
+  d_{5,PNIE} &= 0\\
+  d_{6,PNIE} &= K_{PNIE} - D_{PNIE}\\
+  d_{7,PNIE} &= a_{0} (K_{PNIE} - D_{PNIE})\\
+  d_{8,PNIE} &= \b0\\
+  &\text{Note the lack of the common factor }(a_{1} - a_{0})\\
+  \Gamma_{PNIE}
+  &= \frac{\partial PNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \begin{bmatrix}
+      d_{1,PNIE}\\
+      d_{2,PNIE}\\
+      d_{3,PNIE}\\
+      d_{4,PNIE}\\
+      d_{5,PNIE}\\
+      d_{6,PNIE}\\
+      d_{7,PNIE}\\
+      d_{8,PNIE}\\
+    \end{bmatrix}\\
+  \\
+  &\text{Note the lack of the common factor }(a_{1} - a_{0})\\
+  \Gamma_{TE}
+  &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})\Gamma_{PNDE} + \Gamma_{TNIE}\\
+  \\
+  &\text{Note the lack of the common factor }(a_{1} - a_{0})\\
+  \Gamma_{PM}
+  &= \frac{\partial PM}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &~~~\text{By multivariate chain rule}\\
+  &= \frac{\partial PM}{\partial PNDE}\frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}} + \frac{\partial PM}{\partial TNIE}\frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial PM}{\partial PNDE}(a_{1}-a_{0})\Gamma_{PNDE} + \frac{\partial PM}{\partial TNIE}\Gamma_{TNIE}\\
+  &= \frac{-TNIE}{(PNDE+TNIE)^{2}}(a_{1}-a_{0})\Gamma_{PNDE} + \frac{PNDE}{(PNDE+TNIE)^{2}}\Gamma_{TNIE}\\
+  &= \frac{-TNIE~(a_{1}-a_{0})\Gamma_{PNDE} + PNDE~\Gamma_{TNIE}}{(PNDE+TNIE)^{2}}\\
+\end{align*}
+
+
+\subsection{Logistic mediator model, non-linear outcome model}
+\label{sec:org240e14b}
+\subsubsection{Effect formulas}
+\label{sec:orge089a06}
+The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p473).
+
+\begin{align*}
+  &\text{Models}\\
+  \logit(E[Y|A=a,M=m,\bC=\bc]) &= \theta_{0} + \theta_{1}a + \theta_{2}m + \theta_{3}am + \btheta_{4}^{T}\bc\\
+  \logit(E[M|A=a,\bC=\bc]) &= \beta_{0} + \beta_{1}a + \bbeta_{2}^{T}\bc
+\end{align*}
+
+\begin{align*}
+  &\text{Effects on link function scale}\\
+  CDE(m) &= \logit(E[Y_{a_{1},m} | \bC = \bc]) - \logit(E[Y_{a_{0},m} | \bC = \bc])\\
+  &= (\theta_{1} + \theta_{3}m)(a_{1} - a_{0})\\
+  \\
+  PNDE &= \logit(E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]) - \logit(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
+  &\approx \theta_{1}(a_{1} - a_{0})\\
+  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
+  TNIE &= \logit(E[Y_{a_{1},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{a_{1},M_{a_{0}}} | \bC = \bc])\\
+  &\approx \log(1 + \exp(\beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
+  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
+  \\
+  &\text{Note the $a_{0} \rightarrow a_{1}$ changes associated with $\beta_{1}$.}\\
+  TNDE &= \logit(E[Y_{a_{1},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc])\\
+  &\approx \theta_{1}(a_{1} - a_{0})\\
+  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
+  &\text{Note the $a_{1} \rightarrow a_{0}$ changes associated with $\theta_{3}$.}\\
+  PNIE &= \logit(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
+  &\approx \log(1 + \exp(\beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
+  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
+  \\
+  TE &= PNDE + TNIE\\
+  PM &= \frac{\exp(PNDE)(\exp(TNIE) - 1)}{\exp(PNDE)\exp(TNIE) - 1}\\
+\end{align*}
+
+\subsubsection{Variance formulas}
+\label{sec:orga68395a}
+The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p473).
+
+\begin{align*}
+  &\text{Note the lack of the common factor $(a_{1} - a_{0})$ throughout.}\\
+  \Gamma_{CDE(m)}
+  &= \frac{\partial CDE(m)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= (a_{1}-a_{0})
+    \begin{bmatrix}
+      0\\
+      0\\
+      \b0\\
+      0\\
+      (a_{1} - a_{0})\\
+      0\\
+      m(a_{1} - a_{0})\\
+      \b0\\
+    \end{bmatrix}\\
+  \\
+  Q_{PNDE} &= \frac
+             {    \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+             {1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  B_{PNDE} &= \frac
+             {    \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+             {1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+      d_{1,PNDE} &= Q_{PNDE} - B_{PNDE}\\
+      d_{2,PNDE} &= a_{0} (Q_{PNDE} - B_{PNDE})\\
+      d_{3,PNDE} &= \bc (Q_{PNDE} - B_{PNDE})\\
+      d_{4,PNDE} &= 0\\
+      d_{5,PNDE} &= a_{1} - a_{0}\\
+      d_{6,PNDE} &= Q_{PNDE} - B_{PNDE}\\
+      d_{7,PNDE} &= a_{1}Q_{PNDE} - a_{0}B_{PNDE}\\
+      d_{8,PNDE} &= \b0\\
+  \Gamma_{PNDE}
+  &= \frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \begin{bmatrix}
+      d_{1,PNDE}\\
+      d_{2,PNDE}\\
+      d_{3,PNDE}\\
+      d_{4,PNDE}\\
+      d_{5,PNDE}\\
+      d_{6,PNDE}\\
+      d_{7,PNDE}\\
+      d_{8,PNDE}\\
+    \end{bmatrix}\\
+  \\
+  Q_{TNIE} &= \frac
+      {    \exp(\theta_{2} + \theta_{3}a_{1} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}a_{1} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  B_{TNIE} &= \frac
+      {    \exp(\theta_{2} + \theta_{3}a_{1} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}a_{1} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  K_{TNIE} &= \frac
+      {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  D_{TNIE} &= \theta_{3} \frac
+      {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  d_{1,TNIE} &= (D_{TNIE} + Q_{TNIE}) - (K_{TNIE} + B_{TNIE})\\
+  d_{2,TNIE} &= a_{0}(D_{TNIE} - B_{TNIE}) + a_{1}(Q_{TNIE} - K_{TNIE})\\
+  d_{3,TNIE} &= \bc \left\{ (D_{TNIE} + Q_{TNIE}) - (K_{TNIE} + B_{TNIE}) \right\}\\
+  d_{4,TNIE} &= 0\\
+  d_{5,TNIE} &= 0\\
+  d_{6,TNIE} &= Q_{TNIE} - B_{TNIE}\\
+  d_{7,TNIE} &= a_{1} (Q_{TNIE} - B_{TNIE})\\
+  d_{8,TNIE} &= \b0\\
+  \Gamma_{TNIE}
+  &= \frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \begin{bmatrix}
+      d_{1,TNIE}\\
+      d_{2,TNIE}\\
+      d_{3,TNIE}\\
+      d_{4,TNIE}\\
+      d_{5,TNIE}\\
+      d_{6,TNIE}\\
+      d_{7,TNIE}\\
+      d_{8,TNIE}\\
+    \end{bmatrix}\\
+  \\
+  Q_{TNDE} &= \frac
+             {    \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+             {1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  B_{TNDE} &= \frac
+             {    \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+             {1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+      d_{1,TNDE} &= Q_{TNDE} - B_{TNDE}\\
+      d_{2,TNDE} &= a_{1} (Q_{TNDE} - B_{TNDE})\\
+      d_{3,TNDE} &= \bc (Q_{TNDE} - B_{TNDE})\\
+      d_{4,TNDE} &= 0\\
+      d_{5,TNDE} &= a_{1} - a_{0}\\
+      d_{6,TNDE} &= Q_{TNDE} - B_{TNDE}\\
+      d_{7,TNDE} &= a_{1}Q_{TNDE} - a_{0}B_{TNDE}\\
+      d_{8,TNDE} &= \b0\\
+  \Gamma_{TNDE}
+  &= \frac{\partial TNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \begin{bmatrix}
+      d_{1,TNDE}\\
+      d_{2,TNDE}\\
+      d_{3,TNDE}\\
+      d_{4,TNDE}\\
+      d_{5,TNDE}\\
+      d_{6,TNDE}\\
+      d_{7,TNDE}\\
+      d_{8,TNDE}\\
+    \end{bmatrix}\\
+  \\
+  Q_{PNIE} &= \frac
+      {    \exp(\theta_{2} + \theta_{3}a_{0} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}a_{0} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  B_{PNIE} &= \frac
+      {    \exp(\theta_{2} + \theta_{3}a_{0} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}a_{0} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  K_{PNIE} &= \frac
+      {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+  D_{PNIE} &= \theta_{3} \frac
+      {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+  d_{1,PNIE} &= (D_{PNIE} + Q_{PNIE}) - (K_{PNIE} + B_{PNIE})\\
+  d_{2,PNIE} &= a_{0}(D_{PNIE} - B_{PNIE}) + a_{1}(Q_{PNIE} - K_{PNIE})\\
+  d_{3,PNIE} &= \bc \left\{ (D_{PNIE} + Q_{PNIE}) - (K_{PNIE} + B_{PNIE}) \right\}\\
+  d_{4,PNIE} &= 0\\
+  d_{5,PNIE} &= 0\\
+  d_{6,PNIE} &= Q_{PNIE} - B_{PNIE}\\
+  d_{7,PNIE} &= a_{0} (Q_{PNIE} - B_{PNIE})\\
+  d_{8,PNIE} &= \b0\\
+  \Gamma_{PNIE}
+  &= \frac{\partial PNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \begin{bmatrix}
+      d_{1,PNIE}\\
+      d_{2,PNIE}\\
+      d_{3,PNIE}\\
+      d_{4,PNIE}\\
+      d_{5,PNIE}\\
+      d_{6,PNIE}\\
+      d_{7,PNIE}\\
+      d_{8,PNIE}\\
+    \end{bmatrix}\\
+  \\
+  \Gamma_{TE}
+  &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \Gamma_{PNDE} + \Gamma_{TNIE}\\
+  \\
+  \Gamma_{PM}
+  &= \frac{\partial PM}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &~~~\text{By multivariate chain rule}\\
+  &= \frac{\partial PM}{\partial PNDE}\frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}} + \frac{\partial PM}{\partial TNIE}\frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial PM}{\partial PNDE}\Gamma_{PNDE} + \frac{\partial PM}{\partial TNIE}\Gamma_{TNIE}\\
+\end{align*}
+
+
+\section{Software}
+\label{sec:org41ca1ed}
+The detailed explanation of the software implementation is given on its website (\url{https://kaz-yos.github.io/regmedint/index.html}).
+
+\section{Bibliography}
+\label{sec:org3fcc9a7}
+\renewcommand{\section}[2]{}
+
+\bibliographystyle{apalike}
+\bibliography{../../../../../.emacs.d/misc/zotero}
+\end{document}
