@@ -268,7 +268,8 @@ The function =calc_myreg_mreg_linear_yreg_linear_se()= implements the standard e
     \end{bmatrix}\\
   \\
   (a_{1}-a_{0})\Gamma_{TE}
-  &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T})^{T}} = \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
   &= (a_{1}-a_{0})(\Gamma_{PNDE} + \Gamma_{TNIE})\\
   \\
   (a_{1}-a_{0})\Gamma_{PM}
@@ -386,7 +387,8 @@ The function =calc_myreg_mreg_linear_yreg_logistic_se()= implements the standard
     \end{bmatrix}\\
   \\
   (a_{1}-a_{0})\Gamma_{TE}
-  &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}} = \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
+  &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
+  &= \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T},\sigma^2)^{T}}\\
   &= (a_{1}-a_{0})(\Gamma_{PNDE} + \Gamma_{TNIE})\\
   \\
   (a_{1}-a_{0})\Gamma_{PM}
@@ -596,7 +598,8 @@ The function =calc_myreg_mreg_logistic_yreg_linear_se()= implements the standard
   \\
   &\text{Note the lack of the common factor }(a_{1} - a_{0})\\
   \Gamma_{TE}
-  &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T})^{T}} = \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
   &= (a_{1}-a_{0})\Gamma_{PNDE} + \Gamma_{TNIE}\\
   \\
   &\text{Note the lack of the common factor }(a_{1} - a_{0})\\
@@ -791,7 +794,8 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
     \end{bmatrix}\\
   \\
   \Gamma_{TE}
-  &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T})^{T}} = \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial TE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
+  &= \frac{\partial (PNDE+TNIE)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
   &= \Gamma_{PNDE} + \Gamma_{TNIE}\\
   \\
   \Gamma_{PM}
