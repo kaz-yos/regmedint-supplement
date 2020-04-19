@@ -412,6 +412,22 @@ The function =calc_myreg_mreg_linear_yreg_logistic_se()= implements the standard
   &= \frac{\partial PM}{\partial PNDE}(a_{1}-a_{0})\Gamma_{PNDE} + \frac{\partial PM}{\partial TNIE}(a_{1}-a_{0})\Gamma_{TNIE}\\
   &= - \frac{\exp(PNDE)\left\{ \exp(TNIE) - 1 \right\}}{\left\{ \exp(PNDE)\exp(TNIE) - 1 \right\}^{2}} (a_{1}-a_{0})\Gamma_{PNDE}\\
   &~~~ + \frac{\exp(PNDE)\exp(TNIE)\left\{ \exp(PNDE) - 1 \right\}}{\left\{ \exp(PNDE)\exp(TNIE) - 1 \right\}^{2}} (a_{1}-a_{0})\Gamma_{TNIE}\\
+  \\
+  &\text{Variance-covariance matrix from two models}\\
+  \bSigma &=
+           \begin{bmatrix}
+             \bSigma_{\bbeta} & 0 & 0\\
+             0 & \bSigma_{\btheta} & 0\\
+             0 & 0 & \Sigma_{\sigma^{2}}\\
+           \end{bmatrix}\\
+  \Sigma_{\sigma^{2}} &= \frac{2 (\sigma^{2})^{2}}{n - p} ~ \text{where} ~ p = \text{length}(\bbeta)\\
+  SE(\widehat{CDE}(m)) &= \sqrt{\Gamma_{CDE(m)}^{T} ~\bSigma~ \Gamma_{CDE(m)}} ~ \abs{a_{1} - a_{0}}\\
+  SE(\widehat{PNDE}) &= \sqrt{\Gamma_{PNDE}^{T} ~\bSigma~ \Gamma_{PNDE}} ~ \abs{a_{1} - a_{0}}\\
+  SE(\widehat{TNIE}) &= \sqrt{\Gamma_{TNIE}^{T} ~\bSigma~ \Gamma_{TNIE}} ~ \abs{a_{1} - a_{0}}\\
+  SE(\widehat{TNDE}) &= \sqrt{\Gamma_{TNDE}^{T} ~\bSigma~ \Gamma_{TNDE}} ~ \abs{a_{1} - a_{0}}\\
+  SE(\widehat{PNIE}) &= \sqrt{\Gamma_{PNIE}^{T} ~\bSigma~ \Gamma_{PNIE}} ~ \abs{a_{1} - a_{0}}\\
+  SE(\widehat{TE}) &= \sqrt{\Gamma_{TE}^{T} ~\bSigma~ \Gamma_{TE}} ~ \abs{a_{1} - a_{0}}\\
+  SE(\widehat{PM}) &= \sqrt{\Gamma_{PM}^{T} ~\bSigma~ \Gamma_{PM}} ~ \abs{a_{1} - a_{0}}\\
 \end{align*}
 
 
