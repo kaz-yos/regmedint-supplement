@@ -185,15 +185,15 @@ The function =calc_myreg_mreg_linear_yreg_linear_est()= implements the effect fo
   CDE(m) &= E[Y_{a_{1},m} | \bC = \bc] - E[Y_{a_{0},m} | \bC = \bc]\\
   &= (\theta_{1} + \theta_{3}m)(a_{1} - a_{0})\\
   \\
-  PNDE &= E[Y_{a_{1},M_{a_{0}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
-  &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc) \right\} (a_{1} - a_{0})\\
-  TNIE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
-  &= \beta_{1}(\theta_{2} + \theta_{3}a_{1})(a_{1} - a_{0})\\
+  PNDE &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
+  &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc) \right\} (a_{1} - a_{0})\\
+  TNIE &= E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc]\\
+  &= \beta_{1}(\theta_{2} + \theta_{3}\uwave{a_{1}})(a_{1} - a_{0})\\
   \\
-  TNDE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]\\
-  &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc) \right\} (a_{1} - a_{0})\\
-  PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
-  &= \beta_{1}(\theta_{2} + \theta_{3}a_{0})(a_{1} - a_{0})\\
+  TNDE &= E[Y_{a_{1},\uwave{M_{a_{1}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{1}}}} | \bC = \bc]\\
+  &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc) \right\} (a_{1} - a_{0})\\
+  PNIE &= E[Y_{\uwave{a_{0}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{0}},M_{a_{0}}} | \bC = \bc]\\
+  &= \beta_{1}(\theta_{2} + \theta_{3}\uwave{a_{0}})(a_{1} - a_{0})\\
   \\
   TE &= PNDE + TNIE\\
   PM &= \frac{TNIE}{PNDE + TNIE}\\
@@ -222,12 +222,12 @@ The function =calc_myreg_mreg_linear_yreg_linear_se()= implements the standard e
   &= (a_{1}-a_{0})
     \begin{bmatrix}
       \theta_{3}\\
-      \theta_{3}a_{0}\\
+      \theta_{3}\uwave{a_{0}}\\
       \theta_{3}\bc\\
       0\\
       1\\
       0\\
-      \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc\\
+      \beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc\\
       \b0\\
     \end{bmatrix}\\
   (a_{1}-a_{0})\Gamma_{TNIE}
@@ -235,12 +235,12 @@ The function =calc_myreg_mreg_linear_yreg_linear_se()= implements the standard e
   &= (a_{1}-a_{0})
     \begin{bmatrix}
       0\\
-      \theta_{2} + \theta_{3}a_{1}\\
+      \theta_{2} + \theta_{3}\uwave{a_{1}}\\
       \b0\\
       0\\
       0\\
       \beta_{1}\\
-      \beta_{1}a_{1}\\
+      \beta_{1}\uwave{a_{1}}\\
       \b0\\
     \end{bmatrix}\\
   \\
@@ -249,12 +249,12 @@ The function =calc_myreg_mreg_linear_yreg_linear_se()= implements the standard e
   &= (a_{1}-a_{0})
     \begin{bmatrix}
       \theta_{3}\\
-      \theta_{3}a_{1}\\
+      \theta_{3}\uwave{a_{1}}\\
       \theta_{3}\bc\\
       0\\
       1\\
       0\\
-      \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc\\
+      \beta_{0} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc\\
       \b0\\
     \end{bmatrix}\\
   (a_{1}-a_{0})\Gamma_{PNIE}
@@ -262,12 +262,12 @@ The function =calc_myreg_mreg_linear_yreg_linear_se()= implements the standard e
   &= (a_{1}-a_{0})
     \begin{bmatrix}
       0\\
-      \theta_{2} + \theta_{3}a_{0}\\
+      \theta_{2} + \theta_{3}\uwave{a_{0}}\\
       \b0\\
       0\\
       0\\
       \beta_{1}\\
-      \beta_{1}a_{0}\\
+      \beta_{1}\uwave{a_{0}}\\
       \b0\\
     \end{bmatrix}\\
   \\
