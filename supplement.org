@@ -380,7 +380,7 @@ The function =calc_myreg_mreg_linear_yreg_logistic_se()= implements the standard
   &= (a_{1}-a_{0})
     \begin{bmatrix}
       \theta_{3}\\
-      \theta_{3}a_{0}\\
+      \theta_{3}a_{1}\\
       \theta_{3}\bc\\
       0\\
       1\\
