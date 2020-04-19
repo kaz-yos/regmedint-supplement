@@ -803,6 +803,8 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
   &~~~\text{By multivariate chain rule}\\
   &= \frac{\partial PM}{\partial PNDE}\frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}} + \frac{\partial PM}{\partial TNIE}\frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
   &= \frac{\partial PM}{\partial PNDE}\Gamma_{PNDE} + \frac{\partial PM}{\partial TNIE}\Gamma_{TNIE}\\
+  &= - \frac{\exp(PNDE)\left\{ \exp(TNIE) - 1 \right\}}{\left\{ \exp(PNDE)\exp(TNIE) - 1 \right\}^{2}} \Gamma_{PNDE}\\
+  &~~~ + \frac{\exp(PNDE)\exp(TNIE)\left\{ \exp(PNDE) - 1 \right\}}{\left\{ \exp(PNDE)\exp(TNIE) - 1 \right\}^{2}} \Gamma_{TNIE}\\
 \end{align*}
 
 
