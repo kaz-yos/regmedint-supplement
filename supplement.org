@@ -503,19 +503,19 @@ The function =calc_myreg_mreg_logistic_yreg_linear_se()= implements the standard
     \end{bmatrix}\\
   \\
   d_{1,PNDE} &= \theta_{3} \frac
-               {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+               {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
                {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
   d_{2,PNDE} &= a_{0} \theta_{3} \frac
-               {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+               {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
                {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
   d_{3,PNDE} &= \bc \theta_{3} \frac
-               {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+               {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
                {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
   d_{4,PNDE} &= 0\\
   d_{5,PNDE} &= 1\\
   d_{6,PNDE} &= 0\\
   d_{7,PNDE} &= \frac
-               {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+               {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
                {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
   d_{8,PNDE} &= \b0\\
   (a_{1}-a_{0})\Gamma_{PNDE}
@@ -533,16 +533,16 @@ The function =calc_myreg_mreg_logistic_yreg_linear_se()= implements the standard
     \end{bmatrix}\\
   \\
   Q_{TNIE} &= \frac
-      {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {            \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
       {\left\{ 1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc) \right\}^{2}}\\
   B_{TNIE} &= \frac
-      {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {            \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
       {\left\{ 1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc) \right\}^{2}}\\
   K_{TNIE} &= \frac
-      {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
-  D_{TNIE} &= \theta_{3} \frac
-      {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+  D_{TNIE} &= \frac
+      {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
   d_{1,TNIE} &= (\theta_{2} + \theta_{3}a_{1}) (Q_{TNIE} - B_{TNIE})\\
   d_{2,TNIE} &= (\theta_{2} + \theta_{3}a_{1}) (a_{1}Q_{TNIE} - a_{0}B_{TNIE})\\
