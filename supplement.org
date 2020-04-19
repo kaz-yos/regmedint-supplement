@@ -147,14 +147,18 @@ Let the scalar quantity of interest be $Q$, a function of parameter vector $(\bb
 \begin{align*}
 \nabla Q &= \frac{\partial Q}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
          &= \begin{bmatrix}
-           \frac{\partial Q}{\partial \beta_{0}}\\
-           \vdots\\
-           \frac{\partial Q}{\partial \beta_{2}}\\
-           \frac{\partial Q}{\partial \theta_{0}}\\
-           \vdots\\
-           \frac{\partial Q}{\partial \theta_{4}}\\
+           \frac{\partial Q}{\partial \beta_{0}}\\[6pt]
+           \frac{\partial Q}{\partial \beta_{1}}\\[6pt]
+           \frac{\partial Q}{\partial \bbeta_{2}}\\[6pt]
+           \frac{\partial Q}{\partial \theta_{0}}\\[6pt]
+           \frac{\partial Q}{\partial \theta_{1}}\\[6pt]
+           \frac{\partial Q}{\partial \theta_{2}}\\[6pt]
+           \frac{\partial Q}{\partial \theta_{3}}\\[6pt]
+           \frac{\partial Q}{\partial \btheta_{4}}\\
          \end{bmatrix}\\
 \end{align*}
+
+In the case of a linear mediator model and a non-linear outcome model, there is an additional element $\frac{\partial Q}{\partial \sigma^{2}}$ at the bottom of the gradient vector.\\
 
 By the large sample approximation using the multivariate delta method, the variance of the quantity of interest evaluated at the MLEs $(\bbetahat^{T},\bthetahat^{T})^{T}$ is the following.
 
