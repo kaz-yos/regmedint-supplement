@@ -849,6 +849,20 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
   &= \frac{\partial PM}{\partial PNDE}\Gamma_{PNDE} + \frac{\partial PM}{\partial TNIE}\Gamma_{TNIE}\\
   &= - \frac{\exp(PNDE)\left\{ \exp(TNIE) - 1 \right\}}{\left\{ \exp(PNDE)\exp(TNIE) - 1 \right\}^{2}} \Gamma_{PNDE}\\
   &~~~ + \frac{\exp(PNDE)\exp(TNIE)\left\{ \exp(PNDE) - 1 \right\}}{\left\{ \exp(PNDE)\exp(TNIE) - 1 \right\}^{2}} \Gamma_{TNIE}\\
+  \\
+  &\text{Variance-covariance matrix from two models}\\
+  \bSigma &=
+           \begin{bmatrix}
+             \bSigma_{\bbeta} & 0 \\
+             0 & \bSigma_{\btheta} \\
+           \end{bmatrix}\\
+  SE(\widehat{CDE}(m)) &= \sqrt{\Gamma_{CDE(m)}^{T} ~\bSigma~ \Gamma_{CDE(m)}}\\
+  SE(\widehat{PNDE}) &= \sqrt{\Gamma_{PNDE}^{T} ~\bSigma~ \Gamma_{PNDE}}\\
+  SE(\widehat{TNIE}) &= \sqrt{\Gamma_{TNIE}^{T} ~\bSigma~ \Gamma_{TNIE}}\\
+  SE(\widehat{TNDE}) &= \sqrt{\Gamma_{TNDE}^{T} ~\bSigma~ \Gamma_{TNDE}}\\
+  SE(\widehat{PNIE}) &= \sqrt{\Gamma_{PNIE}^{T} ~\bSigma~ \Gamma_{PNIE}}\\
+  SE(\widehat{TE}) &= \sqrt{\Gamma_{TE}^{T} ~\bSigma~ \Gamma_{TE}}\\
+  SE(\widehat{PM}) &= \sqrt{\Gamma_{PM}^{T} ~\bSigma~ \Gamma_{PM}}\\
 \end{align*}
 
 
