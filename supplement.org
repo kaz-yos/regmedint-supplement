@@ -88,15 +88,15 @@ Let $Y$ be the outcome variable of interest, $A$ be the treatment variable of in
 Given these notations, the effects are defined as follows at the covariate level $\bC = \bc$ and the mediator level $M = m$ (only for CDE).
 
 \begin{align*}
-TE &= E[Y_{a_{1}} | \bC = \bc] - E[Y_{a_{0}} | \bC = \bc]\\
-\\
-CDE(m) &= E[Y_{a_{1},m} | \bC = \bc] - E[Y_{a_{0},m} | \bC = \bc]\\
-\\
-TNIE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
-PNDE &= E[Y_{a_{1},M_{a_{0}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
-\\
-TNDE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]\\
-PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+  CDE(m) &= E[Y_{a_{1},m} | \bC = \bc] - E[Y_{a_{0},m} | \bC = \bc]\\
+  \\
+  TNIE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
+  PNDE &= E[Y_{a_{1},M_{a_{0}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+  \\
+  TNDE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]\\
+  PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+  \\
+  TE &= E[Y_{a_{1}} | \bC = \bc] - E[Y_{a_{0}} | \bC = \bc]\\
 \end{align*}
 
 The total effect (TE) can be decomposed into the direct (non-mediated) effect and indirect (mediated) effect in two different ways cite:robinsIdentifiabilityExchangeabilityDirect1992,vanderweeleThreewayDecompositionTotal2013.\\
@@ -104,15 +104,15 @@ The total effect (TE) can be decomposed into the direct (non-mediated) effect an
  The decomposition of TE into the pure (natural) direct effect (PNDE) and the total (natural) indirect effect (TNIE) is the usual decomposition cite:pearlDirectIndirectEffects2001.
 
 \begin{align*}
-TNIE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
-PNDE &= E[Y_{a_{1},M_{a_{0}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+  PNDE &= E[Y_{a_{1},M_{a_{0}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+  TNIE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
 \end{align*}
 
  The other decomposition of TE is into the pure (natural) indirect effect (PNIE) and the total (natural) direct effect (TNDE) cite:robinsIdentifiabilityExchangeabilityDirect1992.
 
 \begin{align*}
-TNDE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]\\
-PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+  TNDE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]\\
+  PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
 \end{align*}
 
  These decomposition differs in the cross-world counterfactual state that is used as the partition. The PNDE+TNIE decomposition uses $Y_{a_{1},M_{a_{0}}}$ (treatment exerting on the outcome changes first), whereas the PNIE+TNDE decomposition uses $Y_{a_{0},M_{a_{1}}}$ (treatment exerting on the mediator changes first). In either case, the effect that has the reference counterfactual outcome $Y_{a_{0}} = Y_{a_{0},M_{0}}$ is the "pure" effect and the effect that has $Y_{a_{1}} = Y_{a_{1},M_{1}}$ is the total effect. See cite:vanderweeleThreewayDecompositionTotal2013 for the meaning of these two decompositions.\\
@@ -120,15 +120,15 @@ PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\
 More in general, we can consider the effects on the link function scale as follows cite:starkopfComparisonFiveSoftware2017.
 
 \begin{align*}
-TE &= g(E[Y_{a_{1}} | \bC = \bc]) - g(E[Y_{a_{0}} | \bC = \bc])\\
-\\
-CDE(m) &= g(E[Y_{a_{1},m} | \bC = \bc]) - g(E[Y_{a_{0},m} | \bC = \bc])\\
-\\
-TNIE &= g(E[Y_{a_{1},M_{a_{1}}} | \bC = \bc]) - g(E[Y_{a_{1},M_{a_{0}}} | \bC = \bc])\\
-PNDE &= g(E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]) - g(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
-\\
-TNDE &= g(E[Y_{a_{1},M_{a_{1}}} | \bC = \bc]) - g(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc])\\
-PNIE &= g(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]) - g(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
+  CDE(m) &= g(E[Y_{a_{1},m} | \bC = \bc]) - g(E[Y_{a_{0},m} | \bC = \bc])\\
+  \\
+  PNDE &= g(E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]) - g(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
+  TNIE &= g(E[Y_{a_{1},M_{a_{1}}} | \bC = \bc]) - g(E[Y_{a_{1},M_{a_{0}}} | \bC = \bc])\\
+  \\
+  TNDE &= g(E[Y_{a_{1},M_{a_{1}}} | \bC = \bc]) - g(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc])\\
+  PNIE &= g(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]) - g(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
+  \\
+  TE &= g(E[Y_{a_{1}} | \bC = \bc]) - g(E[Y_{a_{0}} | \bC = \bc])\\
 \end{align*}
 
 
