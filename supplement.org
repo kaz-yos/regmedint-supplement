@@ -749,11 +749,11 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
     \end{bmatrix}\\
   \\
   Q_{TNIE} &= \frac
-      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
   B_{TNIE} &= \frac
-      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
   K_{TNIE} &= \frac
       {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
@@ -809,11 +809,11 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
     \end{bmatrix}\\
   \\
   Q_{PNIE} &= \frac
-      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
   B_{PNIE} &= \frac
-      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
   K_{PNIE} &= \frac
       {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
