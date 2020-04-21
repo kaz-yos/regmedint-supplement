@@ -1,4 +1,4 @@
-% Created 2020-04-18 Sat 23:14
+% Created 2020-04-21 Tue 04:52
 % Intended LaTeX compiler: pdflatex
 \documentclass[dvipdfmx,10pt]{article}
 \usepackage[utf8]{inputenc}
@@ -100,12 +100,12 @@
 \sloppy
 \newpage
 \section{Brief description of the causal mediation analysis}
-\label{sec:org9e92e57}
+\label{sec:org9996e98}
 
 The literature on the causal mediation is vast \cite{vanderweeleExplanationCausalInference2015} and is evolving, thus, only the pieces relevant for the current software are reviewed here.
 
 \subsection{Decomposition of total effect}
-\label{sec:orgbf48a2e}
+\label{sec:org8496110}
 Let \(Y\) be the outcome variable of interest, \(A\) be the treatment variable of interest, \(M\) be the mediator variable of interest, and \(\bC\) be the potentially vector-valued pre-treatment baseline covariates necessary for exchangeability. The treatment contrast of interest is \(a_{1}\) vs \(a_{0}\), the second being the reference level. The counterfactual \(Y_{a,m}\) is the value of \(Y\) for an individual when, possibly contrary to the fact, the treatment level \(a\) and mediator level \(m\) are assigned.\\
 
 Given these notations, the effects are defined as follows at the covariate level \(\bC = \bc\) and the mediator level \(M = m\) (only for CDE).
@@ -156,15 +156,15 @@ More in general, we can consider the effects on the link function scale as follo
 
 
 \section{Understanding the approach}
-\label{sec:orgaf9871b}
+\label{sec:org122f228}
 Here we describe the formulas implemented in \texttt{regmendint}, using the notational convention in \cite{vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015}.
 
 \subsection{Parametrizing the mediation formulas}
-\label{sec:org86b398e}
+\label{sec:org785e882}
 The method directly parametrize the effects with the coefficients of the mediator model (\(\beta\)) and the outcome model (\(\theta\)). The maximum likelihood estimates (MLE) of these effects are the ones with these parameters replaced with their respective MLEs. See XYZ for derivation of these formulas.\\
 
 \subsection{Obtaining standard errors via multivariate delta method}
-\label{sec:org199b0a7}
+\label{sec:org4a7c00b}
 
 As seen above, each effects of interest is estimated as a scalar-valued, non-linear function of estiamted coefficients for the mediator model and the outcome model. Thus, we can obtain the standard error of each effect estimate using the variance covariance matrix for the coefficients and multivariate delta method \cite{hoefWhoInventedDelta2012}.\\
 
@@ -199,9 +199,9 @@ By the large sample approximation using the multivariate delta method, the varia
 This expression is abbreviated as \(\Gamma\Sigma\Gamma'\) in \cite{vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015}. In these references, the treatment contrast (\(a_{1}-a_{0}\)) is factored out from \(\nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right)\) when possible.
 
 \subsection{Linear mediator model, linear outcome model}
-\label{sec:orgb18b670}
+\label{sec:org109765a}
 \subsubsection{Effect formulas}
-\label{sec:orga915396}
+\label{sec:org051cf49}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p466).
 
 \begin{align*}
@@ -228,7 +228,7 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_est()} implements 
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:orge51203a}
+\label{sec:org38e1aff}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p466).
 
 \begin{align*}
@@ -330,9 +330,9 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_se()} implements t
 
 
 \subsection{Linear mediator model, non-linear outcome model}
-\label{sec:orgf065592}
+\label{sec:org6173607}
 \subsubsection{Effect formulas}
-\label{sec:orgd2db3e7}
+\label{sec:orgd5da073}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p468).
 
 \begin{align*}
@@ -359,7 +359,7 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_est()} implement
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:orgf52f6a4}
+\label{sec:orgfbbd000}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p468).
 
 \begin{align*}
@@ -468,9 +468,9 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_se()} implements
 
 
 \subsection{Logistic mediator model, linear outcome model}
-\label{sec:org7dfa08b}
+\label{sec:org63e5c6f}
 \subsubsection{Effect formulas}
-\label{sec:org67e2cff}
+\label{sec:org1b2e590}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p471).
 
 \begin{align*}
@@ -482,35 +482,35 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_est()} implement
   CDE(m) &= E[Y_{a_{1},m} | \bC = \bc] - E[Y_{a_{0},m} | \bC = \bc]\\
   &= (\theta_{1} + \theta_{3}m)(a_{1} - a_{0})\\
   \\
-  PNDE &= E[Y_{a_{1},M_{a_{0}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+  PNDE &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
   &= \left\{\theta_{1}(a_{1} - a_{0}) \right\} + \left\{\theta_{3}(a_{1} - a_{0}) \right\}
     \frac
-    {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-    {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
-  TNIE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
-  &= (\theta_{2} + \theta_{3}a_{1})\left\{
+    {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
+    {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
+  TNIE &= E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc]\\
+  &= (\theta_{2} + \theta_{3}\uwave{a_{1}})\left\{
     \frac
-    {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+    {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
     {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
     -
     \frac
-    {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+    {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
     {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
     \right\}
   \\
-  TNDE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]\\
+  TNDE &= E[Y_{a_{1},\uwave{M_{a_{1}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{1}}}} | \bC = \bc]\\
   &= \left\{\theta_{1}(a_{1} - a_{0}) \right\} + \left\{\theta_{3}(a_{1} - a_{0}) \right\}
     \frac
-    {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-    {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
-  PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
-  &= (\theta_{2} + \theta_{3}a_{0})\left\{
+    {    \exp(\beta_{0} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}
+    {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}\\
+  PNIE &= E[Y_{\uwave{a_{0}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{0}},M_{a_{0}}} | \bC = \bc]\\
+  &= (\theta_{2} + \theta_{3}\uwave{a_{0}})\left\{
     \frac
-    {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+    {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
     {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
     -
     \frac
-    {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+    {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
     {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
     \right\}
   \\
@@ -519,7 +519,7 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_est()} implement
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:org3017884}
+\label{sec:orga2ec5dc}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p471).
 
 \begin{align*}
@@ -538,20 +538,20 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_se()} implements
     \end{bmatrix}\\
   \\
   d_{1,PNDE} &= \theta_{3} \frac
-               {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-               {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
-  d_{2,PNDE} &= a_{0} \theta_{3} \frac
-               {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-               {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+               {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
+  d_{2,PNDE} &= \uwave{a_{0}} \theta_{3} \frac
+               {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
   d_{3,PNDE} &= \bc \theta_{3} \frac
-               {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-               {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+               {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
   d_{4,PNDE} &= 0\\
   d_{5,PNDE} &= 1\\
   d_{6,PNDE} &= 0\\
   d_{7,PNDE} &= \frac
-               {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-               {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+               {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
   d_{8,PNDE} &= \b0\\
   (a_{1}-a_{0})\Gamma_{PNDE}
   &= \frac{\partial PNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
@@ -579,13 +579,13 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_se()} implements
   D_{TNIE} &= \frac
       {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
-  d_{1,TNIE} &= (\theta_{2} + \theta_{3}a_{1}) (Q_{TNIE} - B_{TNIE})\\
-  d_{2,TNIE} &= (\theta_{2} + \theta_{3}a_{1}) (a_{1}Q_{TNIE} - a_{0}B_{TNIE})\\
-  d_{3,TNIE} &= (\theta_{2} + \theta_{3}a_{1})\bc (Q_{TNIE} - B_{TNIE})\\
+  d_{1,TNIE} &= (\theta_{2} + \theta_{3}\uwave{a_{1}}) (Q_{TNIE} - B_{TNIE})\\
+  d_{2,TNIE} &= (\theta_{2} + \theta_{3}\uwave{a_{1}}) (a_{1}Q_{TNIE} - a_{0}B_{TNIE})\\
+  d_{3,TNIE} &= (\theta_{2} + \theta_{3}\uwave{a_{1}})\bc (Q_{TNIE} - B_{TNIE})\\
   d_{4,TNIE} &= 0\\
   d_{5,TNIE} &= 0\\
   d_{6,TNIE} &= K_{TNIE} - D_{TNIE}\\
-  d_{7,TNIE} &= a_{1} (K_{TNIE} - D_{TNIE})\\
+  d_{7,TNIE} &= \uwave{a_{1}} (K_{TNIE} - D_{TNIE})\\
   d_{8,TNIE} &= \b0\\
   &\text{Note the lack of the common factor }(a_{1} - a_{0})\\
   \Gamma_{TNIE}
@@ -602,20 +602,20 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_se()} implements
     \end{bmatrix}\\
   \\
   d_{1,TNDE} &= \theta_{3} \frac
-               {\exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-               {1 + \exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
-  d_{2,TNDE} &= a_{1} \theta_{3} \frac
-               {\exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-               {1 + \exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+               {    \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}\\
+  d_{2,TNDE} &= \uwave{a_{1}} \theta_{3} \frac
+               {    \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}\\
   d_{3,TNDE} &= \bc \theta_{3} \frac
-               {\exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-               {1 + \exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+               {    \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}\\
   d_{4,TNDE} &= 0\\
   d_{5,TNDE} &= 1\\
   d_{6,TNDE} &= 0\\
   d_{7,TNDE} &= \frac
-               {\exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-               {1 + \exp(\beta_{1} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+               {    \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}
+               {1 + \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}\\
   d_{8,TNDE} &= \b0\\
   (a_{1}-a_{0})\Gamma_{TNDE}
   &= \frac{\partial TNDE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
@@ -632,24 +632,24 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_se()} implements
     \end{bmatrix}\\
   \\
   Q_{PNIE} &= \frac
-      {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {            \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
       {\left\{ 1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc) \right\}^{2}}\\
   B_{PNIE} &= \frac
-      {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {            \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
       {\left\{ 1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc) \right\}^{2}}\\
   K_{PNIE} &= \frac
-      {\exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
   D_{PNIE} &= \theta_{3} \frac
-      {\exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
-  d_{1,PNIE} &= (\theta_{2} + \theta_{3}a_{0}) (Q_{PNIE} - B_{PNIE})\\
-  d_{2,PNIE} &= (\theta_{2} + \theta_{3}a_{0}) (a_{1}Q_{PNIE} - a_{0}B_{PNIE})\\
-  d_{3,PNIE} &= (\theta_{2} + \theta_{3}a_{0})\bc (Q_{PNIE} - B_{PNIE})\\
+  d_{1,PNIE} &= (\theta_{2} + \theta_{3}\uwave{a_{0}}) (Q_{PNIE} - B_{PNIE})\\
+  d_{2,PNIE} &= (\theta_{2} + \theta_{3}\uwave{a_{0}}) (a_{1}Q_{PNIE} - a_{0}B_{PNIE})\\
+  d_{3,PNIE} &= (\theta_{2} + \theta_{3}\uwave{a_{0}})\bc (Q_{PNIE} - B_{PNIE})\\
   d_{4,PNIE} &= 0\\
   d_{5,PNIE} &= 0\\
   d_{6,PNIE} &= K_{PNIE} - D_{PNIE}\\
-  d_{7,PNIE} &= a_{0} (K_{PNIE} - D_{PNIE})\\
+  d_{7,PNIE} &= \uwave{a_{0}} (K_{PNIE} - D_{PNIE})\\
   d_{8,PNIE} &= \b0\\
   &\text{Note the lack of the common factor }(a_{1} - a_{0})\\
   \Gamma_{PNIE}
@@ -697,9 +697,9 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_se()} implements
 
 
 \subsection{Logistic mediator model, non-linear outcome model}
-\label{sec:orgd4bf014}
+\label{sec:orgfcb8846}
 \subsubsection{Effect formulas}
-\label{sec:orgaf48d46}
+\label{sec:orge79f470}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p473).
 
 \begin{align*}
@@ -713,34 +713,34 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_est()} impleme
   CDE(m) &= \logit(E[Y_{a_{1},m} | \bC = \bc]) - \logit(E[Y_{a_{0},m} | \bC = \bc])\\
   &= (\theta_{1} + \theta_{3}m)(a_{1} - a_{0})\\
   \\
-  PNDE &= \logit(E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]) - \logit(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
+  PNDE &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc])\\
   &\approx \theta_{1}(a_{1} - a_{0})\\
-  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
-  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
-  TNIE &= \logit(E[Y_{a_{1},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{a_{1},M_{a_{0}}} | \bC = \bc])\\
+  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^T\bc))\\
+  TNIE &= \logit(E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc])\\
   &\approx \log(1 + \exp(\beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
   &~~~ - \log(1 + \exp(\beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
-  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
-  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
+  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
   \\
   &\text{Note the $a_{0} \rightarrow a_{1}$ changes associated with $\beta_{1}$.}\\
-  TNDE &= \logit(E[Y_{a_{1},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc])\\
+  TNDE &= \logit(E[Y_{a_{1},\uwave{M_{a_{1}}}} | \bC = \bc]) - \logit(E[Y_{a_{0},\uwave{M_{a_{1}}}} | \bC = \bc])\\
   &\approx \theta_{1}(a_{1} - a_{0})\\
-  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
-  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
+  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} \uwave{a_{1}} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} \uwave{a_{1}} + \bbeta_{2}^T\bc))\\
   &\text{Note the $a_{1} \rightarrow a_{0}$ changes associated with $\theta_{3}$.}\\
-  PNIE &= \logit(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
+  PNIE &= \logit(E[Y_{\uwave{a_{0}},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{\uwave{a_{0}},M_{a_{0}}} | \bC = \bc])\\
   &\approx \log(1 + \exp(\beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
   &~~~ - \log(1 + \exp(\beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
-  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
-  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
+  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
   \\
   TE &= PNDE + TNIE\\
   PM &= \frac{\exp(PNDE)(\exp(TNIE) - 1)}{\exp(PNDE)\exp(TNIE) - 1}\\
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:org60bf211}
+\label{sec:orgeea9ec5}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p473).
 
 \begin{align*}
@@ -760,13 +760,13 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_se()} implemen
     \end{bmatrix}\\
   \\
   Q_{PNDE} &= \frac
-             {    \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-             {1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+             {    \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
+             {1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
   B_{PNDE} &= \frac
-             {    \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-             {1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+             {    \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
+             {1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
       d_{1,PNDE} &= Q_{PNDE} - B_{PNDE}\\
-      d_{2,PNDE} &= a_{0} (Q_{PNDE} - B_{PNDE})\\
+      d_{2,PNDE} &= \uwave{a_{0}} (Q_{PNDE} - B_{PNDE})\\
       d_{3,PNDE} &= \bc (Q_{PNDE} - B_{PNDE})\\
       d_{4,PNDE} &= 0\\
       d_{5,PNDE} &= a_{1} - a_{0}\\
@@ -787,11 +787,11 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_se()} implemen
     \end{bmatrix}\\
   \\
   Q_{TNIE} &= \frac
-      {    \exp(\theta_{2} + \theta_{3}a_{1} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-      {1 + \exp(\theta_{2} + \theta_{3}a_{1} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
   B_{TNIE} &= \frac
-      {    \exp(\theta_{2} + \theta_{3}a_{1} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-      {1 + \exp(\theta_{2} + \theta_{3}a_{1} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
   K_{TNIE} &= \frac
       {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
@@ -804,7 +804,7 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_se()} implemen
   d_{4,TNIE} &= 0\\
   d_{5,TNIE} &= 0\\
   d_{6,TNIE} &= Q_{TNIE} - B_{TNIE}\\
-  d_{7,TNIE} &= a_{1} (Q_{TNIE} - B_{TNIE})\\
+  d_{7,TNIE} &= \uwave{a_{1}} (Q_{TNIE} - B_{TNIE})\\
   d_{8,TNIE} &= \b0\\
   \Gamma_{TNIE}
   &= \frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
@@ -820,13 +820,13 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_se()} implemen
     \end{bmatrix}\\
   \\
   Q_{TNDE} &= \frac
-             {    \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-             {1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+             {    \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}
+             {1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}\\
   B_{TNDE} &= \frac
-             {    \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-             {1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+             {    \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}
+             {1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}\\
       d_{1,TNDE} &= Q_{TNDE} - B_{TNDE}\\
-      d_{2,TNDE} &= a_{1} (Q_{TNDE} - B_{TNDE})\\
+      d_{2,TNDE} &= \uwave{a_{1}} (Q_{TNDE} - B_{TNDE})\\
       d_{3,TNDE} &= \bc (Q_{TNDE} - B_{TNDE})\\
       d_{4,TNDE} &= 0\\
       d_{5,TNDE} &= a_{1} - a_{0}\\
@@ -847,11 +847,11 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_se()} implemen
     \end{bmatrix}\\
   \\
   Q_{PNIE} &= \frac
-      {    \exp(\theta_{2} + \theta_{3}a_{0} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-      {1 + \exp(\theta_{2} + \theta_{3}a_{0} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
   B_{PNIE} &= \frac
-      {    \exp(\theta_{2} + \theta_{3}a_{0} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-      {1 + \exp(\theta_{2} + \theta_{3}a_{0} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
   K_{PNIE} &= \frac
       {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
@@ -864,7 +864,7 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_se()} implemen
   d_{4,PNIE} &= 0\\
   d_{5,PNIE} &= 0\\
   d_{6,PNIE} &= Q_{PNIE} - B_{PNIE}\\
-  d_{7,PNIE} &= a_{0} (Q_{PNIE} - B_{PNIE})\\
+  d_{7,PNIE} &= \uwave{a_{0}} (Q_{PNIE} - B_{PNIE})\\
   d_{8,PNIE} &= \b0\\
   \Gamma_{PNIE}
   &= \frac{\partial PNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
@@ -909,11 +909,11 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_se()} implemen
 
 
 \section{Software}
-\label{sec:orgf730a65}
+\label{sec:org45087dc}
 The detailed explanation of the software implementation is given on its website (\url{https://kaz-yos.github.io/regmedint/index.html}).
 
 \section{Bibliography}
-\label{sec:org1ac2ca8}
+\label{sec:orgf6c8ae1}
 \renewcommand{\section}[2]{}
 
 \bibliographystyle{apalike}
