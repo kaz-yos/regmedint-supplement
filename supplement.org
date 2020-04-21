@@ -676,27 +676,27 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_est()= implements the effec
   CDE(m) &= \logit(E[Y_{a_{1},m} | \bC = \bc]) - \logit(E[Y_{a_{0},m} | \bC = \bc])\\
   &= (\theta_{1} + \theta_{3}m)(a_{1} - a_{0})\\
   \\
-  PNDE &= \logit(E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]) - \logit(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
+  PNDE &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc])\\
   &\approx \theta_{1}(a_{1} - a_{0})\\
-  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
-  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
-  TNIE &= \logit(E[Y_{a_{1},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{a_{1},M_{a_{0}}} | \bC = \bc])\\
+  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^T\bc))\\
+  TNIE &= \logit(E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc])\\
   &\approx \log(1 + \exp(\beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
   &~~~ - \log(1 + \exp(\beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
-  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
-  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
+  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
   \\
   &\text{Note the $a_{0} \rightarrow a_{1}$ changes associated with $\beta_{1}$.}\\
-  TNDE &= \logit(E[Y_{a_{1},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc])\\
+  TNDE &= \logit(E[Y_{a_{1},\uwave{M_{a_{1}}}} | \bC = \bc]) - \logit(E[Y_{a_{0},\uwave{M_{a_{1}}}} | \bC = \bc])\\
   &\approx \theta_{1}(a_{1} - a_{0})\\
-  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
-  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
+  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} \uwave{a_{1}} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} \uwave{a_{1}} + \bbeta_{2}^T\bc))\\
   &\text{Note the $a_{1} \rightarrow a_{0}$ changes associated with $\theta_{3}$.}\\
-  PNIE &= \logit(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
+  PNIE &= \logit(E[Y_{\uwave{a_{0}},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{\uwave{a_{0}},M_{a_{0}}} | \bC = \bc])\\
   &\approx \log(1 + \exp(\beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
   &~~~ - \log(1 + \exp(\beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
-  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
-  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
+  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
   \\
   TE &= PNDE + TNIE\\
   PM &= \frac{\exp(PNDE)(\exp(TNIE) - 1)}{\exp(PNDE)\exp(TNIE) - 1}\\
@@ -722,13 +722,13 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
     \end{bmatrix}\\
   \\
   Q_{PNDE} &= \frac
-             {    \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-             {1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+             {    \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
+             {1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
   B_{PNDE} &= \frac
-             {    \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-             {1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+             {    \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
+             {1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
       d_{1,PNDE} &= Q_{PNDE} - B_{PNDE}\\
-      d_{2,PNDE} &= a_{0} (Q_{PNDE} - B_{PNDE})\\
+      d_{2,PNDE} &= \uwave{a_{0}} (Q_{PNDE} - B_{PNDE})\\
       d_{3,PNDE} &= \bc (Q_{PNDE} - B_{PNDE})\\
       d_{4,PNDE} &= 0\\
       d_{5,PNDE} &= a_{1} - a_{0}\\
@@ -749,11 +749,11 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
     \end{bmatrix}\\
   \\
   Q_{TNIE} &= \frac
-      {    \exp(\theta_{2} + \theta_{3}a_{1} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-      {1 + \exp(\theta_{2} + \theta_{3}a_{1} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
   B_{TNIE} &= \frac
-      {    \exp(\theta_{2} + \theta_{3}a_{1} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-      {1 + \exp(\theta_{2} + \theta_{3}a_{1} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
   K_{TNIE} &= \frac
       {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
@@ -766,7 +766,7 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
   d_{4,TNIE} &= 0\\
   d_{5,TNIE} &= 0\\
   d_{6,TNIE} &= Q_{TNIE} - B_{TNIE}\\
-  d_{7,TNIE} &= a_{1} (Q_{TNIE} - B_{TNIE})\\
+  d_{7,TNIE} &= \uwave{a_{1}} (Q_{TNIE} - B_{TNIE})\\
   d_{8,TNIE} &= \b0\\
   \Gamma_{TNIE}
   &= \frac{\partial TNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
@@ -782,13 +782,13 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
     \end{bmatrix}\\
   \\
   Q_{TNDE} &= \frac
-             {    \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-             {1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+             {    \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}
+             {1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}\\
   B_{TNDE} &= \frac
-             {    \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-             {1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+             {    \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}
+             {1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}\\
       d_{1,TNDE} &= Q_{TNDE} - B_{TNDE}\\
-      d_{2,TNDE} &= a_{1} (Q_{TNDE} - B_{TNDE})\\
+      d_{2,TNDE} &= \uwave{a_{1}} (Q_{TNDE} - B_{TNDE})\\
       d_{3,TNDE} &= \bc (Q_{TNDE} - B_{TNDE})\\
       d_{4,TNDE} &= 0\\
       d_{5,TNDE} &= a_{1} - a_{0}\\
@@ -809,11 +809,11 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
     \end{bmatrix}\\
   \\
   Q_{PNIE} &= \frac
-      {    \exp(\theta_{2} + \theta_{3}a_{0} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-      {1 + \exp(\theta_{2} + \theta_{3}a_{0} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
+      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
   B_{PNIE} &= \frac
-      {    \exp(\theta_{2} + \theta_{3}a_{0} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-      {1 + \exp(\theta_{2} + \theta_{3}a_{0} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
+      {    \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+      {1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{0}} + beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
   K_{PNIE} &= \frac
       {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
@@ -826,7 +826,7 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
   d_{4,PNIE} &= 0\\
   d_{5,PNIE} &= 0\\
   d_{6,PNIE} &= Q_{PNIE} - B_{PNIE}\\
-  d_{7,PNIE} &= a_{0} (Q_{PNIE} - B_{PNIE})\\
+  d_{7,PNIE} &= \uwave{a_{0}} (Q_{PNIE} - B_{PNIE})\\
   d_{8,PNIE} &= \b0\\
   \Gamma_{PNIE}
   &= \frac{\partial PNIE}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
