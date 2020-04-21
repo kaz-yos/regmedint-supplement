@@ -134,6 +134,33 @@ More in general, we can consider the effects on the link function scale as follo
 \end{align*}
 
 
+** Identification of natural effects
+Several conditional exchangeabilities must be assumed for identification of effects in the causal mediation framework. See cite:vanderweeleExplanationCausalInference2015 (p463) for details.
+
+\begin{align*}
+  &\text{A1}\\
+  Y_{a,m} &\ind A | \bC\\
+  &\text{A2}\\
+  Y_{a,m} &\ind M | \left\{ A, \bC \right\}\\
+  &\text{A3}\\
+  M_{a} &\ind A | \bC\\
+  &\text{A4}\\
+  Y_{a,m} &\ind M_{a^{*}} |\bC\\
+\end{align*}
+
+The controlled direct effect (CDE) is identified with only Assumptions A1 and A2. The natural effects require all four assumptions.  Intuitively, the identification of CDE involves handling the treatment and the mediator as a sequence of exposures, whose causal effects on the outcome must be identified. Thus, the conditional exchangeabilities for the treatment as an exposure (A1) and the mediator as an exposure (A2) are required.\\
+
+Additionally, the identification of the natural effects require identifying the causal effect of the treatment on the mediator acting as an "outcome" (thus, Assumption A3). The identification of the partitioning counterfactual state mentioned above, in which the treatment value indexing the outcome $Y$ and the treatment value indexing the mediator $M$ differ requires Assumption A4.\\
+
+Given these four assumptions, the mean counterfactual with different treatment values indexing the outcome $Y$ and the mediator $M$ can be identified as follows. See cite:vanderweeleExplanationCausalInference2015 (p465) for the proof. For a continuous $M$, the summation is replaced with an integration.
+
+\begin{align*}
+E[Y_{a,M_{a^{*}}}] &= \sum_{m} E[Y | A = a, M = m, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc)
+\end{align*}
+
+We can observe that the first treatment value $a$ in the counterfactual $Y_{\uwave{a},M_{a^{*}}}$ indexes the outcome model $E[Y | A = \uwave{a}, M = m, \bC = \bc]$, whereas the second treatment value $a^{*}$ in the counterfactual $Y_{a,\uwave{M_{a^{*}}}}$ indexes the mediator model $p(M = m | A = \uwave{a^{*}}, \bC = \bc)$.
+
+
 * Understanding the approach
 Here we describe the formulas implemented in =regmendint=, using the notational convention in cite:vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015.
 
