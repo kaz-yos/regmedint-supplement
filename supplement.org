@@ -155,10 +155,46 @@ Additionally, the identification of the natural effects require identifying the 
 Given these four assumptions, the mean counterfactual with different treatment values indexing the outcome $Y$ and the mediator $M$ can be identified as follows. See cite:vanderweeleExplanationCausalInference2015 (p465) for the proof. For a continuous $M$, the summation is replaced with an integration.
 
 \begin{align*}
-E[Y_{a,M_{a^{*}}}] &= \sum_{m} E[Y | A = a, M = m, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc)
+E[Y_{a,M_{a^{*}}} | \bC = \bc] &= \sum_{m} E[Y | A = a, M = m, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc)
 \end{align*}
 
-We can observe that the first treatment value $a$ in the counterfactual $Y_{\uwave{a},M_{a^{*}}}$ indexes the outcome model $E[Y | A = \uwave{a}, M = m, \bC = \bc]$, whereas the second treatment value $a^{*}$ in the counterfactual $Y_{a,\uwave{M_{a^{*}}}}$ indexes the mediator model $p(M = m | A = \uwave{a^{*}}, \bC = \bc)$.
+We can observe that the first treatment value $a$ in the counterfactual $Y_{\uwave{a},M_{a^{*}}}$ indexes the outcome model $E[Y | A = \uwave{a}, M = m, \bC = \bc]$, whereas the second treatment value $a^{*}$ in the counterfactual $Y_{a,\uwave{M_{a^{*}}}}$ indexes the mediator model $p(M = m | A = \uwave{a^{*}}, \bC = \bc)$.\\
+
+As a result, the identification formulas for the two natural /direct/ effects are the following. Note the change in the treatment value indexing the /mediator model/ from $a_{0}$ in the PNDE (usual NDE) to $a_{1}$ in the TNDE (annotated with \uwave{~~~~}). Within each effect, only the treatment values indexing the /outcome model/ vary (ones not annotated) because each NDE represent the direct effect of the treatment when the mediator is fixed at the natural value it would take under one treatment value (annotated with \uwave{~~~~}).
+
+\begin{align*}
+  PNDE
+  &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
+  &=     \sum_{m} E[Y | A = a_{1}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  &~~~ - \sum_{m} E[Y | A = a_{0}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  &= \sum_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times p(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  \\
+  TNDE
+  &= E[Y_{a_{1},\uwave{M_{a_{1}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{1}}}} | \bC = \bc]\\
+  &=     \sum_{m} E[Y | A = a_{1}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+  &~~~ - \sum_{m} E[Y | A = a_{0}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+  &= \sum_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times p(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+\end{align*}
+
+Also, the identification formulas for the two natural /indirect/ effects are the following. Note the change in the treatment value indexing the /outcome model/ from $a_{1}$ in the TNIE (usual NIE) to $a_{0}$ in the PNIE (annotated with \uwave{~~~~}). Within each effect, only the treatment values indexing the /mediator model/ vary (ones not annotated) because each NIE represent the indirect effect of the treatment when its effect on the mediator is "turned on", while the treatment value representing the direct path is fixed at the natural value it would take under one treatment value (annotated with \uwave{~~~~}).
+
+\begin{align*}
+  TNIE
+  &= E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc]\\
+  &=     \sum_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc] p(M = m | A = a_{1}, \bC = \bc)\\
+  &~~~ - \sum_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc] p(M = m | A = a_{0}, \bC = \bc)\\
+  &= \sum_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ p(M = m | A = a_{1}, \bC = \bc) - p(M = m | A = a_{0}, \bC = \bc) \right\}
+  \\
+  PNIE
+   &= E[Y_{\uwave{a_{0}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{0}},M_{a_{0}}} | \bC = \bc]\\
+  &=     \sum_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc] p(M = m | A = a_{1}, \bC = \bc)\\
+  &~~~ - \sum_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc] p(M = m | A = a_{0}, \bC = \bc)\\
+  &= \sum_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ p(M = m | A = a_{1}, \bC = \bc) - p(M = m | A = a_{0}, \bC = \bc) \right\}
+\end{align*}
 
 
 * Understanding the approach
@@ -900,7 +936,7 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
 
 
 * Software
-The detailed explanation of the software implementation is given on its website (https://kaz-yos.github.io/regmedint/index.html).
+The detailed explanation of the software implementation and its use are given on its website (https://kaz-yos.github.io/regmedint/index.html).
 
 * Bibliography
 \renewcommand{\section}[2]{}
