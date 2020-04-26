@@ -1,4 +1,4 @@
-% Created 2020-04-26 Sun 07:40
+% Created 2020-04-26 Sun 07:47
 % Intended LaTeX compiler: pdflatex
 \documentclass[dvipdfmx,10pt]{article}
 \usepackage[utf8]{inputenc}
@@ -83,6 +83,7 @@
 %% Allow URL embedding
 \usepackage{url}
 \usepackage{fontawesome}
+%% https://github.com/kaz-yos/emacs/blob/master/misc/GrandMacros.tex
 \input{\string~/.emacs.d/misc/GrandMacros}
 \date{\today}
 \title{}
@@ -100,12 +101,12 @@
 \sloppy
 \newpage
 \section{Brief description of the causal mediation}
-\label{sec:orgefe5071}
+\label{sec:orgad2995c}
 
 The literature on the causal mediation is vast \cite{vanderweeleExplanationCausalInference2015} and is evolving, thus, only the pieces relevant for the current software are reviewed here.
 
 \subsection{Decomposition of total effect}
-\label{sec:orga05a1ff}
+\label{sec:org9bb8e70}
 Let \(Y\) be the outcome variable of interest, \(A\) be the treatment variable of interest, \(M\) be the mediator variable of interest, and \(\bC\) be the potentially vector-valued pre-treatment baseline covariates necessary for exchangeability. The treatment contrast of interest is \(a_{1}\) vs \(a_{0}\), the second being the reference level. The counterfactual \(Y_{a,m}\) is the value of \(Y\) for an individual when, possibly contrary to the fact, the treatment level \(a\) and mediator level \(m\) are assigned.\\
 
 Given these notations, the effects are defined as follows at the covariate level \(\bC = \bc\) and the mediator level \(M = m\) (only for CDE).
@@ -158,7 +159,7 @@ More in general, we can consider the effects on the link function scale as follo
 
 
 \subsection{Identification of natural effects}
-\label{sec:orge163755}
+\label{sec:orge86d2fe}
 Several conditional exchangeabilities must be assumed for identification of effects in the causal mediation framework. See \cite{vanderweeleExplanationCausalInference2015} (p463) for details.
 
 \begin{align*}
@@ -222,17 +223,17 @@ Also, the identification formulas for the two natural \emph{indirect} effects ar
 
 
 \section{Understanding the approach}
-\label{sec:orgaf49a24}
+\label{sec:orgd48a142}
 Here we describe the formulas implemented in \texttt{regmendint}, using the notational convention in \cite{vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015}.
 
 \subsection{Parametrizing the mediation effect formulas}
-\label{sec:org9141232}
+\label{sec:org9b91357}
 A seen above, there are two models involved in identification of natural effects: the outcome model (\(E[Y|A=a,M=m,\bC=\bc]\)) and the mediator model (\(p(M|A=a,\bC=\bc)\)). The identification formulas do not specify any particular model structure (non-parametric). In the method described in \cite{valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015}, a simple parametric model is proposed for each.\\
 
 Under this parametric modeling assumption, each effect of interest can be written as a function of the parameters (coefficients) of the the mediator model (\(\beta\)) and the outcome model (\(\theta\)). Because of the product configuration (outcome model \texttimes{} mediator model), each natural effect is a non-linear function of the parameters (model coefficients). The maximum likelihood estimates (MLE) of these effects are the ones with these parameters replaced with their respective MLEs from the two models.
 
 \subsection{Obtaining standard errors via multivariate delta method}
-\label{sec:org7716760}
+\label{sec:org7f00a05}
 
 Each effect of interest is estimated as a scalar-valued, non-linear function of estiamted coefficients for the mediator model and the outcome model. Thus, we can obtain the standard error of each effect estimate using the variance covariance matrix for the coefficients and multivariate delta method \cite{hoefWhoInventedDelta2012}.\\
 
@@ -267,9 +268,9 @@ By the large sample approximation using the multivariate delta method, the varia
 This expression is abbreviated as \(\Gamma\Sigma\Gamma'\) in \cite{vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015}. In these references, the treatment contrast (\(a_{1}-a_{0}\)) is factored out from \(\nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right)\) when possible.
 
 \subsection{Linear mediator model, linear outcome model}
-\label{sec:org51fca62}
+\label{sec:orgc8df632}
 \subsubsection{Effect formulas}
-\label{sec:orgd573184}
+\label{sec:orgc5861eb}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p466).
 
 \begin{align*}
@@ -296,7 +297,7 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_est()} implements 
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:org5a31a85}
+\label{sec:orgb31128e}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p466).
 
 \begin{align*}
@@ -398,9 +399,9 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_se()} implements t
 
 
 \subsection{Linear mediator model, non-linear outcome model}
-\label{sec:orge823457}
+\label{sec:org881371e}
 \subsubsection{Effect formulas}
-\label{sec:orgf68bd5b}
+\label{sec:orge8aeaa4}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p468).
 
 \begin{align*}
@@ -427,7 +428,7 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_est()} implement
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:orgadaf5e8}
+\label{sec:orgdf708e2}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p468).
 
 \begin{align*}
@@ -536,9 +537,9 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_se()} implements
 
 
 \subsection{Logistic mediator model, linear outcome model}
-\label{sec:org6471396}
+\label{sec:orga993efb}
 \subsubsection{Effect formulas}
-\label{sec:orgcc9b7c3}
+\label{sec:org28fa3a1}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p471).
 
 \begin{align*}
@@ -587,7 +588,7 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_est()} implement
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:org71e5c64}
+\label{sec:org8d03f89}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p471).
 
 \begin{align*}
@@ -765,9 +766,9 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_se()} implements
 
 
 \subsection{Logistic mediator model, non-linear outcome model}
-\label{sec:org23cc5bd}
+\label{sec:org1ce37bc}
 \subsubsection{Effect formulas}
-\label{sec:orgcd9f9fc}
+\label{sec:orgeca4f7a}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p473).
 
 \begin{align*}
@@ -808,7 +809,7 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_est()} impleme
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:orge7ddb0f}
+\label{sec:orgcc3f440}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p473).
 
 \begin{align*}
@@ -977,11 +978,11 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_se()} implemen
 
 
 \section{Software}
-\label{sec:orgd1db72e}
+\label{sec:org506e2fa}
 The detailed explanation of the software implementation and its use are given on its website (\url{https://kaz-yos.github.io/regmedint/index.html}).
 
 \section{Bibliography}
-\label{sec:org397e5e3}
+\label{sec:org0ba3417}
 \renewcommand{\section}[2]{}
 
 \bibliographystyle{apalike}
