@@ -1,4 +1,4 @@
-% Created 2020-04-21 Tue 04:52
+% Created 2020-04-26 Sun 07:40
 % Intended LaTeX compiler: pdflatex
 \documentclass[dvipdfmx,10pt]{article}
 \usepackage[utf8]{inputenc}
@@ -99,13 +99,13 @@
 
 \sloppy
 \newpage
-\section{Brief description of the causal mediation analysis}
-\label{sec:org9996e98}
+\section{Brief description of the causal mediation}
+\label{sec:orgefe5071}
 
 The literature on the causal mediation is vast \cite{vanderweeleExplanationCausalInference2015} and is evolving, thus, only the pieces relevant for the current software are reviewed here.
 
 \subsection{Decomposition of total effect}
-\label{sec:org8496110}
+\label{sec:orga05a1ff}
 Let \(Y\) be the outcome variable of interest, \(A\) be the treatment variable of interest, \(M\) be the mediator variable of interest, and \(\bC\) be the potentially vector-valued pre-treatment baseline covariates necessary for exchangeability. The treatment contrast of interest is \(a_{1}\) vs \(a_{0}\), the second being the reference level. The counterfactual \(Y_{a,m}\) is the value of \(Y\) for an individual when, possibly contrary to the fact, the treatment level \(a\) and mediator level \(m\) are assigned.\\
 
 Given these notations, the effects are defined as follows at the covariate level \(\bC = \bc\) and the mediator level \(M = m\) (only for CDE).
@@ -113,8 +113,8 @@ Given these notations, the effects are defined as follows at the covariate level
 \begin{align*}
   CDE(m) &= E[Y_{a_{1},m} | \bC = \bc] - E[Y_{a_{0},m} | \bC = \bc]\\
   \\
-  TNIE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
   PNDE &= E[Y_{a_{1},M_{a_{0}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+  TNIE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
   \\
   TNDE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]\\
   PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
@@ -124,21 +124,23 @@ Given these notations, the effects are defined as follows at the covariate level
 
 The total effect (TE) can be decomposed into the direct (non-mediated) effect and indirect (mediated) effect in two different ways \cite{robinsIdentifiabilityExchangeabilityDirect1992,vanderweeleThreewayDecompositionTotal2013}.\\
 
-The decomposition of TE into the pure (natural) direct effect (PNDE) and the total (natural) indirect effect (TNIE) is the usual decomposition \cite{pearlDirectIndirectEffects2001}.
+The decomposition of TE into the pure (natural) direct effect (PNDE) and the total (natural) indirect effect (TNIE) is the usual decomposition \cite{pearlDirectIndirectEffects2001}. Note that the treatment value indexing the mediator \(M\) is fixed at \(a_{0}\) in the PNDE, whereas the treatment value indexing the outcome \(Y\) is fixed at \(a_{1}\) in the TNIE. These are emphasized with \(\uwave{~~~~}\) throughout the document.
 
 \begin{align*}
-  PNDE &= E[Y_{a_{1},M_{a_{0}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
-  TNIE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
+  PNDE &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
+  TNIE &= E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc]\\
 \end{align*}
 
-The other decomposition of TE is into the pure (natural) indirect effect (PNIE) and the total (natural) direct effect (TNDE) \cite{robinsIdentifiabilityExchangeabilityDirect1992}.
+The other decomposition of TE is into the pure (natural) indirect effect (PNIE) and the total (natural) direct effect (TNDE) \cite{robinsIdentifiabilityExchangeabilityDirect1992}. Note that the treatment value indexing the mediator \(M\) is fixed at \(a_{1}\) in the TNDE, whereas the treatment value indexing the outcome \(Y\) is fixed at \(a_{0}\) in the PNIE. That is, these flipped in this decomposition. These are emphasized with \(\uwave{~~~~}\) throughout the document.
 
 \begin{align*}
-  TNDE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]\\
-  PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
+  TNDE &= E[Y_{a_{1},\uwave{M_{a_{1}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{1}}}} | \bC = \bc]\\
+  PNIE &= E[Y_{\uwave{a_{0}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{0}},M_{a_{0}}} | \bC = \bc]\\
 \end{align*}
 
-These decomposition differs in the cross-world counterfactual state that is used as the partition. The PNDE+TNIE decomposition uses \(Y_{a_{1},M_{a_{0}}}\) (treatment exerting on the outcome changes first), whereas the PNIE+TNDE decomposition uses \(Y_{a_{0},M_{a_{1}}}\) (treatment exerting on the mediator changes first). In either case, the effect that has the reference counterfactual outcome \(Y_{a_{0}} = Y_{a_{0},M_{0}}\) is the "pure" effect and the effect that has \(Y_{a_{1}} = Y_{a_{1},M_{1}}\) is the total effect. See \cite{vanderweeleThreewayDecompositionTotal2013} for the meaning of these two decompositions.\\
+More intuitively, these decomposition differs in the cross-world counterfactual state that is used as the partition. The usual PNDE+TNIE decomposition uses \(Y_{a_{1},M_{a_{0}}}\) (treatment indexing on the outcome goes up to \(a_{1}\) from \(a_{0}\) first), whereas the PNIE+TNDE decomposition uses \(Y_{a_{0},M_{a_{1}}}\) (treatment indexing the mediator goes up to \(a_{1}\) from \(a_{0}\) first).\\
+
+In either case, the effect that has the reference counterfactual outcome \(Y_{a_{0}} = Y_{a_{0},M_{a_{0}}}\) is the "pure" natural direct/indirect effect and the effect that has \(Y_{a_{1}} = Y_{a_{1},M_{a_{1}}}\) is the total natural direct/indirect effect. See \cite{vanderweeleThreewayDecompositionTotal2013} for the meaning of these two decompositions in terms of causal interaction.\\
 
 More in general, we can consider the effects on the link function scale as follows \cite{starkopfComparisonFiveSoftware2017}.
 
@@ -155,18 +157,84 @@ More in general, we can consider the effects on the link function scale as follo
 \end{align*}
 
 
+\subsection{Identification of natural effects}
+\label{sec:orge163755}
+Several conditional exchangeabilities must be assumed for identification of effects in the causal mediation framework. See \cite{vanderweeleExplanationCausalInference2015} (p463) for details.
+
+\begin{align*}
+  &\text{A1}\\
+  Y_{a,m} &\ind A | \bC\\
+  &\text{A2}\\
+  Y_{a,m} &\ind M | \left\{ A, \bC \right\}\\
+  &\text{A3}\\
+  M_{a} &\ind A | \bC\\
+  &\text{A4}\\
+  Y_{a,m} &\ind M_{a^{*}} |\bC\\
+\end{align*}
+
+The controlled direct effect (CDE) is identified with only Assumptions A1 and A2. The natural effects require all four assumptions.  Intuitively, the identification of CDE involves handling the treatment and the mediator as a sequence of exposures, whose causal effects on the outcome must be identified. Thus, the conditional exchangeabilities for the treatment as an exposure (A1) and the mediator as an exposure (A2) are required.\\
+
+Additionally, the identification of the natural effects require identifying the causal effect of the treatment on the mediator acting as an "outcome" (thus, Assumption A3). The identification of the partitioning counterfactual state mentioned above, in which the treatment value indexing the outcome \(Y\) and the treatment value indexing the mediator \(M\) differ requires Assumption A4.\\
+
+Given these four assumptions, the mean counterfactual with different treatment values indexing the outcome \(Y\) and the mediator \(M\) can be identified as follows. See \cite{vanderweeleExplanationCausalInference2015} (p465) for the proof. For a continuous \(M\), the summation is replaced with an integration.
+
+\begin{align*}
+E[Y_{a,M_{a^{*}}} | \bC = \bc] &= \sum_{m} E[Y | A = a, M = m, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc)
+\end{align*}
+
+We can observe that the first treatment value \(a\) in the counterfactual \(Y_{\uwave{a},M_{a^{*}}}\) indexes the outcome model \(E[Y | A = \uwave{a}, M = m, \bC = \bc]\), whereas the second treatment value \(a^{*}\) in the counterfactual \(Y_{a,\uwave{M_{a^{*}}}}\) indexes the mediator model \(p(M = m | A = \uwave{a^{*}}, \bC = \bc)\).\\
+
+As a result, the identification formulas for the two natural \emph{direct} effects are the following. Note the change in the treatment value indexing the \emph{mediator model} from \(a_{0}\) in the PNDE (usual NDE) to \(a_{1}\) in the TNDE (annotated with \uwave{~~~~}). Within each effect, only the treatment values indexing the \emph{outcome model} vary (ones not annotated) because each NDE represent the direct effect of the treatment when the mediator is fixed at the natural value it would take under one treatment value (annotated with \uwave{~~~~}).
+
+\begin{align*}
+  PNDE
+  &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
+  &=     \sum_{m} E[Y | A = a_{1}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  &~~~ - \sum_{m} E[Y | A = a_{0}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  &= \sum_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times p(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  \\
+  TNDE
+  &= E[Y_{a_{1},\uwave{M_{a_{1}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{1}}}} | \bC = \bc]\\
+  &=     \sum_{m} E[Y | A = a_{1}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+  &~~~ - \sum_{m} E[Y | A = a_{0}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+  &= \sum_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times p(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+\end{align*}
+
+Also, the identification formulas for the two natural \emph{indirect} effects are the following. Note the change in the treatment value indexing the \emph{outcome model} from \(a_{1}\) in the TNIE (usual NIE) to \(a_{0}\) in the PNIE (annotated with \uwave{~~~~}). Within each effect, only the treatment values indexing the \emph{mediator model} vary (ones not annotated) because each NIE represent the indirect effect of the treatment when its effect on the mediator is "turned on", while the treatment value representing the direct path is fixed at the natural value it would take under one treatment value (annotated with \uwave{~~~~}).
+
+\begin{align*}
+  TNIE
+  &= E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc]\\
+  &=     \sum_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc] p(M = m | A = a_{1}, \bC = \bc)\\
+  &~~~ - \sum_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc] p(M = m | A = a_{0}, \bC = \bc)\\
+  &= \sum_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ p(M = m | A = a_{1}, \bC = \bc) - p(M = m | A = a_{0}, \bC = \bc) \right\}
+  \\
+  PNIE
+   &= E[Y_{\uwave{a_{0}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{0}},M_{a_{0}}} | \bC = \bc]\\
+  &=     \sum_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc] p(M = m | A = a_{1}, \bC = \bc)\\
+  &~~~ - \sum_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc] p(M = m | A = a_{0}, \bC = \bc)\\
+  &= \sum_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ p(M = m | A = a_{1}, \bC = \bc) - p(M = m | A = a_{0}, \bC = \bc) \right\}
+\end{align*}
+
+
 \section{Understanding the approach}
-\label{sec:org122f228}
+\label{sec:orgaf49a24}
 Here we describe the formulas implemented in \texttt{regmendint}, using the notational convention in \cite{vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015}.
 
-\subsection{Parametrizing the mediation formulas}
-\label{sec:org785e882}
-The method directly parametrize the effects with the coefficients of the mediator model (\(\beta\)) and the outcome model (\(\theta\)). The maximum likelihood estimates (MLE) of these effects are the ones with these parameters replaced with their respective MLEs. See XYZ for derivation of these formulas.\\
+\subsection{Parametrizing the mediation effect formulas}
+\label{sec:org9141232}
+A seen above, there are two models involved in identification of natural effects: the outcome model (\(E[Y|A=a,M=m,\bC=\bc]\)) and the mediator model (\(p(M|A=a,\bC=\bc)\)). The identification formulas do not specify any particular model structure (non-parametric). In the method described in \cite{valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015}, a simple parametric model is proposed for each.\\
+
+Under this parametric modeling assumption, each effect of interest can be written as a function of the parameters (coefficients) of the the mediator model (\(\beta\)) and the outcome model (\(\theta\)). Because of the product configuration (outcome model \texttimes{} mediator model), each natural effect is a non-linear function of the parameters (model coefficients). The maximum likelihood estimates (MLE) of these effects are the ones with these parameters replaced with their respective MLEs from the two models.
 
 \subsection{Obtaining standard errors via multivariate delta method}
-\label{sec:org4a7c00b}
+\label{sec:org7716760}
 
-As seen above, each effects of interest is estimated as a scalar-valued, non-linear function of estiamted coefficients for the mediator model and the outcome model. Thus, we can obtain the standard error of each effect estimate using the variance covariance matrix for the coefficients and multivariate delta method \cite{hoefWhoInventedDelta2012}.\\
+Each effect of interest is estimated as a scalar-valued, non-linear function of estiamted coefficients for the mediator model and the outcome model. Thus, we can obtain the standard error of each effect estimate using the variance covariance matrix for the coefficients and multivariate delta method \cite{hoefWhoInventedDelta2012}.\\
 
 Let the scalar quantity of interest be \(Q\), a function of parameter vector \((\bbeta^{T},\btheta^{T})^{T}\). Then, its gradient (vector of partial derivatives) with respect to the parameter vector \((\bbeta^{T},\btheta^{T})^{T}\) is the following.\\
 
@@ -199,9 +267,9 @@ By the large sample approximation using the multivariate delta method, the varia
 This expression is abbreviated as \(\Gamma\Sigma\Gamma'\) in \cite{vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015}. In these references, the treatment contrast (\(a_{1}-a_{0}\)) is factored out from \(\nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right)\) when possible.
 
 \subsection{Linear mediator model, linear outcome model}
-\label{sec:org109765a}
+\label{sec:org51fca62}
 \subsubsection{Effect formulas}
-\label{sec:org051cf49}
+\label{sec:orgd573184}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p466).
 
 \begin{align*}
@@ -228,7 +296,7 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_est()} implements 
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:org38e1aff}
+\label{sec:org5a31a85}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p466).
 
 \begin{align*}
@@ -330,9 +398,9 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_se()} implements t
 
 
 \subsection{Linear mediator model, non-linear outcome model}
-\label{sec:org6173607}
+\label{sec:orge823457}
 \subsubsection{Effect formulas}
-\label{sec:orgd5da073}
+\label{sec:orgf68bd5b}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p468).
 
 \begin{align*}
@@ -359,7 +427,7 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_est()} implement
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:orgfbbd000}
+\label{sec:orgadaf5e8}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p468).
 
 \begin{align*}
@@ -468,9 +536,9 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_se()} implements
 
 
 \subsection{Logistic mediator model, linear outcome model}
-\label{sec:org63e5c6f}
+\label{sec:org6471396}
 \subsubsection{Effect formulas}
-\label{sec:org1b2e590}
+\label{sec:orgcc9b7c3}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p471).
 
 \begin{align*}
@@ -519,7 +587,7 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_est()} implement
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:orga2ec5dc}
+\label{sec:org71e5c64}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p471).
 
 \begin{align*}
@@ -697,9 +765,9 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_se()} implements
 
 
 \subsection{Logistic mediator model, non-linear outcome model}
-\label{sec:orgfcb8846}
+\label{sec:org23cc5bd}
 \subsubsection{Effect formulas}
-\label{sec:orge79f470}
+\label{sec:orgcd9f9fc}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p473).
 
 \begin{align*}
@@ -740,7 +808,7 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_est()} impleme
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:orgeea9ec5}
+\label{sec:orge7ddb0f}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p473).
 
 \begin{align*}
@@ -909,11 +977,11 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_se()} implemen
 
 
 \section{Software}
-\label{sec:org45087dc}
-The detailed explanation of the software implementation is given on its website (\url{https://kaz-yos.github.io/regmedint/index.html}).
+\label{sec:orgd1db72e}
+The detailed explanation of the software implementation and its use are given on its website (\url{https://kaz-yos.github.io/regmedint/index.html}).
 
 \section{Bibliography}
-\label{sec:orgf6c8ae1}
+\label{sec:org397e5e3}
 \renewcommand{\section}[2]{}
 
 \bibliographystyle{apalike}
