@@ -200,12 +200,14 @@ Also, the identification formulas for the two natural /indirect/ effects are the
 * Understanding the approach
 Here we describe the formulas implemented in =regmendint=, using the notational convention in cite:vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015.
 
-** Parametrizing the mediation formulas
-The method directly parametrize the effects with the coefficients of the mediator model ($\beta$) and the outcome model ($\theta$). The maximum likelihood estimates (MLE) of these effects are the ones with these parameters replaced with their respective MLEs. See XYZ for derivation of these formulas.\\
+** Parametrizing the mediation effect formulas
+A seen above, there are two models involved in identification of natural effects: the outcome model ($E[Y|A=a,M=m,\bC=\bc]$) and the mediator model ($p(M|A=a,\bC=\bc)$). The identification formulas do not specify any particular model structure (non-parametric). In the method described in cite:valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015, a simple parametric model is proposed for each.\\
+
+Under this parametric modeling assumption, each effect of interest can be written as a function of the parameters (coefficients) of the the mediator model ($\beta$) and the outcome model ($\theta$). Because of the product configuration (outcome model \times mediator model), each natural effect is a non-linear function of the parameters (model coefficients). The maximum likelihood estimates (MLE) of these effects are the ones with these parameters replaced with their respective MLEs from the two models.
 
 ** Obtaining standard errors via multivariate delta method
 
-As seen above, each effects of interest is estimated as a scalar-valued, non-linear function of estiamted coefficients for the mediator model and the outcome model. Thus, we can obtain the standard error of each effect estimate using the variance covariance matrix for the coefficients and multivariate delta method cite:hoefWhoInventedDelta2012.\\
+Each effect of interest is estimated as a scalar-valued, non-linear function of estiamted coefficients for the mediator model and the outcome model. Thus, we can obtain the standard error of each effect estimate using the variance covariance matrix for the coefficients and multivariate delta method cite:hoefWhoInventedDelta2012.\\
 
 Let the scalar quantity of interest be $Q$, a function of parameter vector $(\bbeta^{T},\btheta^{T})^{T}$. Then, its gradient (vector of partial derivatives) with respect to the parameter vector $(\bbeta^{T},\btheta^{T})^{T}$ is the following.\\
 
