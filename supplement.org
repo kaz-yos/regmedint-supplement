@@ -572,13 +572,13 @@ The function =calc_myreg_mreg_logistic_yreg_linear_se()= implements the standard
   \\
   d_{1,PNDE} &= \theta_{3} \frac
                {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
-               {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
+               {\{1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)\}^{2}}\\
   d_{2,PNDE} &= \uwave{a_{0}} \theta_{3} \frac
                {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
-               {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
+               {\{1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)\}^{2}}\\
   d_{3,PNDE} &= \bc \theta_{3} \frac
                {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
-               {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
+               {\{1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)\}^{2}}\\
   d_{4,PNDE} &= 0\\
   d_{5,PNDE} &= 1\\
   d_{6,PNDE} &= 0\\
@@ -636,13 +636,13 @@ The function =calc_myreg_mreg_logistic_yreg_linear_se()= implements the standard
   \\
   d_{1,TNDE} &= \theta_{3} \frac
                {    \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}
-               {1 + \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}\\
+               {\{1 + \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)\}^{2}}\\
   d_{2,TNDE} &= \uwave{a_{1}} \theta_{3} \frac
                {    \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}
-               {1 + \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}\\
+               {\{1 + \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)\}^{2}}\\
   d_{3,TNDE} &= \bc \theta_{3} \frac
                {    \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}
-               {1 + \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)}\\
+               {\{1 + \exp(\beta_{1} + \beta_{1}\uwave{a_{1}} + \bbeta_{2}^{T}\bc)\}^{2}}\\
   d_{4,TNDE} &= 0\\
   d_{5,TNDE} &= 1\\
   d_{6,TNDE} &= 0\\
@@ -673,7 +673,7 @@ The function =calc_myreg_mreg_logistic_yreg_linear_se()= implements the standard
   K_{PNIE} &= \frac
       {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
-  D_{PNIE} &= \theta_{3} \frac
+  D_{PNIE} &= \frac
       {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
   d_{1,PNIE} &= (\theta_{2} + \theta_{3}\uwave{a_{0}}) (Q_{PNIE} - B_{PNIE})\\
@@ -777,7 +777,7 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
   &\text{Note the lack of the common factor $(a_{1} - a_{0})$ throughout.}\\
   \Gamma_{CDE(m)}
   &= \frac{\partial CDE(m)}{\partial (\bbeta^{T},\btheta^{T})^{T}}\\
-  &= (a_{1}-a_{0})
+  &=
     \begin{bmatrix}
       0\\
       0\\
@@ -825,7 +825,7 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
   K_{TNIE} &= \frac
       {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
-  D_{TNIE} &= \theta_{3} \frac
+  D_{TNIE} &= \frac
       {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
   d_{1,TNIE} &= (D_{TNIE} + Q_{TNIE}) - (K_{TNIE} + B_{TNIE})\\
@@ -885,7 +885,7 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
   K_{PNIE} &= \frac
       {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}\\
-  D_{PNIE} &= \theta_{3} \frac
+  D_{PNIE} &= \frac
       {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
       {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}\\
   d_{1,PNIE} &= (D_{PNIE} + Q_{PNIE}) - (K_{PNIE} + B_{PNIE})\\
