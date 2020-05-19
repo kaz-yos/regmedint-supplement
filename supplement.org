@@ -1061,35 +1061,14 @@ res <- tibble(mreg = rep(c("linear","linear","logistic","logistic"), 2),
 
 ## Plot
 res %>%
-  filter(name %in% c("te","pnde","tnie"), interaction == TRUE) %>%
-  ggplot(mapping = aes(x = c_cond, y = value, group = name, color = name)) +
-  geom_line() +
-  facet_grid(mreg ~ yreg) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
-        legend.key = element_blank(),
-        plot.title = element_text(hjust = 0.5),
-        strip.background = element_blank())
-
-## Plot
-res %>%
-  filter(name %in% c("te","pnde","tnie"), interaction == FALSE) %>%
-  ggplot(mapping = aes(x = c_cond, y = value, group = name, color = name)) +
-  geom_line() +
-  facet_grid(mreg ~ yreg) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
-        legend.key = element_blank(),
-        plot.title = element_text(hjust = 0.5),
-        strip.background = element_blank())
-
-## Plot
-res %>%
   filter(name %in% c("te","pnde","tnie")) %>%
   mutate(name = factor(name, levels = c("te","pnde","tnie"))) %>%
   ggplot(mapping = aes(x = c_cond, y = value, group = name, linetype = name)) +
   geom_line() +
-  facet_grid(interaction ~ mreg + yreg, scales = "free_y") +
+  scale_y_continuous(name = "Effect estimate") +
+  scale_x_continuous(name = "Covariate value") +
+  scale_linetype(name = "Effect") +
+  facet_grid(interaction ~ mreg + yreg, scales = "free_y", labeller = label_both) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
         legend.position = "bottom",
