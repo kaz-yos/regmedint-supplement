@@ -960,6 +960,129 @@ summary(res_obj)
 #+END_SRC
 \normalsize
 
+As seen above, the mediator regression model, the outcome regression model, and the mediation analysis results are presented. The results also include the values of =a0=, =a1=, =mvar= (relevant for =cde=), and =c_cond= (relevant for natural effects) at which the effect estimates are evaluated.
+
+** Demonstration of the role of =c_cond=
+
+# https://orgmode.org/manual/results.html
+# https://orgmode.org/manual/Exporting-code-blocks.html
+# https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org04ba7ed
+\scriptsize
+#+HEADER: :width 3.5 :height 3
+#+BEGIN_SRC R :session *R-org* :results output graphics file :file ./source/figure.pdf :exports both
+res_mreg_linear_yreg_linear <-
+  regmedint(data = vv2015,
+            yvar = "y", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
+            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
+            mreg = "linear", yreg = "linear",
+            interaction = TRUE, casecontrol = FALSE)
+
+res_mreg_linear_yreg_logistic <-
+  regmedint(data = vv2015,
+            yvar = "event", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
+            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
+            mreg = "linear", yreg = "logistic",
+            interaction = TRUE, casecontrol = FALSE)
+
+res_mreg_logistic_yreg_linear <-
+  regmedint(data = vv2015,
+            yvar = "y", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
+            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
+            mreg = "logistic", yreg = "linear",
+            interaction = TRUE, casecontrol = FALSE)
+
+res_mreg_logistic_yreg_logistic <-
+  regmedint(data = vv2015,
+            yvar = "event", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
+            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
+            mreg = "logistic", yreg = "logistic",
+            interaction = TRUE, casecontrol = FALSE)
+
+res_mreg_linear_yreg_linear_int_false <-
+  regmedint(data = vv2015,
+            yvar = "y", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
+            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
+            mreg = "linear", yreg = "linear",
+            interaction = FALSE, casecontrol = FALSE)
+
+res_mreg_linear_yreg_logistic_int_false <-
+  regmedint(data = vv2015,
+            yvar = "event", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
+            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
+            mreg = "linear", yreg = "logistic",
+            interaction = FALSE, casecontrol = FALSE)
+
+res_mreg_logistic_yreg_linear_int_false <-
+  regmedint(data = vv2015,
+            yvar = "y", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
+            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
+            mreg = "logistic", yreg = "linear",
+            interaction = FALSE, casecontrol = FALSE)
+
+res_mreg_logistic_yreg_logistic_int_false <-
+  regmedint(data = vv2015,
+            yvar = "event", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
+            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
+            mreg = "logistic", yreg = "logistic",
+            interaction = FALSE, casecontrol = FALSE)
+
+c_cond_min <- min(vv2015$c)
+c_cond_max <- max(vv2015$c)
+c_cond_grid <- seq(from = c_cond_min, to = c_cond_max, by = 0.1)
+
+library(tidyverse)
+
+res <- tibble(mreg = rep(c("linear","linear","logistic","logistic"), 2),
+              yreg = rep(c("linear","logistic","linear","logistic"), 2),
+              interaction = rep(c(TRUE, FALSE), each = 4),
+              fit = list(res_mreg_linear_yreg_linear,
+                         res_mreg_linear_yreg_logistic,
+                         res_mreg_logistic_yreg_linear,
+                         res_mreg_logistic_yreg_logistic,
+                         res_mreg_linear_yreg_linear_int_false,
+                         res_mreg_linear_yreg_logistic_int_false,
+                         res_mreg_logistic_yreg_linear_int_false,
+                         res_mreg_logistic_yreg_logistic_int_false)) %>%
+  mutate(data = map(fit, function(fit) {
+    ## Evaluate at each c_cond value using the coef method.
+    map(c_cond_grid, function(c_cond) {
+      ## Force in a row tibble.
+      as_tibble(t(c(c_cond = c_cond, coef(fit, c_cond = c_cond))))
+    }) %>%
+      ## Collect all rows in one tibble
+      bind_rows()
+  })) %>%
+  select(-fit) %>%
+  unnest(data) %>%
+  ## Long format
+  pivot_longer(cols = c(-mreg,-yreg,-interaction, -c_cond))
+
+## Plot
+res %>%
+  filter(name %in% c("te","pnde","tnie"), interaction == TRUE) %>%
+  ggplot(mapping = aes(x = c_cond, y = value, group = name, color = name)) +
+  geom_line() +
+  facet_grid(mreg ~ yreg) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
+        legend.key = element_blank(),
+        plot.title = element_text(hjust = 0.5),
+        strip.background = element_blank())
+
+## Plot
+res %>%
+  filter(name %in% c("te","pnde","tnie"), interaction == FALSE) %>%
+  ggplot(mapping = aes(x = c_cond, y = value, group = name, color = name)) +
+  geom_line() +
+  facet_grid(mreg ~ yreg) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
+        legend.key = element_blank(),
+        plot.title = element_text(hjust = 0.5),
+        strip.background = element_blank())
+#+END_SRC
+\normalsize
+
 * Bibliography
 \renewcommand{\section}[2]{}
 # Following lines must be left-aligned without preceding spaces.
