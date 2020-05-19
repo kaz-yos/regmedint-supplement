@@ -972,79 +972,24 @@ Here we demonstrate the dependence of natural effect estimates on the =c_cond= v
 \scriptsize
 #+HEADER: :width 7 :height 7
 #+BEGIN_SRC R :session *R-org* :results output graphics file :file ./figure.pdf :exports both
-res_mreg_linear_yreg_linear <-
-  regmedint(data = vv2015,
-            yvar = "y", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
-            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
-            mreg = "linear", yreg = "linear",
-            interaction = TRUE, casecontrol = FALSE)
-
-res_mreg_linear_yreg_logistic <-
-  regmedint(data = vv2015,
-            yvar = "event", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
-            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
-            mreg = "linear", yreg = "logistic",
-            interaction = TRUE, casecontrol = FALSE)
-
-res_mreg_logistic_yreg_linear <-
-  regmedint(data = vv2015,
-            yvar = "y", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
-            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
-            mreg = "logistic", yreg = "linear",
-            interaction = TRUE, casecontrol = FALSE)
-
-res_mreg_logistic_yreg_logistic <-
-  regmedint(data = vv2015,
-            yvar = "event", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
-            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
-            mreg = "logistic", yreg = "logistic",
-            interaction = TRUE, casecontrol = FALSE)
-
-res_mreg_linear_yreg_linear_int_false <-
-  regmedint(data = vv2015,
-            yvar = "y", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
-            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
-            mreg = "linear", yreg = "linear",
-            interaction = FALSE, casecontrol = FALSE)
-
-res_mreg_linear_yreg_logistic_int_false <-
-  regmedint(data = vv2015,
-            yvar = "event", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
-            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
-            mreg = "linear", yreg = "logistic",
-            interaction = FALSE, casecontrol = FALSE)
-
-res_mreg_logistic_yreg_linear_int_false <-
-  regmedint(data = vv2015,
-            yvar = "y", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
-            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
-            mreg = "logistic", yreg = "linear",
-            interaction = FALSE, casecontrol = FALSE)
-
-res_mreg_logistic_yreg_logistic_int_false <-
-  regmedint(data = vv2015,
-            yvar = "event", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
-            a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
-            mreg = "logistic", yreg = "logistic",
-            interaction = FALSE, casecontrol = FALSE)
-
-c_cond_min <- min(vv2015$c)
-c_cond_max <- max(vv2015$c)
-c_cond_grid <- seq(from = -10, to = +10, by = 0.1)
-
 library(tidyverse)
 
-res <- tibble(mreg = rep(c("linear","linear","logistic","logistic"), 2),
-              yreg = rep(c("linear","logistic","linear","logistic"), 2),
-              interaction = rep(c(TRUE, FALSE), each = 4),
-              fit = list(res_mreg_linear_yreg_linear,
-                         res_mreg_linear_yreg_logistic,
-                         res_mreg_logistic_yreg_linear,
-                         res_mreg_logistic_yreg_logistic,
-                         res_mreg_linear_yreg_linear_int_false,
-                         res_mreg_linear_yreg_logistic_int_false,
-                         res_mreg_logistic_yreg_linear_int_false,
-                         res_mreg_logistic_yreg_logistic_int_false)) %>%
+## A grid of c_cond values to evaluate the effects at.
+c_cond_grid <- seq(from = -10, to = +10, by = 0.1)
+
+res <-
+  tibble(mreg = rep(c("linear","linear","logistic","logistic"), 2),
+         yreg = rep(c("linear","logistic","linear","logistic"), 2),
+         interaction = rep(c(TRUE, FALSE), each = 4)) %>%
+  mutate(yvar = if_else(yreg == "linear", "y", "event"),
+         fit = pmap(list(mreg, yreg, interaction, yvar),
+                    function(mreg, yreg, interaction, yvar) {
+                      regmedint(data = vv2015,
+                                yvar = yvar, avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
+                                a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
+                                mreg = mreg, yreg = yreg,
+                                interaction = interaction, casecontrol = FALSE)
+                    })) %>%
   mutate(data = map(fit, function(fit) {
     ## Evaluate at each c_cond value using the coef method.
     map(c_cond_grid, function(c_cond) {
@@ -1054,7 +999,7 @@ res <- tibble(mreg = rep(c("linear","linear","logistic","logistic"), 2),
       ## Collect all rows in one tibble
       bind_rows()
   })) %>%
-  select(-fit) %>%
+  select(-yvar, -fit) %>%
   unnest(data) %>%
   ## Long format
   pivot_longer(cols = c(-mreg,-yreg,-interaction, -c_cond))
