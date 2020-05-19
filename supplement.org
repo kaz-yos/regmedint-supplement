@@ -939,7 +939,26 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
 
 
 * Software
-The detailed explanation of the software implementation and its use are given on its website (https://kaz-yos.github.io/regmedint/index.html).
+The detailed explanation of the software implementation =regmedint= and its use are given on its website (https://kaz-yos.github.io/regmedint/index.html). Here we demonstrate the minimum aspects relevant for the paper.
+
+** Example function call
+The example simulated data that appeared in cite:valeriSASMacroCausal2015 is included in the =regmedint= package as =vv2015= dataset.
+
+\scriptsize
+#+BEGIN_SRC R :session *R-org* :results output :exports both
+library(regmedint)
+## Load the example dataset included in the package
+data(vv2015)
+## Model fitting
+res_obj <- regmedint(data = vv2015,
+                     yvar = "y", avar = "x", mvar = "m", cvar = "c", eventvar = "event",
+                     a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
+                     mreg = "logistic", yreg = "survAFT_weibull",
+                     interaction = TRUE, casecontrol = FALSE)
+## Result extraction
+summary(res_obj)
+#+END_SRC
+\normalsize
 
 * Bibliography
 \renewcommand{\section}[2]{}
