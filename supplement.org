@@ -969,7 +969,7 @@ As seen above, the mediator regression model, the outcome regression model, and 
 # https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org04ba7ed
 \scriptsize
 #+HEADER: :width 3.5 :height 3
-#+BEGIN_SRC R :session *R-org* :results output graphics file :file ./source/figure.pdf :exports both
+#+BEGIN_SRC R :session *R-org* :results output graphics file :file ./figure.pdf :exports both
 res_mreg_linear_yreg_linear <-
   regmedint(data = vv2015,
             yvar = "y", avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
@@ -1077,6 +1077,20 @@ res %>%
   facet_grid(mreg ~ yreg) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
+        legend.key = element_blank(),
+        plot.title = element_text(hjust = 0.5),
+        strip.background = element_blank())
+
+## Plot
+res %>%
+  filter(name %in% c("te","pnde","tnie")) %>%
+  mutate(name = factor(name, levels = c("te","pnde","tnie"))) %>%
+  ggplot(mapping = aes(x = c_cond, y = value, group = name, linetype = name)) +
+  geom_line() +
+  facet_grid(interaction ~ mreg + yreg, scales = "free_y") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
+        legend.position = "bottom",
         legend.key = element_blank(),
         plot.title = element_text(hjust = 0.5),
         strip.background = element_blank())
