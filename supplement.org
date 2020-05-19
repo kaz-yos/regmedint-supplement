@@ -968,7 +968,7 @@ As seen above, the mediator regression model, the outcome regression model, and 
 # https://orgmode.org/manual/Exporting-code-blocks.html
 # https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org04ba7ed
 \scriptsize
-#+HEADER: :width 3.5 :height 3
+#+HEADER: :width 7 :height 7
 #+BEGIN_SRC R :session *R-org* :results output graphics file :file ./figure.pdf :exports both
 res_mreg_linear_yreg_linear <-
   regmedint(data = vv2015,
@@ -1028,7 +1028,7 @@ res_mreg_logistic_yreg_logistic_int_false <-
 
 c_cond_min <- min(vv2015$c)
 c_cond_max <- max(vv2015$c)
-c_cond_grid <- seq(from = c_cond_min, to = c_cond_max, by = 0.1)
+c_cond_grid <- seq(from = -10, to = +10, by = 0.1)
 
 library(tidyverse)
 
