@@ -1023,6 +1023,19 @@ res %>%
 #+END_SRC
 \normalsize
 
+The following relationship with =c_cond= can be observed.
+
+| Interaction          | Effect | linear/linear | linear/logistic | logistic/linear | logistic/logistic |
+|----------------------+--------+---------------+-----------------+-----------------+-------------------|
+| FALSE                | PNDE   | Constant      | Constant        | Constant        | Constant          |
+| $(\theta_{3} = 0)$   | TNIE   | Constant      | Constant        | Varies          | Varies            |
+|                      | TE     | Constant      | Constant        | Varies          | Varies            |
+|                      |        |               |                 |                 |                   |
+| TRUE                 | PNDE   | Varies        | Varies          | Varies          | Varies            |
+| $(\theta_{3} \ne 0)$ | TNIE   | Constant      | Constant        | Varies          | Varies            |
+|                      | TE     | Varies        | Varies          | Varies          | Varies            |
+
+
 * Latest version of this document
 The latest version of this document as well as the corresponding =org-mode= and \LaTeX \nbsp{} documents can be found at:  https://github.com/kaz-yos/regmedint-supplement.
 
