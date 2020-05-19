@@ -1078,6 +1078,10 @@ res %>%
 #+END_SRC
 \normalsize
 
+* Latest version of this document
+The latest version of this document as well as the corresponding =org-mode= and \LaTeX \nbsp{} documents can be found at:  https://github.com/kaz-yos/regmedint-supplement.
+
+
 * Bibliography
 \renewcommand{\section}[2]{}
 # Following lines must be left-aligned without preceding spaces.
