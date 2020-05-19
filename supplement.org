@@ -964,6 +964,8 @@ As seen above, the mediator regression model, the outcome regression model, and 
 
 ** Demonstration of the role of =c_cond=
 
+Here we demonstrate the dependence of natural effect estimates on the =c_cond= value at which they are evaluated. We reuse the aforementioned =vv2015= dataset. For this demonstration purpose only, =m= is regarded as a continuous or binary mediator (it is really binary). =y= is regarded as a continuous outcome. =event= is regarded as a binary outcome. Therefore, the results do not have substantive interpretation beyond the demonstration of the =c_cond= dependence of some effect estimates.
+
 # https://orgmode.org/manual/results.html
 # https://orgmode.org/manual/Exporting-code-blocks.html
 # https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org04ba7ed
