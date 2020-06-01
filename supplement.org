@@ -204,7 +204,17 @@ Here we describe the formulas implemented in =regmendint=, using the notational 
 ** Parametrizing the mediation effect formulas
 A seen above, there are two models involved in identification of natural effects: the outcome model ($E[Y|A=a,M=m,\bC=\bc]$) and the mediator model ($p(M|A=a,\bC=\bc)$). The identification formulas do not specify any particular model structure (non-parametric). In the method described in cite:valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015, a simple parametric model is proposed for each.\\
 
-Under this parametric modeling assumption, each effect of interest can be written as a function of the parameters (coefficients) of the the mediator model ($\beta$) and the outcome model ($\theta$). Because of the product configuration (outcome model \times mediator model), each natural effect is a non-linear function of the parameters (model coefficients). The maximum likelihood estimates (MLE) of these effects are the ones with these parameters replaced with their respective MLEs from the two models.
+The mediator model with a link function $g_{M}$ is parametrized as follows.
+\begin{align*}
+  g_{M}(E[M|A=a,\bC=\bc]) &= \beta_{0} + \beta_{1}a + \bbeta_{2}^{T}\bc
+\end{align*}
+
+The outcome model with a link function $g_{Y}$ is parametrized as follows.
+\begin{align*}
+  g_{Y}(E[Y|A=a,M=m,\bC=\bc]) &= \theta_{0} + \theta_{1}a + \theta_{2}m + \theta_{3}am + \btheta_{4}^{T}\bc
+\end{align*}
+
+Under these parametric modeling assumptions, each effect of interest can be written as a function of the parameters (coefficients) of the the mediator model ($\beta$ and sometimes $\sigma^{2}$) and the outcome model ($\theta$). Because of the product configuration (outcome model \times mediator model), each natural effect is a non-linear function of the parameters (model coefficients). The maximum likelihood estimates (MLE) of these effects are the ones with these parameters replaced with their respective MLEs from the two models.
 
 ** Obtaining standard errors via multivariate delta method
 
