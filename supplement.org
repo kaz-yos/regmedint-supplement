@@ -84,7 +84,7 @@
 The literature on the causal mediation is vast cite:vanderweeleExplanationCausalInference2015 and is evolving, thus, only the pieces relevant for the current software are reviewed here.
 
 ** Decomposition of total effect
-Let $Y$ be the outcome variable of interest, $A$ be the treatment variable of interest, $M$ be the mediator variable of interest, and $\bC$ be the potentially vector-valued pre-treatment baseline covariates necessary for exchangeability. The treatment contrast of interest is $a_{1}$ vs $a_{0}$, the second being the reference level. The counterfactual $Y_{a,m}$ is the value of $Y$ for an individual when, possibly contrary to the fact, the treatment level $a$ and mediator level $m$ are assigned.\\
+Let $Y$ be the outcome variable of interest, $A$ be the treatment variable of interest, $M$ be the mediator variable of interest, and $\bC$ be the potentially vector-valued pre-treatment baseline covariates necessary for exchangeability (See the section on identification). The treatment contrast of interest is $a_{1}$ vs $a_{0}$, the second being the reference level. The counterfactual $Y_{a,m}$ is the value of $Y$ for an individual when, possibly contrary to the fact, the treatment level $a$ and mediator level $m$ are assigned.\\
 
 Given these notations, the effects are defined as follows at the covariate level $\bC = \bc$ and the mediator level $M = m$ (only for CDE).
 
@@ -102,14 +102,14 @@ Given these notations, the effects are defined as follows at the covariate level
 
 The total effect (TE) can be decomposed into the direct (non-mediated) effect and indirect (mediated) effect in two different ways cite:robinsIdentifiabilityExchangeabilityDirect1992,vanderweeleThreewayDecompositionTotal2013.\\
 
- The decomposition of TE into the pure (natural) direct effect (PNDE) and the total (natural) indirect effect (TNIE) is the usual decomposition cite:pearlDirectIndirectEffects2001. Note that the treatment value indexing the mediator $M$ is fixed at $a_{0}$ in the PNDE, whereas the treatment value indexing the outcome $Y$ is fixed at $a_{1}$ in the TNIE. These are emphasized with $\uwave{~~~~}$ throughout the document.
+The decomposition of TE into the pure natural direct effect (PNDE) and the total natural indirect effect (TNIE) is the usual decomposition cite:pearlDirectIndirectEffects2001. Note that the treatment value indexing the mediator $M$ is fixed at $a_{0}$ in the PNDE, whereas the treatment value indexing the outcome $Y$ is fixed at $a_{1}$ in the TNIE. These are emphasized with $\uwave{~~~~}$ throughout the document.
 
 \begin{align*}
   PNDE &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
   TNIE &= E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc]\\
 \end{align*}
 
- The other decomposition of TE is into the pure (natural) indirect effect (PNIE) and the total (natural) direct effect (TNDE) cite:robinsIdentifiabilityExchangeabilityDirect1992. Note that the treatment value indexing the mediator $M$ is fixed at $a_{1}$ in the TNDE, whereas the treatment value indexing the outcome $Y$ is fixed at $a_{0}$ in the PNIE. That is, these flipped in this decomposition. These are emphasized with $\uwave{~~~~}$ throughout the document.
+ The other decomposition of TE is into the pure natural indirect effect (PNIE) and the total natural direct effect (TNDE) cite:robinsIdentifiabilityExchangeabilityDirect1992. Note that the treatment value indexing the mediator $M$ is fixed at $a_{1}$ in the TNDE, whereas the treatment value indexing the outcome $Y$ is fixed at $a_{0}$ in the PNIE. That is, these flipped in this decomposition. These are emphasized with $\uwave{~~~~}$ throughout the document.
 
 \begin{align*}
   TNDE &= E[Y_{a_{1},\uwave{M_{a_{1}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{1}}}} | \bC = \bc]\\
@@ -118,7 +118,7 @@ The total effect (TE) can be decomposed into the direct (non-mediated) effect an
 
 More intuitively, these decomposition differs in the cross-world counterfactual state that is used as the partition. The usual PNDE+TNIE decomposition uses $Y_{a_{1},M_{a_{0}}}$ (treatment indexing on the outcome goes up to $a_{1}$ from $a_{0}$ first), whereas the PNIE+TNDE decomposition uses $Y_{a_{0},M_{a_{1}}}$ (treatment indexing the mediator goes up to $a_{1}$ from $a_{0}$ first).\\
 
- In either case, the effect that has the reference counterfactual outcome $Y_{a_{0}} = Y_{a_{0},M_{a_{0}}}$ is the "pure" natural direct/indirect effect and the effect that has $Y_{a_{1}} = Y_{a_{1},M_{a_{1}}}$ is the total natural direct/indirect effect. See cite:vanderweeleThreewayDecompositionTotal2013 for the meaning of these two decompositions in terms of causal interaction.\\
+ In either case, the effect that has the reference counterfactual outcome $Y_{a_{0}} = Y_{a_{0},M_{a_{0}}}$ is the /pure/ natural direct/indirect effect and the effect that has $Y_{a_{1}} = Y_{a_{1},M_{a_{1}}}$ is the /total/ natural direct/indirect effect. See cite:vanderweeleThreewayDecompositionTotal2013 for the meaning of these two decompositions in terms of causal interaction.\\
 
 More in general, we can consider the effects on the link function scale as follows cite:starkopfComparisonFiveSoftware2017.
 
@@ -161,7 +161,7 @@ E[Y_{a,M_{a^{*}}} | \bC = \bc] &= \sum_{m} E[Y | A = a, M = m, \bC = \bc] p(M = 
 
 We can observe that the first treatment value $a$ in the counterfactual $Y_{\uwave{a},M_{a^{*}}}$ indexes the outcome model $E[Y | A = \uwave{a}, M = m, \bC = \bc]$, whereas the second treatment value $a^{*}$ in the counterfactual $Y_{a,\uwave{M_{a^{*}}}}$ indexes the mediator model $p(M = m | A = \uwave{a^{*}}, \bC = \bc)$.\\
 
-As a result, the identification formulas for the two natural /direct/ effects are the following. Note the change in the treatment value indexing the /mediator model/ from $a_{0}$ in the PNDE (usual NDE) to $a_{1}$ in the TNDE (annotated with \uwave{~~~~}). Within each effect, only the treatment values indexing the /outcome model/ vary (ones not annotated) because each NDE represent the direct effect of the treatment when the mediator is fixed at the natural value it would take under one treatment value (annotated with \uwave{~~~~}).
+The identification formulas for the two natural /direct/ effects are the following. Note the change in the treatment value indexing the /mediator model/ from $a_{0}$ in the PNDE (usual NDE) to $a_{1}$ in the TNDE (annotated with \uwave{~~~~}). Within each effect, only the treatment values indexing the /outcome model/ vary (ones not annotated) because each NDE represent the direct effect of the treatment when the mediator is fixed at the natural value it would take under one treatment value (annotated with \uwave{~~~~}).
 
 \begin{align*}
   PNDE
@@ -179,7 +179,7 @@ As a result, the identification formulas for the two natural /direct/ effects ar
   &~~~ \times p(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
 \end{align*}
 
-Also, the identification formulas for the two natural /indirect/ effects are the following. Note the change in the treatment value indexing the /outcome model/ from $a_{1}$ in the TNIE (usual NIE) to $a_{0}$ in the PNIE (annotated with \uwave{~~~~}). Within each effect, only the treatment values indexing the /mediator model/ vary (ones not annotated) because each NIE represent the indirect effect of the treatment when its effect on the mediator is "turned on", while the treatment value representing the direct path is fixed at the natural value it would take under one treatment value (annotated with \uwave{~~~~}).
+The identification formulas for the two natural /indirect/ effects are the following. Note the change in the treatment value indexing the /outcome model/ from $a_{1}$ in the TNIE (usual NIE) to $a_{0}$ in the PNIE (annotated with \uwave{~~~~}). Within each effect, only the treatment values indexing the /mediator model/ vary (ones not annotated) because each NIE represent the indirect effect of the treatment when its effect on the mediator is "turned on", while the treatment value representing the direct path is fixed at the natural value it would take under one treatment value (annotated with \uwave{~~~~}).
 
 \begin{align*}
   TNIE
