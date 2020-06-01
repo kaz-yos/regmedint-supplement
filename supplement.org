@@ -248,7 +248,7 @@ By the large sample approximation using the multivariate delta method, the varia
   \underbrace{\left[ \nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right) \right]}_{\text{column vector}}
 \end{align*}
 
-This expression is abbreviated as $\Gamma\Sigma\Gamma'$ in cite:vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015. In these references, the treatment contrast ($a_{1}-a_{0}$) is factored out from $\nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right)$ when possible.
+This expression is abbreviated as $\Gamma\Sigma\Gamma'$ in cite:vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015. In these references, the treatment contrast ($a_{1}-a_{0}$) is factored out from $\nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right)$ when possible. In the following, we define $\Gamma$ as a column vector to be consistent with the implementation of =regmedint=, thus, the corresponding expression appears as $\Gamma^{T}\Sigma\Gamma$.
 
 ** Linear mediator model, linear outcome model
 *** Effect formulas
