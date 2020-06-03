@@ -970,7 +970,9 @@ res_obj <- regmedint(data = vv2015,
                      mreg = "logistic", yreg = "survAFT_weibull",
                      interaction = TRUE, casecontrol = FALSE)
 ## Result extraction
-summary(res_obj)
+summary(res_obj, exponentiate = TRUE)
+## Re-evaluate cde at m_cde = 0
+summary(res_obj, exponentiate = TRUE, m_cde = 0)
 #+END_SRC
 \normalsize
 
