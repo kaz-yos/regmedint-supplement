@@ -1022,6 +1022,40 @@ coef(summary(res_obj, exponentiate = TRUE, m_cde = 0.5))
 
 As seen above, the mediator regression model, the outcome regression model, and the mediation analysis results are presented. The results also include the values of =a0=, =a1=, =mvar= (relevant for =cde=), and =c_cond= (relevant for natural effects) at which the effect estimates are evaluated.
 
+\scriptsize
+#+BEGIN_SRC R :session *R-org* :results output :exports none
+cols <- c("est","lower","upper","exp(est)","exp(lower)","exp(upper)")
+rows1 <- c("te","pnde","tnie","pm")
+## Construct a table
+df <- rbind(coef(summary(res_obj, exponentiate = TRUE))[rows1,cols],
+            coef(summary(res_obj, exponentiate = TRUE, m_cde = 0.0))["cde",cols, drop = FALSE],
+            coef(summary(res_obj, exponentiate = TRUE, m_cde = 0.5))["cde",cols, drop = FALSE]) %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column() %>%
+  mutate(rowname = case_when(rowname == "te" ~ "Total Effect (TE)",
+                             rowname == "pnde" ~ " Pure Natural Direct Effect (PNDE)",
+                             rowname == "tnie" ~ " Total Natural Indirect Effect (TNIE)",
+                             rowname == "pm" ~ " Proportion Mediated (PM)",
+                             rowname == "cde" ~ " CDE at m = 0",
+                             rowname == "cde.1" ~ " CDE at m = 0.5")) %>%
+  mutate_at(.vars = vars(-starts_with("rowname")), function(vec) {
+    if_else(!is.na(vec), sprintf("%.2f", vec), "")
+  }) %>%
+  mutate(est_ci = sprintf("%s [%s, %s]", est, lower, upper),
+         exp_est_ci = sprintf("%s [%s, %s]", `exp(est)`, `exp(lower)`, `exp(upper)`)) %>%
+  mutate(exp_est_ci = if_else(exp_est_ci == " [, ]", "-", exp_est_ci)) %>%
+  add_row(rowname = "Controlled Direct Effect (CDE)",
+          est_ci = "", exp_est_ci = "",
+          .before = 5) %>%
+  select(rowname, est_ci, exp_est_ci) %>%
+  rename(Effect = rowname,
+         `Est. [95% CI]` = est_ci,
+         `Exp(Est.) [95% CI]` = exp_est_ci)
+df
+openxlsx::write.xlsx(x = df,
+                     file = "./supplement.xlsx")
+#+END_SRC
+
 ** Demonstration of the role of =c_cond=
 
 Here we demonstrate the dependence of natural effect estimates on the =c_cond= value at which they are evaluated. We reuse the aforementioned =vv2015= dataset. For this demonstration purpose only, =m= is regarded as a continuous or binary mediator (it is really binary). =y= is regarded as a continuous outcome. =event= is regarded as a binary outcome. Therefore, the results do not have substantive interpretation beyond the demonstration of the =c_cond= dependence of some effect estimates.
