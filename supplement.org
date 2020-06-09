@@ -1065,6 +1065,49 @@ df %>%
 
 ** Demonstration of the role of =c_cond=
 
+\scriptsize
+#+BEGIN_SRC R :session *R-org* :results output :exports both
+suppressMessages(library(tidyverse))
+set.seed(248361264)
+## Sample size
+n <- 1000
+## Demo data
+demo2 <-
+  ## Covariates
+  tibble(id = seq_len(n),
+         c1 = rnorm(n = n, mean = 0, sd = 1)) %>%
+  ## Binary treatment
+  mutate(logit_p_a = (-0.5) + (0.1 * c1),
+         p_a = exp(logit_p_a) / (1 + exp(logit_p_a)),
+         a = rbinom(n = n, size = 1, prob = p_a)) %>%
+  ## Continuous and binary mediator
+  mutate(lp_m_cont = 0 + (0.5 * a) + (-0.1 * c1),
+         m_cont = rnorm(n = n, mean = lp_m_cont, sd = 0.5),
+         lp_m_bin = -0.9 + (0.5 * a) + (-0.1 * c1),
+         p_m_bin = exp(lp_m_bin) / (1 + exp(lp_m_bin)),
+         m_bin = rbinom(n = n, size = 1, prob = p_m_bin)) %>%
+  ## Outcomes
+  mutate(lp_y_m_cont = 0 + (0.3 * a) + (0.15 * m_cont) + (0.05 * a * m_cont) + (-0.2 * c1),
+         lp_y_m_bin = 0 + (0.3 * a) + (0.15 * m_bin) + (0.05 * a * m_bin) + (-0.2 * c1),
+         ## Normal continuous outcomes
+         y_cont_m_cont = rnorm(n = n, mean = lp_y_m_cont, sd = 1),
+         y_cont_m_bin = rnorm(n = n, mean = lp_y_m_bin, sd = 1),
+         ## Poisson count outcomes
+         y_pois_m_cont = rpois(n = n, lambda = exp(lp_y_m_cont)),
+         y_pois_m_bin = rpois(n = n, lambda = exp(lp_y_m_bin)),
+         ) %>%
+  ## Clean
+  select(id, c1, a, m_cont, m_bin,
+         y_cont_m_cont, y_cont_m_bin,
+         y_pois_m_cont, y_pois_m_bin)
+## Summarize generated data
+CreateTableOne(vars = setdiff(names(demo2), "id"),
+               strata = c("a"),
+               data = demo2,
+               test = FALSE)
+#+END_SRC
+\normalsize
+
 Here we demonstrate the dependence of natural effect estimates on the =c_cond= value at which they are evaluated. We reuse the aforementioned =vv2015= dataset. For this demonstration purpose only, =m= is regarded as a continuous or binary mediator (it is really binary). =y= is regarded as a continuous outcome. =event= is regarded as a binary outcome. Therefore, the results do not have substantive interpretation beyond the demonstration of the =c_cond= dependence of some effect estimates.
 
 # https://orgmode.org/manual/results.html
