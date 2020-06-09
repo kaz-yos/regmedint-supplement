@@ -960,6 +960,7 @@ Here we provide the code used to generated the demonstration data.
 \scriptsize
 #+BEGIN_SRC R :session *R-org* :results output :exports both
 suppressMessages(library(tidyverse))
+library(survival)
 library(tableone)
 set.seed(248361264)
 ## Sample size
@@ -978,8 +979,9 @@ demo <-
   mutate(lp_m = 0 + (0.5 * a) + (-0.1 * c1) + (0.3 * c2),
          m = rnorm(n = n, mean = lp_m, sd = 0.5)) %>%
   ## Exponential event time
-  mutate(log_rate_t = 0 + (-0.1 * a) + (-0.3 * m) + (-0.05 * a * m) + (0.2 * c1) + (0.4 * c2),
-         t = rexp(n = n, rate = exp(log_rate_t))) %>%
+  mutate(lp_t = 0 + (0.3 * a) + (0.15 * m) + (0.05 * a * m) + (-0.2 * c1) + (-0.4 * c2),
+         ## The "mean" argument is on the linear predictor scale.
+         t = rsurvreg(n = n, mean = lp_t, scale = 1, distribution = "exponential")) %>%
   ## Exponential censoring time
   mutate(log_rate_cens = -0.5,
          cens = rexp(n = n, rate = exp(log_rate_cens)),
