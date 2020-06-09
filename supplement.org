@@ -1020,7 +1020,7 @@ coef(summary(res_obj, exponentiate = TRUE, m_cde = 0.5))
 #+END_SRC
 \normalsize
 
-As seen above, the mediator regression model, the outcome regression model, and the mediation analysis results are presented. The results also include the values of =a0=, =a1=, =mvar= (relevant for =cde=), and =c_cond= (relevant for natural effects) at which the effect estimates are evaluated.
+As seen above, the mediator regression model, the outcome regression model, and the mediation analysis results are presented. The results also include the values of =a0=, =a1=, =m_cde= (relevant for =cde=), and =c_cond= (relevant for natural effects) at which the effect estimates are evaluated.
 
 \scriptsize
 #+BEGIN_SRC R :session *R-org* :results output :exports none
