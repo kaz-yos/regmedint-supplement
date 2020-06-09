@@ -1081,9 +1081,9 @@ demo2 <-
          p_a = exp(logit_p_a) / (1 + exp(logit_p_a)),
          a = rbinom(n = n, size = 1, prob = p_a)) %>%
   ## Continuous and binary mediator
-  mutate(lp_m_cont = 0 + (0.5 * a) + (-0.1 * c1),
+  mutate(lp_m_cont = 0 + (0.5 * a) + (0.5 * c1),
          m_cont = rnorm(n = n, mean = lp_m_cont, sd = 0.5),
-         lp_m_bin = -0.9 + (0.5 * a) + (-0.1 * c1),
+         lp_m_bin = -0.9 + (0.5 * a) + (0.5 * c1),
          p_m_bin = exp(lp_m_bin) / (1 + exp(lp_m_bin)),
          m_bin = rbinom(n = n, size = 1, prob = p_m_bin)) %>%
   ## Outcomes
@@ -1116,7 +1116,7 @@ Here we demonstrate the dependence of natural effect estimates on the =c_cond= v
 library(tidyverse)
 
 ## A grid of c_cond values to evaluate the effects at.
-c_cond_grid <- seq(from = -100, to = +100, by = 0.1)
+c_cond_grid <- seq(from = -10, to = +10, by = 0.1)
 
 res <-
   tibble(mreg = rep(c("linear","linear","logistic","logistic"), 2),
