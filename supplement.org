@@ -1152,7 +1152,10 @@ res <-
 ## Plot
 res %>%
   filter(name %in% c("te","pnde","tnie")) %>%
-  mutate(name = factor(name, levels = c("te","pnde","tnie"))) %>%
+  mutate(name = factor(name,
+                       levels = c("te","pnde","tnie"),
+                       labels = c("TE","PNDE","TNIE")),
+         yreg = if_else(yreg == "linear", "linear", "non-linear")) %>%
   ggplot(mapping = aes(x = c_cond, y = value, group = name, linetype = name)) +
   geom_line() +
   scale_y_continuous(name = "Effect estimate") +
