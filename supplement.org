@@ -1013,8 +1013,8 @@ res_obj <- regmedint(data = demo,
                      interaction = TRUE, casecontrol = FALSE)
 ## Result extraction
 summary(res_obj, exponentiate = TRUE)
-## Re-evaluate cde at m_cde = 0
-summary(res_obj, exponentiate = TRUE, m_cde = 0)
+## Re-evaluate cde at m_cde = 0.5
+coef(summary(res_obj, exponentiate = TRUE, m_cde = 0.5))
 #+END_SRC
 \normalsize
 
