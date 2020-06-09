@@ -1110,27 +1110,28 @@ CreateTableOne(vars = setdiff(names(demo2), "id"),
 
 Here we demonstrate the dependence of natural effect estimates on the =c_cond= value at which they are evaluated. We reuse the aforementioned =vv2015= dataset. For this demonstration purpose only, =m= is regarded as a continuous or binary mediator (it is really binary). =y= is regarded as a continuous outcome. =event= is regarded as a binary outcome. Therefore, the results do not have substantive interpretation beyond the demonstration of the =c_cond= dependence of some effect estimates.
 
-# https://orgmode.org/manual/results.html
-# https://orgmode.org/manual/Exporting-code-blocks.html
-# https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org04ba7ed
 \scriptsize
 #+HEADER: :width 7 :height 7
 #+BEGIN_SRC R :session *R-org* :results output graphics file :file ./figure.pdf :exports both
 library(tidyverse)
 
 ## A grid of c_cond values to evaluate the effects at.
-c_cond_grid <- seq(from = -10, to = +10, by = 0.1)
+c_cond_grid <- seq(from = -100, to = +100, by = 0.1)
 
 res <-
   tibble(mreg = rep(c("linear","linear","logistic","logistic"), 2),
-         yreg = rep(c("linear","logistic","linear","logistic"), 2),
+         yreg = rep(c("linear","poisson","linear","poisson"), 2),
          interaction = rep(c(TRUE, FALSE), each = 4)) %>%
-  mutate(yvar = if_else(yreg == "linear", "y", "event"),
-         fit = pmap(list(mreg, yreg, interaction, yvar),
-                    function(mreg, yreg, interaction, yvar) {
-                      regmedint(data = vv2015,
-                                yvar = yvar, avar = "x", mvar = "m", cvar = "c", eventvar = NULL,
-                                a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
+  mutate(mvar = if_else(mreg == "linear", "m_cont", "m_bin"),
+         yvar = case_when(mreg == "linear"   & yreg == "linear"  ~ "y_cont_m_cont",
+                          mreg == "logistic" & yreg == "linear"  ~ "y_cont_m_bin",
+                          mreg == "linear"   & yreg == "poisson" ~ "y_pois_m_cont",
+                          mreg == "logistic" & yreg == "poisson" ~ "y_pois_m_bin"),
+         fit = pmap(list(mreg, yreg, interaction, yvar, mvar),
+                    function(mreg, yreg, interaction, yvar, mvar) {
+                      regmedint(data = demo2,
+                                yvar = yvar, avar = "a", mvar = mvar, cvar = "c1", eventvar = NULL,
+                                a0 = 0, a1 = 1, m_cde = 0, c_cond = 0,
                                 mreg = mreg, yreg = yreg,
                                 interaction = interaction, casecontrol = FALSE)
                     })) %>%
@@ -1143,10 +1144,10 @@ res <-
       ## Collect all rows in one tibble
       bind_rows()
   })) %>%
-  select(-yvar, -fit) %>%
+  select(-yvar, -fit, -mvar) %>%
   unnest(data) %>%
   ## Long format
-  pivot_longer(cols = c(-mreg,-yreg,-interaction, -c_cond))
+  pivot_longer(cols = c(-mreg,-yreg,-interaction,-c_cond))
 
 ## Plot
 res %>%
