@@ -959,7 +959,8 @@ Here we provide the code used to generated the demonstration data.
 
 \scriptsize
 #+BEGIN_SRC R :session *R-org* :results output :exports both
-library(tidyverse)
+suppressMessages(library(tidyverse))
+library(tableone)
 set.seed(248361264)
 ## Sample size
 n <- 1000
@@ -974,19 +975,25 @@ demo <-
          p_a = exp(logit_p_a) / (1 + exp(logit_p_a)),
          a = rbinom(n = n, size = 1, prob = p_a)) %>%
   ## Continuous mediator
-  mutate(lp_m = 0 + (0.1 * a) + (-0.1 * c1) + (0.3 * c2),
+  mutate(lp_m = 0 + (0.5 * a) + (-0.1 * c1) + (0.3 * c2),
          m = rnorm(n = n, mean = lp_m, sd = 0.5)) %>%
   ## Exponential event time
-  mutate(log_rate_t = 0 + (-0.1 * a) + (-0.1 * m) + (0.2 * c1) + (0.4 * c2),
+  mutate(log_rate_t = 0 + (-0.1 * a) + (-0.3 * m) + (-0.05 * a * m) + (0.2 * c1) + (0.4 * c2),
          t = rexp(n = n, rate = exp(log_rate_t))) %>%
   ## Exponential censoring time
-  mutate(log_rate_cens = 0,
-         cens = rexp(n = n, rate = exp(log_rate_cens))) %>%
+  mutate(log_rate_cens = -0.5,
+         cens = rexp(n = n, rate = exp(log_rate_cens)),
+         admin_cens = 10) %>%
   ## Observed time and event
   mutate(time = pmin(t, cens),
-         event = as.numeric(t < cens)) %>%
+         event = as.numeric((t < cens) & (t < admin_cens))) %>%
   ## Clean
   select(id, c1, c2, a, m, time, event)
+## Summarize generated data
+CreateTableOne(vars = c("c1","c2","m","time","event"),
+               strata = c("a"),
+               data = demo,
+               test = FALSE)
 #+END_SRC
 \normalsize
 
