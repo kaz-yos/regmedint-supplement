@@ -954,19 +954,55 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
 * Software
 The detailed explanation of the software implementation =regmedint= and its use are given on its website (https://kaz-yos.github.io/regmedint/index.html). Here we demonstrate the minimum aspects relevant for the paper.
 
+** Example data generation
+Here we provide the code used to generated the demonstration data.
+
+\scriptsize
+#+BEGIN_SRC R :session *R-org* :results output :exports both
+library(tidyverse)
+set.seed(248361264)
+## Sample size
+n <- 1000
+## Demo data
+demo <-
+  ## Covariates
+  tibble(id = seq_len(n),
+         c1 = rnorm(n = n, mean = 0, sd = 1),
+         c2 = rnorm(n = n, mean = 0, sd = 1)) %>%
+  ## Binary treatment
+  mutate(logit_p_a = (-0.5) + (0.1 * c1) + (0.2 * c2),
+         p_a = exp(logit_p_a) / (1 + exp(logit_p_a)),
+         a = rbinom(n = n, size = 1, prob = p_a)) %>%
+  ## Continuous mediator
+  mutate(lp_m = 0 + (0.1 * a) + (-0.1 * c1) + (0.3 * c2),
+         m = rnorm(n = n, mean = lp_m, sd = 0.5)) %>%
+  ## Exponential event time
+  mutate(log_rate_t = 0 + (-0.1 * a) + (-0.1 * m) + (0.2 * c1) + (0.4 * c2),
+         t = rexp(n = n, rate = exp(log_rate_t))) %>%
+  ## Exponential censoring time
+  mutate(log_rate_cens = 0,
+         cens = rexp(n = n, rate = exp(log_rate_cens))) %>%
+  ## Observed time and event
+  mutate(time = pmin(t, cens),
+         event = as.numeric(t < cens)) %>%
+  ## Clean
+  select(id, c1, c2, a, m, time, event)
+#+END_SRC
+\normalsize
+
 ** Example function call
 The example simulated data that appeared in cite:valeriSASMacroCausal2015 is included in the =regmedint= package as =vv2015= dataset.
 
 \scriptsize
 #+BEGIN_SRC R :session *R-org* :results output :exports both
 library(regmedint)
-## Load the example dataset included in the package
-data(vv2015)
+## Means of covariates
+c_means <- colMeans(demo[,c("c1","c2")])
 ## Model fitting
-res_obj <- regmedint(data = vv2015,
-                     yvar = "y", avar = "x", mvar = "m", cvar = "c", eventvar = "event",
-                     a0 = 0, a1 = 1, m_cde = 1, c_cond = 0.5,
-                     mreg = "logistic", yreg = "survAFT_weibull",
+res_obj <- regmedint(data = demo,
+                     yvar = "time", avar = "a", mvar = "m", cvar = c("c1","c2"), eventvar = "event",
+                     a0 = 0, a1 = 1, m_cde = 0, c_cond = c_means,
+                     mreg = "linear", yreg = "survAFT_weibull",
                      interaction = TRUE, casecontrol = FALSE)
 ## Result extraction
 summary(res_obj, exponentiate = TRUE)
