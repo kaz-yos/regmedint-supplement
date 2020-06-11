@@ -1063,7 +1063,9 @@ df %>%
 #+END_SRC
 \normalsize
 
-** Demonstration of the role of =c_cond=
+* Demonstration of covariate-dependence of natural effect estimates
+
+** Demonstration data generation
 
 \scriptsize
 #+BEGIN_SRC R :session *R-org* :results output :exports both
@@ -1107,6 +1109,8 @@ CreateTableOne(vars = setdiff(names(demo2), "id"),
                test = FALSE)
 #+END_SRC
 \normalsize
+
+** Demonstration of the role of =c_cond=
 
 Here we demonstrate the dependence of natural effect estimates on the =c_cond= value at which they are evaluated. We reuse the aforementioned =vv2015= dataset. For this demonstration purpose only, =m= is regarded as a continuous or binary mediator (it is really binary). =y= is regarded as a continuous outcome. =event= is regarded as a binary outcome. Therefore, the results do not have substantive interpretation beyond the demonstration of the =c_cond= dependence of some effect estimates.
 
