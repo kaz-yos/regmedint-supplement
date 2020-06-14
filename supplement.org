@@ -1107,6 +1107,7 @@ tab %>%
 All effect estimates are estimates of conditional effects, conditioning on the covariates in =c_var=. Since the outcome model is an accelerated failure time model (Weibull model), the estimates are on the log mean time ratio scale (positive values indicate beneficial effects). The exponentiated estimates are on the mean time ratio scale (values > 1.0 indicate beneficial effects). As the outcome model is a non-linear model, the proportion mediated is calculated using a transformation of the ratio scale cite:vanderweeleOddsRatiosMediation2010.
 
 * Demonstration of covariate-dependence of natural effect estimates
+We here use the =regmedint= package to describe a somewhat overlooked aspect of the regression-based estimation method, \textit{i.e.}, covariate-dependence of conditional effect estimates. Although neither the mediator model nor the outcome model has interaction terms between the treatment variable and baseline covariates, the resulting conditional effect estimates are dependent on the baseline covariate vector value at which they are evaluated (=c_cond= argument). This subtle point regarding the regression-based causal mediation method has previously been mentioned cite:steenFlexibleMediationAnalysis2017,starkopfComparisonFiveSoftware2017, but remains relatively unknown. Using simulated data, we visualy demonstrate the issue and then state potential approaches to reporting of the results.
 
 ** Generating demonstration data
 \scriptsize
@@ -1153,8 +1154,6 @@ CreateTableOne(vars = setdiff(names(demo2), "id"),
 \normalsize
 
 ** Demonstration of the role of =c_cond=
-
-Here we demonstrate the dependence of natural effect estimates on the =c_cond= value at which they are evaluated. We reuse the aforementioned =vv2015= dataset. For this demonstration purpose only, =m= is regarded as a continuous or binary mediator (it is really binary). =y= is regarded as a continuous outcome. =event= is regarded as a binary outcome. Therefore, the results do not have substantive interpretation beyond the demonstration of the =c_cond= dependence of some effect estimates.
 
 \scriptsize
 #+HEADER: :width 7 :height 7
