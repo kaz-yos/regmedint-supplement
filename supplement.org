@@ -1240,7 +1240,7 @@ The following relationship between the effect estimates and covariate value can 
 The reasons for these specific covariate dependences can be understood by examing the PNDE and TNIE formulas in Section 2. Covariate dependence exists when the formula contains the term $\bbeta_{2}^{T}\bc$, which is the covariate part of linear predictor for the mediator model. If either one of PNDE and TNIE contains this term, TE (PNDE + TNIE) is also dependent on the covariates.\\
 
 *** Linear mediator model
-In the cases with a linear mediator model with a linear (Section [[* Linear mediator model, linear outcome model]]) or non-linear (Section [[* Linear mediator model, non-linear outcome model]]) outcome model, the PNDE (and also TNDE) expressions contain the term $\bbeta_{2}^{T}\bc$. Notably these expressions are linear in the covariate vector $\bc$, thus, evaluating these expressions at the mean covariate vector $E[\bC]$ gives the marginal effect as follows (The linear mediator, linear outcome case is shown here).
+In the cases with a linear mediator model with a linear (Section [[* Linear mediator model, linear outcome model]]) or non-linear (Section [[* Linear mediator model, non-linear outcome model]]) outcome model, the PNDE (and also TNDE) expressions contain the term $\bbeta_{2}^{T}\bc$. Notably these expressions are linear in the covariate vector $\bc$, thus, evaluating these expressions at the mean covariate vector $E[\bC]$ gives the marginal effect as follows (Only the linear mediator, linear outcome case is shown here).
 
 \begin{align*}
   &\text{Conditional effect evaluated at } \bc\\
@@ -1262,6 +1262,13 @@ When there is no treatment-mediator interaction term in the outcome model $(\the
 In the cases with a logistic mediator model with a linear (Section [[* Logistic mediator model, linear outcome model]]) or non-linear (Section [[* Logistic mediator model, non-linear outcome model]]) outcome model, both the PNDE (and also TNDE) expression and the TNIE (and also PNIE) expression are non-linear functions of $\bbeta_{2}^{T}\bc$. Therefore, covariate dependent exists for both PNDE and TNIE. Because of the non-linearity, evaluation at $E[\bC]$ does not give a marginal interpretation. The interpretation the effect evaluated at $E[\bC]$ is the /conditional/ effect for an /average/ individual.\\
 
 When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ cancels out of the expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence for PNDE (and also TNDE). However, the TNIE (and also PNIE) expressions remain as non-linear functions of $\bbeta_{2}^{T}\bc$, thus, covariate dependence persists for TNIE.
+
+** Practical implications for reporting
+For the cases with a linear /mediator/ model, evaluation at the mean covariate vector gives the effect estimates marginal (population average) interpretations cite:vanderweeleExplanationCausalInference2015 (p37). Thus, reporting these marginal quantities for a well-defined population is useful. Additionally, if there is no treatment-mediator interaction term in the outcome model, uniform conditional effects are implied. \\
+
+For the cases with a logistic /mediator/ model, evaluation at the mean covariate level does not give such marginal interpretations. Thus, care must be taken. It is still possible to report the result evaluated at the mean covariate vector, however, the results should be interpreted as /conditional/ effects for an /average/ individual. If categorical covariates (e.g., region) are involved, an average individual can be ambiguous or non-existent (e.g., individual residing in the average region). Reporting conditional effects evaluated at several meaningful covariate patterns may be preferred.
+
+# Note cite:valeriMediationAnalysisAllowing2013 states "For continuous outcomes, if C were set at its average level we would obtain marginal effects on the entire population." (p139). But this does not seem to apply in general.
 
 * Bibliography
 \renewcommand{\section}[2]{}
