@@ -1101,9 +1101,11 @@ tab %>%
 #+END_SRC
 \normalsize
 
-* Demonstration of covariate-dependence of natural effect estimates
-** Demonstration data generation
+All effect estimates are estimates of conditional effects, conditioning on the covariates in =c_var=. Since the outcome model is an accelerated failure time model (Weibull model), the estimates are on the log mean time ratio scale (positive values indicate beneficial effects). The exponentiated estimates are on the mean time ratio scale (values > 1.0 indicate beneficial effects). As the outcome model is a non-linear model, the proportion mediated is calculated using a transformation of the ratio scale cite:vanderweeleOddsRatiosMediation2010.
 
+* Demonstration of covariate-dependence of natural effect estimates
+
+** Generating demonstration data
 \scriptsize
 #+BEGIN_SRC R :session *R-org* :results output :exports both
 suppressMessages(library(tidyverse))
