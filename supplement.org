@@ -951,12 +951,26 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
 \end{align*}
 
 
-* Software
-The detailed explanation of the software implementation =regmedint= and its use are given on its website (https://kaz-yos.github.io/regmedint/index.html). Here we demonstrate the minimum aspects relevant for the paper.
+* Software user guide
+Further details of the software =regmedint= are given on its website (https://kaz-yos.github.io/regmedint/index.html). In particular, the online vignettes for the package should be useful.
+
+1. [[https://kaz-yos.github.io/regmedint/articles/vig_01_introduction.html][*Introduction to user interface functions*]]
+   - URL: https://kaz-yos.github.io/regmedint/articles/vig_01_introduction.html
+   - Explains all user interface functions and their outputs.
+2. [[https://kaz-yos.github.io/regmedint/articles/vig_02_formulas.html][*Implementation of formulas*]]
+   - URL: https://kaz-yos.github.io/regmedint/articles/vig_02_formulas.html
+   - Demonstrates internal functions implementing formulas.
+3. [[https://kaz-yos.github.io/regmedint/articles/vig_03_bootstrap.html][*Using bootstrapping with regemedint*]]
+   - URL: https://kaz-yos.github.io/regmedint/articles/vig_03_bootstrap.html
+   - Implements bootstrap confidence intervals with the =boot= and =modelr= packages.
+4. [[https://kaz-yos.github.io/regmedint/articles/vig_04_mi.html][*Using multiple imputation with regmedint*]]
+   - URL: https://kaz-yos.github.io/regmedint/articles/vig_04_mi.html
+   - Shows how to use multiple imputation via the =mice= and =mitools= packages.
+
+In the following, we included the minimum code to reproduce the example causal mediation analysis in the paper.
 
 ** Example data generation
-Here we provide the code used to generated the demonstration data.
-
+The demonstration data used in the paper was generated as follows.
 \scriptsize
 #+BEGIN_SRC R :session *R-org* :results output :exports both
 suppressMessages(library(tidyverse))
@@ -992,6 +1006,7 @@ demo <-
   ## Clean
   select(id, c1, c2, a, m, time, event)
 ## Summarize generated data
+cat("### Summary of the generated data\n")
 CreateTableOne(vars = c("c1","c2","m","time","event"),
                strata = c("a"),
                data = demo,
@@ -1064,7 +1079,6 @@ df %>%
 \normalsize
 
 * Demonstration of covariate-dependence of natural effect estimates
-
 ** Demonstration data generation
 
 \scriptsize
