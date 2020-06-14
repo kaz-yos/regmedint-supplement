@@ -197,8 +197,8 @@ The identification formulas for the two natural /indirect/ effects are the follo
 \end{align*}
 
 
-* Understanding the approach
-Here we describe the formulas implemented in =regmendint=, using the notational convention in cite:vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015.
+* Implementation of the regression-based causal mediation analysis method
+Here we describe the formulas implemented in =regmendint=, using the notational convention in cite:vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015. In addition to what can be found in the appendix of cite:vanderweeleExplanationCausalInference2015, we provide the explicit expressions for the alternative TNDE-PNIE decomposition. The differences are highlighted with $\uwave{~~~~}$.
 
 ** Parametrizing the mediation effect formulas
 A seen above, there are two models involved in identification of natural effects: the outcome model ($E[Y|A=a,M=m,\bC=\bc]$) and the mediator model ($p(M|A=a,\bC=\bc)$). The identification formulas do not specify any particular model structure (non-parametric). In the method described in cite:valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015, a simple parametric model is proposed for each.\\
