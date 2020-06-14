@@ -90,7 +90,7 @@ This supplement document provides additional details for the causal mediation an
 3. Links to software guide for =regmedint= and code to reproduce the example.
 4. Visual demonstration of covariate-dependence of effect estimates.
 
-Applied users of the =regmedint= package should benefit most from the sotware instructions in Section 3 and the causal assumptions stated in Section 1. Section 2 is meant for methodologists and developers looking for the implementation details of the =regmedint= package. Section 4 visually demonstrate a somewhat overlooked aspect of the regression-based causal mediation analysis and should assist the appropriate use of the =regmedint= package.\\
+Applied users of the =regmedint= package should benefit most from the sotware instructions in Section 3 and the causal assumptions stated in Section 1. Section 2 is meant for methodologists and developers looking for the implementation details of the =regmedint= package. Section 4 visually demonstrate a somewhat overlooked aspect of the regression-based causal mediation analysis and should assist the users with the appropriate use of the =regmedint= package.\\
 
 The latest version of this supplement document as well as the corresponding =org-mode= and \LaTeX \nbsp{} documents can be found at: https://github.com/kaz-yos/regmedint-supplement.
 
