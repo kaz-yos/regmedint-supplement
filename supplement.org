@@ -107,7 +107,7 @@ The total effect (TE), the causal effect of chaning the treatment level from the
   TE &= E[Y_{a_{1}} | \bC = \bc] - E[Y_{a_{0}} | \bC = \bc]
 \end{align*}
 
-The conditional direct effect (CDE(m)), the effect of chaning the treatment level from the reference level $a_{0}$ to the level of interest $a_{1}$ while fixing the mediator at $m$ is the following.
+The conditional direct effect (CDE(m)), the effect of chaning the treatment level from the reference level $a_{0}$ to the level of interest $a_{1}$ while fixing the mediator at $m$ is the following at the covariate level $\bC = \bc$.
 
 \begin{align*}
   CDE(m) &= E[Y_{a_{1},m} | \bC = \bc] - E[Y_{a_{0},m} | \bC = \bc]
