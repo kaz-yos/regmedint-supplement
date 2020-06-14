@@ -1063,8 +1063,9 @@ coef(summary(res_obj, exponentiate = TRUE, m_cde = 0.5))
 
 The following code was used to create the table included in the paper.
 
+# https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html
 \scriptsize
-#+BEGIN_SRC R :session *R-org* :results output :exports both
+#+BEGIN_SRC R :session *R-org* :results output latex :exports both
 cols <- c("est","lower","upper","exp(est)","exp(lower)","exp(upper)")
 rows <- c("te","pnde","tnie","pm")
 ## Construct a production-level table
@@ -1095,9 +1096,11 @@ tab <- rbind(coef(summary(res_obj, exponentiate = TRUE))[rows,cols],
 ## Write to an Excel file
 openxlsx::write.xlsx(x = tab,
                      file = "./supplement.xlsx")
-## Print
+## Print as a LaTeX table
 tab %>%
-  print(row.names = FALSE)
+  mutate(Effect = str_replace_all(Effect, "^ ", "- ")) %>%
+  xtable::xtable() %>%
+  print(include.rownames = FALSE)
 #+END_SRC
 \normalsize
 
