@@ -1110,9 +1110,11 @@ All effect estimates are estimates of conditional effects, conditioning on the c
 We here use the =regmedint= package to describe a somewhat overlooked aspect of the regression-based estimation method, \textit{i.e.}, covariate-dependence of conditional effect estimates. Although neither the mediator model nor the outcome model has interaction terms between the treatment variable and baseline covariates, the resulting conditional effect estimates are dependent on the baseline covariate vector value at which they are evaluated (=c_cond= argument). This subtle point regarding the regression-based causal mediation method has previously been mentioned cite:steenFlexibleMediationAnalysis2017,starkopfComparisonFiveSoftware2017, but remains relatively unknown. Using simulated data, we visualy demonstrate the issue and then state potential approaches to reporting of the results.
 
 ** Generating demonstration data
+As explained in Section 2, there are four sets of formulas to cover linear and logistic mediator models as well as linear and non-linear outcome models. Here we generate normal (linear) and Poisson (non-linear) outcomes for demonstration. For simplicity, only one continuous covariate (=c1=) is involved in the simulated data.
 \scriptsize
 #+BEGIN_SRC R :session *R-org* :results output :exports both
 suppressMessages(library(tidyverse))
+library(tableone)
 set.seed(248361264)
 ## Sample size
 n <- 1000
@@ -1149,12 +1151,15 @@ demo2 <-
 CreateTableOne(vars = setdiff(names(demo2), "id"),
                strata = c("a"),
                data = demo2,
-               test = FALSE)
+               factorVars = c("event"),
+               test = FALSE,
+               addOverall = TRUE) %>%
+  print()
 #+END_SRC
 \normalsize
 
 ** Demonstration of the role of =c_cond=
-
+Here we fit models 8 times to cover the four patterns stated above with or without an treatment-mediator interaction term in the outcome model. The resulting effect estimates are re-evaluated at various
 \scriptsize
 #+HEADER: :width 7 :height 7
 #+BEGIN_SRC R :session *R-org* :results output graphics file :file ./figure.pdf :exports both
@@ -1163,7 +1168,9 @@ library(tidyverse)
 ## A grid of c_cond values to evaluate the effects at.
 c_cond_grid <- seq(from = -10, to = +10, by = 0.1)
 
+## Collect results
 res <-
+  ## Construct 8 patterns
   tibble(mreg = rep(c("linear","linear","logistic","logistic"), 2),
          yreg = rep(c("linear","poisson","linear","poisson"), 2),
          interaction = rep(c(TRUE, FALSE), each = 4)) %>%
@@ -1172,6 +1179,7 @@ res <-
                           mreg == "logistic" & yreg == "linear"  ~ "y_cont_m_bin",
                           mreg == "linear"   & yreg == "poisson" ~ "y_pois_m_cont",
                           mreg == "logistic" & yreg == "poisson" ~ "y_pois_m_bin"),
+         ## Fit regression models
          fit = pmap(list(mreg, yreg, interaction, yvar, mvar),
                     function(mreg, yreg, interaction, yvar, mvar) {
                       regmedint(data = demo2,
@@ -1181,7 +1189,7 @@ res <-
                                 interaction = interaction, casecontrol = FALSE)
                     })) %>%
   mutate(data = map(fit, function(fit) {
-    ## Evaluate at each c_cond value using the coef method.
+    ## Re-evaluate at each c_cond value using the coef method.
     map(c_cond_grid, function(c_cond) {
       ## Force in a row tibble.
       as_tibble(t(c(c_cond = c_cond, coef(fit, c_cond = c_cond))))
