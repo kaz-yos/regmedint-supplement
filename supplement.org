@@ -1237,7 +1237,7 @@ The following relationship between the effect estimates and covariate value can 
 | $(\theta_{3} \ne 0)$ | TNIE   | Constant     | Constant         | Varies         | Varies           |
 |                      | TE     | Varies       | Varies           | Varies         | Varies           |
 
-The reasons for these specific covariate dependences can be understood by examing the PNDE and TNIE formulas in Section 2. Covariate dependence exists when the formula contains the term $\bbeta_{2}^{T}\bc$, which is the covariate part of linear predictor for the mediator model. If either one of PNDE and TNIE contains this term, TE (PNDE + TNIE) is also dependent on the covariates.\\
+The reasons for these specific covariate dependences can be understood by examing the PNDE and TNIE formulas in Section [[* Implementation of the regression-based causal mediation analysis method]]. Covariate dependence exists when the formula contains the term $\bbeta_{2}^{T}\bc$, which is the covariate part of linear predictor for the mediator model. If either one of PNDE and TNIE contains this term, TE (PNDE + TNIE) is also dependent on the covariates.\\
 
 *** Linear mediator model
 In the cases with a linear mediator model with a linear (Section [[* Linear mediator model, linear outcome model]]) or non-linear (Section [[* Linear mediator model, non-linear outcome model]]) outcome model, the PNDE (and also TNDE) expressions contain the term $\bbeta_{2}^{T}\bc$. Notably these expressions are linear in the covariate vector $\bc$, thus, evaluating these expressions at the mean covariate vector $E[\bC]$ gives the marginal effect as follows (Only the linear mediator, linear outcome case is shown here).
