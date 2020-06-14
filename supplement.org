@@ -1110,7 +1110,7 @@ All effect estimates are estimates of conditional effects, conditioning on the c
 We here use the =regmedint= package to describe a somewhat overlooked aspect of the regression-based estimation method, \textit{i.e.}, covariate-dependence of conditional effect estimates. Although neither the mediator model nor the outcome model has interaction terms between the treatment variable and baseline covariates, the resulting conditional effect estimates are dependent on the baseline covariate vector value at which they are evaluated (=c_cond= argument). This subtle point regarding the regression-based causal mediation method has previously been mentioned cite:steenFlexibleMediationAnalysis2017,starkopfComparisonFiveSoftware2017, but remains relatively unknown. Using simulated data, we visualy demonstrate the issue and then state potential approaches to reporting of the results.
 
 ** Generating demonstration data
-As explained in Section 2, there are four sets of formulas to cover linear and logistic mediator models as well as linear and non-linear outcome models. Here we generate normal (linear) and Poisson (non-linear) outcomes for demonstration. For simplicity, only one continuous covariate (=c1=) is involved in the simulated data.
+As explained in Section [[* Implementation of the regression-based causal mediation analysis method]], there are four sets of formulas to cover linear and logistic mediator models as well as linear and non-linear outcome models. Here we generate normal (linear) and Poisson (non-linear) outcomes for demonstration. For simplicity, only one continuous covariate (=c1=) is involved in the simulated data.
 \scriptsize
 #+BEGIN_SRC R :session *R-org* :results output :exports both
 suppressMessages(library(tidyverse))
@@ -1158,17 +1158,15 @@ CreateTableOne(vars = setdiff(names(demo2), "id"),
 #+END_SRC
 \normalsize
 
-** Demonstration of the role of =c_cond=
-Here we fit models 8 times to cover the four patterns stated above with or without an treatment-mediator interaction term in the outcome model. The resulting effect estimates are re-evaluated at various
+** Demonstrating covariate dependence visually
+Here we fit models 8 times to cover the four patterns stated above with or without an treatment-mediator interaction term in the outcome model. The resulting effect estimates are re-evaluated at various covariate values to reveal their relationship.
 \scriptsize
 #+HEADER: :width 7 :height 7
 #+BEGIN_SRC R :session *R-org* :results output graphics file :file ./figure.pdf :exports both
-library(tidyverse)
-
+suppressMessages(library(tidyverse))
 ## A grid of c_cond values to evaluate the effects at.
 c_cond_grid <- seq(from = -10, to = +10, by = 0.1)
-
-## Collect results
+## Collect demonstration results
 res <-
   ## Construct 8 patterns
   tibble(mreg = rep(c("linear","linear","logistic","logistic"), 2),
@@ -1224,18 +1222,46 @@ res %>%
 #+END_SRC
 \normalsize
 
-The following relationship with =c_cond= can be observed.
+=mreg= refers to the mediator model specification (linear or logistic). =yreg= refers to the outcome model specification (linear or non-linear).\\
 
-| Interaction          | Effect | linear/linear | linear/logistic | logistic/linear | logistic/logistic |
-|----------------------+--------+---------------+-----------------+-----------------+-------------------|
-| FALSE                | PNDE   | Constant      | Constant        | Constant        | Constant          |
-| $(\theta_{3} = 0)$   | TNIE   | Constant      | Constant        | Varies          | Varies            |
-|                      | TE     | Constant      | Constant        | Varies          | Varies            |
-|                      |        |               |                 |                 |                   |
-| TRUE                 | PNDE   | Varies        | Varies          | Varies          | Varies            |
-| $(\theta_{3} \ne 0)$ | TNIE   | Constant      | Constant        | Varies          | Varies            |
-|                      | TE     | Varies        | Varies          | Varies          | Varies            |
+The following relationship between the effect estimates and covariate value can be observed.
 
+|                      |        | mreg: linear | mreg: linear     | mreg: logistic | mreg: logistic   |
+| Interaction          | Effect | yreg: linear | yreg: non-linear | yreg: linear   | yreg: non-linear |
+|----------------------+--------+--------------+------------------+----------------+------------------|
+| FALSE                | PNDE   | Constant     | Constant         | Constant       | Constant         |
+| $(\theta_{3} = 0)$   | TNIE   | Constant     | Constant         | Varies         | Varies           |
+|                      | TE     | Constant     | Constant         | Varies         | Varies           |
+|                      |        |              |                  |                |                  |
+| TRUE                 | PNDE   | Varies       | Varies           | Varies         | Varies           |
+| $(\theta_{3} \ne 0)$ | TNIE   | Constant     | Constant         | Varies         | Varies           |
+|                      | TE     | Varies       | Varies           | Varies         | Varies           |
+
+The reasons for these specific covariate dependences can be understood by examing the PNDE and TNIE formulas in Section 2. Covariate dependence exists when the formula contains the term $\bbeta_{2}^{T}\bc$, which is the covariate part of linear predictor for the mediator model. If either one of PNDE and TNIE contains this term, TE (PNDE + TNIE) is also dependent on the covariates.\\
+
+*** Linear mediator model
+In the cases with a linear mediator model with a linear (Section [[* Linear mediator model, linear outcome model]]) or non-linear (Section [[* Linear mediator model, non-linear outcome model]]) outcome model, the PNDE (and also TNDE) expressions contain the term $\bbeta_{2}^{T}\bc$. Notably these expressions are linear in the covariate vector $\bc$, thus, evaluating these expressions at the mean covariate vector $E[\bC]$ gives the marginal effect as follows (The linear mediator, linear outcome case is shown here).
+
+\begin{align*}
+  &\text{Conditional effect evaluated at } \bc\\
+  PNDE &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
+  &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc) \right\} (a_{1} - a_{0})\\
+  \\
+  &\text{Marginal effect}\\
+  E[PNDE] &= E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\\
+  &= E\left[ \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bC) \right\} (a_{1} - a_{0}) \right]\\
+  &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}E[\bC]) \right\} (a_{1} - a_{0})\\
+  &= \text{ Conditional effect evaluated at } E[\bC]
+\end{align*}
+
+The argument is similar for the linear mediator, non-linear outcome case as the extra term does not contain $\bbeta_{2}^{T}\bc$.\\
+
+When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of the expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence.
+
+*** Logistic mediator model
+In the cases with a logistic mediator model with a linear (Section [[* Logistic mediator model, linear outcome model]]) or non-linear (Section [[* Logistic mediator model, non-linear outcome model]]) outcome model, both the PNDE (and also TNDE) expression and the TNIE (and also PNIE) expression are non-linear functions of $\bbeta_{2}^{T}\bc$. Therefore, covariate dependent exists for both PNDE and TNIE. Because of the non-linearity, evaluation at $E[\bC]$ does not give a marginal interpretation. The interpretation the effect evaluated at $E[\bC]$ is the /conditional/ effect for an /average/ individual.\\
+
+When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ cancels out of the expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence for PNDE (and also TNDE). However, the TNIE (and also PNIE) expressions remain as non-linear functions of $\bbeta_{2}^{T}\bc$, thus, covariate dependence persists for TNIE.
 
 * Bibliography
 \renewcommand{\section}[2]{}
