@@ -1035,7 +1035,7 @@ CreateTableOne(vars = c("c1","c2","m","time","event"),
 \normalsize
 
 ** Reproducing the data analysis example
-The example data analysis included in the paper was conducted as follows.
+The example data analysis included in the paper was conducted as follows. Please note all variables must be numeric. Multi-category variables must be recoded as multiple dichotomous (0, 1) variables.
 \scriptsize
 #+BEGIN_SRC R :session *R-org* :results output :exports both
 library(regmedint)
