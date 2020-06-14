@@ -1,5 +1,7 @@
 \sloppy
+\setcounter{page}{0}
 \newpage
+\setcounter{section}{-1}
 * Meta-data                                                        :noexport:
 #+TITLE:
 #+AUTHOR:
@@ -79,8 +81,22 @@
 #+LATEX_HEADER: \input{\string~/.emacs.d/misc/GrandMacros}
 # ############################################################################ #
 
+* Overview of the supplement document
+
+This supplement document provides additional details for the causal mediation analysis method implemented in the =R= package [[https://kaz-yos.github.io/regmedint/][=regmedint=]] (https://kaz-yos.github.io/regmedint/). The sections cover the following topics.
+
+1. Definitions of the causal quantities interest and assumptions required for their identification.
+2. Outline of the estimation method implemented in =regmedint= and mathematical formulas.
+3. Links to software guide for =regmedint= and code to reproduce the example.
+4. Visual demonstration of covariate-dependence of effect estimates.
+
+Applied users of the =regmedint= package should benefit most from the sotware instructions in Section 3 and the causal assumptions stated in Section 1. Section 2 is meant for methodologists and developers looking for the implementation details of the =regmedint= package. Section 4 visually demonstrate a somewhat overlooked aspect of the regression-based causal mediation analysis and should assist the appropriate use of the =regmedint= package.\\
+
+The latest version of this supplement document as well as the corresponding =org-mode= and \LaTeX \nbsp{} documents can be found at: https://github.com/kaz-yos/regmedint-supplement.
+
+
 * Brief description of causal mediation analysis
-The literature on causal  mediation analysis is vast cite:vanderweeleExplanationCausalInference2015 and is evolving, thus, only the pieces relevant for the current software are reviewed here.
+The literature on causal mediation analysis is vast cite:vanderweeleExplanationCausalInference2015 and is evolving, thus, only the pieces relevant for the current software are reviewed here.
 
 ** Decomposition of total effect
 Let $Y$ be the outcome variable of interest, $A$ be the treatment variable of interest, $M$ be the mediator variable of interest, and $\bC$ be the potentially vector-valued pre-treatment baseline covariates necessary for exchangeability (See the section on identification). The treatment contrast of interest is $a_{1}$ vs $a_{0}$, the second being the reference level. The counterfactual $Y_{a,m}$ is the value of $Y$ for an individual when, possibly contrary to the fact, the treatment level $a$ and mediator level $m$ are assigned.\\
@@ -1207,10 +1223,6 @@ The following relationship with =c_cond= can be observed.
 | TRUE                 | PNDE   | Varies        | Varies          | Varies          | Varies            |
 | $(\theta_{3} \ne 0)$ | TNIE   | Constant      | Constant        | Varies          | Varies            |
 |                      | TE     | Varies        | Varies          | Varies          | Varies            |
-
-
-* Latest version of this document
-The latest version of this document as well as the corresponding =org-mode= and \LaTeX \nbsp{} documents can be found at:  https://github.com/kaz-yos/regmedint-supplement.
 
 
 * Bibliography
