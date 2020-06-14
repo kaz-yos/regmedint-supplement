@@ -951,7 +951,8 @@ The function =calc_myreg_mreg_logistic_yreg_logistic_se()= implements the standa
 \end{align*}
 
 
-* Software user guide
+* Software user guide and reproducible code
+** Pointers to =regmedint= online user guide
 Further details of the software =regmedint= are given on its website (https://kaz-yos.github.io/regmedint/index.html). In particular, the online vignettes for the package should be useful.
 
 1. [[https://kaz-yos.github.io/regmedint/articles/vig_01_introduction.html][*Introduction to user interface functions*]]
@@ -969,8 +970,8 @@ Further details of the software =regmedint= are given on its website (https://ka
 
 In the following, we included the minimum code to reproduce the example causal mediation analysis in the paper.
 
-** Example data generation
-The demonstration data used in the paper was generated as follows.
+** Generating the example data
+The demonstration data used in the paper was generated as follows in =R= version 4.0.0 on macOS version 10.15.5.
 \scriptsize
 #+BEGIN_SRC R :session *R-org* :results output :exports both
 suppressMessages(library(tidyverse))
@@ -1010,39 +1011,48 @@ cat("### Summary of the generated data\n")
 CreateTableOne(vars = c("c1","c2","m","time","event"),
                strata = c("a"),
                data = demo,
-               test = FALSE)
+               factorVars = c("event"),
+               test = FALSE,
+               addOverall = TRUE) %>%
+  print()
 #+END_SRC
 \normalsize
 
-** Example function call
-The example simulated data that appeared in cite:valeriSASMacroCausal2015 is included in the =regmedint= package as =vv2015= dataset.
-
+** Reproducing the data analysis example
+The example data analysis included in the paper was conducted as follows.
 \scriptsize
 #+BEGIN_SRC R :session *R-org* :results output :exports both
 library(regmedint)
-## Means of covariates
-c_means <- colMeans(demo[,c("c1","c2")])
 ## Model fitting
 res_obj <- regmedint(data = demo,
                      yvar = "time", avar = "a", mvar = "m", cvar = c("c1","c2"), eventvar = "event",
-                     a0 = 0, a1 = 1, m_cde = 0, c_cond = c_means,
+                     a0 = 0, a1 = 1, m_cde = 0, c_cond = c(0.02, -0.01),
                      mreg = "linear", yreg = "survAFT_weibull",
                      interaction = TRUE, casecontrol = FALSE)
 ## Result extraction
 summary(res_obj, exponentiate = TRUE)
+#+END_SRC
+\normalsize
+
+As seen above, the mediator regression model, the outcome regression model, and the mediation analysis results are presented. The results also include the values of =a0= (reference treatment level), =a1= (treatment level of interest), =m_cde= (value at which the mediator is fixed; relevant for =cde= only), and =c_cond= (covariate vector value; relevant for natural direct and indirect effects only) at which the effect estimates are evaluated.\\
+
+The =summary= function has the corresponding arguments =a0=, =a0=, =m_cde=, and =c_cond= to override these without unnecessarily refitting the models. Here the =m_cde= value is overriden (=coef= is used to avoid printing the same mediator and outcome model results).
+
+\scriptsize
+#+BEGIN_SRC R :session *R-org* :results output :exports both
 ## Re-evaluate cde at m_cde = 0.5
 coef(summary(res_obj, exponentiate = TRUE, m_cde = 0.5))
 #+END_SRC
 \normalsize
 
-As seen above, the mediator regression model, the outcome regression model, and the mediation analysis results are presented. The results also include the values of =a0=, =a1=, =m_cde= (relevant for =cde=), and =c_cond= (relevant for natural effects) at which the effect estimates are evaluated.
+The following code was used to create the table included in the paper.
 
 \scriptsize
-#+BEGIN_SRC R :session *R-org* :results output :exports none
+#+BEGIN_SRC R :session *R-org* :results output :exports both
 cols <- c("est","lower","upper","exp(est)","exp(lower)","exp(upper)")
-rows1 <- c("te","pnde","tnie","pm")
-## Construct a table
-df <- rbind(coef(summary(res_obj, exponentiate = TRUE))[rows1,cols],
+rows <- c("te","pnde","tnie","pm")
+## Construct a production-level table
+tab <- rbind(coef(summary(res_obj, exponentiate = TRUE))[rows,cols],
             coef(summary(res_obj, exponentiate = TRUE, m_cde = 0.0))["cde",cols, drop = FALSE],
             coef(summary(res_obj, exponentiate = TRUE, m_cde = 0.5))["cde",cols, drop = FALSE]) %>%
   as.data.frame() %>%
@@ -1066,14 +1076,11 @@ df <- rbind(coef(summary(res_obj, exponentiate = TRUE))[rows1,cols],
   rename(Effect = rowname,
          `Est. [95% CI]` = est_ci,
          `Exp(Est.) [95% CI]` = exp_est_ci)
-df
-openxlsx::write.xlsx(x = df,
+## Write to an Excel file
+openxlsx::write.xlsx(x = tab,
                      file = "./supplement.xlsx")
-#+END_SRC
-
-\scriptsize
-#+BEGIN_SRC R :session *R-org* :results output :exports results
-df %>%
+## Print
+tab %>%
   print(row.names = FALSE)
 #+END_SRC
 \normalsize
