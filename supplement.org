@@ -101,21 +101,19 @@ The literature on causal mediation analysis is vast cite:vanderweeleExplanationC
 ** Decomposition of total effect
 Let $Y$ be the outcome variable of interest, $A$ be the treatment variable of interest, $M$ be the mediator variable of interest, and $\bC$ be the potentially vector-valued pre-treatment baseline covariates necessary for exchangeability (See the section on identification). The treatment contrast of interest is $a_{1}$ vs $a_{0}$, the second being the reference level. The counterfactual $Y_{a,m}$ is the value of $Y$ for an individual when, possibly contrary to the fact, the treatment level $a$ and mediator level $m$ are assigned.\\
 
-Given these notations, the effects are defined as follows at the covariate level $\bC = \bc$ and the mediator level $M = m$ (only for CDE).
+The total effect (TE), the causal effect of chaning the treatment level from the reference level $a_{0}$ to the level of interest $a_{1}$, is defined as follows at the covariate level $\bC = \bc$.
 
 \begin{align*}
-  CDE(m) &= E[Y_{a_{1},m} | \bC = \bc] - E[Y_{a_{0},m} | \bC = \bc]\\
-  \\
-  PNDE &= E[Y_{a_{1},M_{a_{0}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
-  TNIE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]\\
-  \\
-  TNDE &= E[Y_{a_{1},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]\\
-  PNIE &= E[Y_{a_{0},M_{a_{1}}} | \bC = \bc] - E[Y_{a_{0},M_{a_{0}}} | \bC = \bc]\\
-  \\
-  TE &= E[Y_{a_{1}} | \bC = \bc] - E[Y_{a_{0}} | \bC = \bc]\\
+  TE &= E[Y_{a_{1}} | \bC = \bc] - E[Y_{a_{0}} | \bC = \bc]
 \end{align*}
 
-The total effect (TE) can be decomposed into the direct (non-mediated) effect and indirect (mediated) effect in two different ways cite:robinsIdentifiabilityExchangeabilityDirect1992,vanderweeleThreewayDecompositionTotal2013.\\
+The conditional direct effect (CDE(m)), the effect of chaning the treatment level from the reference level $a_{0}$ to the level of interest $a_{1}$ while fixing the mediator at $m$ is the following.
+
+\begin{align*}
+  CDE(m) &= E[Y_{a_{1},m} | \bC = \bc] - E[Y_{a_{0},m} | \bC = \bc]
+\end{align*}
+
+The TE can be decomposed into the direct (non-mediated) effect and indirect (mediated) effect in two different ways cite:robinsIdentifiabilityExchangeabilityDirect1992,vanderweeleThreewayDecompositionTotal2013.\\
 
 The decomposition of TE into the pure natural direct effect (PNDE) and the total natural indirect effect (TNIE) is the usual decomposition cite:pearlDirectIndirectEffects2001. Note that the treatment value indexing the mediator $M$ is fixed at $a_{0}$ in the PNDE, whereas the treatment value indexing the outcome $Y$ is fixed at $a_{1}$ in the TNIE. These are emphasized with $\uwave{~~~~}$ throughout the document.
 
@@ -138,6 +136,8 @@ More intuitively, these decomposition differs in the cross-world counterfactual 
 More in general, we can consider the effects on the link function scale as follows cite:starkopfComparisonFiveSoftware2017.
 
 \begin{align*}
+  TE &= g(E[Y_{a_{1}} | \bC = \bc]) - g(E[Y_{a_{0}} | \bC = \bc])\\
+  \\
   CDE(m) &= g(E[Y_{a_{1},m} | \bC = \bc]) - g(E[Y_{a_{0},m} | \bC = \bc])\\
   \\
   PNDE &= g(E[Y_{a_{1},M_{a_{0}}} | \bC = \bc]) - g(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
@@ -145,8 +145,6 @@ More in general, we can consider the effects on the link function scale as follo
   \\
   TNDE &= g(E[Y_{a_{1},M_{a_{1}}} | \bC = \bc]) - g(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc])\\
   PNIE &= g(E[Y_{a_{0},M_{a_{1}}} | \bC = \bc]) - g(E[Y_{a_{0},M_{a_{0}}} | \bC = \bc])\\
-  \\
-  TE &= g(E[Y_{a_{1}} | \bC = \bc]) - g(E[Y_{a_{0}} | \bC = \bc])\\
 \end{align*}
 
 
