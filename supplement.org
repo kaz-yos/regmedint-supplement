@@ -83,14 +83,16 @@
 
 * Overview of the supplement document
 
-This supplement document provides additional details for the causal mediation analysis method implemented in the =R= package [[https://kaz-yos.github.io/regmedint/][=regmedint=]] (https://kaz-yos.github.io/regmedint/). The sections cover the following topics.
+This supplement document provides additional details for the causal mediation analysis method implemented in the =R= package [[https://kaz-yos.github.io/regmedint/][=regmedint=]] (https://kaz-yos.github.io/regmedint/). The sections cover the following topics.\\
 
-1. Definitions of the causal quantities interest and assumptions required for their identification.
-2. Outline of the estimation method implemented in =regmedint= and mathematical formulas.
-3. Links to software guide for =regmedint= and code to reproduce the example.
-4. Visual demonstration of covariate-dependence of effect estimates.
+[[* Brief description of causal mediation analysis]]. Definitions of the causal quantities interest and assumptions required for their identification.\\
+[[* Implementation of the regression-based causal mediation analysis method]]. Outline of the estimation method implemented in =regmedint= and mathematical formulas.\\
+[[* Software user guide and reproducible code]]. Links to software guide for =regmedint= and code to reproduce the example.\\
+[[* Demonstration of covariate-dependence of natural effect estimates]]. Visual demonstration of covariate-dependence of effect estimates.\\
 
-Applied users of the =regmedint= package should benefit most from the sotware instructions in Section 3 and the causal assumptions stated in Section 1. Section 2 is meant for methodologists and developers looking for the implementation details of the =regmedint= package. Section 4 visually demonstrate a somewhat overlooked aspect of the regression-based causal mediation analysis and should assist the users with the appropriate use of the =regmedint= package.\\
+Applied users of the =regmedint= package should benefit most from the sotware instructions in Section [[* Software user guide and reproducible code]] and the causal assumptions stated in Section [[* Brief description of causal mediation analysis]]. Section [[* Implementation of the regression-based causal mediation analysis method]] is meant for methodologists and developers looking for the implementation details of the =regmedint= package.\\
+
+Section [[* Demonstration of covariate-dependence of natural effect estimates]] visually demonstrate a somewhat overlooked aspect of the regression-based causal mediation analysis using an added functionality of the =regmedint= package (re-evaluation of effect estimates at various covariate levels without model refitting). Practical implications for reporting are discussed.\\
 
 The latest version of this supplement document as well as the corresponding =org-mode= and \LaTeX \nbsp{} documents can be found at: https://github.com/kaz-yos/regmedint-supplement.
 
