@@ -1263,7 +1263,7 @@ In the cases with a linear mediator model with a linear (Section [[* Linear medi
 When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of conditional PNDE expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
 
 *** Linear mediator model, non-linear outcome model
-The argument is similar for the linear mediator, non-linear outcome case as the expression is approximately linear in the covariate vector $\bc$ and the extra term does not contain $\bbeta_{2}^{T}\bc$.
+The conditional PNDE formula is linear in the covariate vector $\bc$ and the extra term does not contain $\bbeta_{2}^{T}\bc$. However, the non-linearity of the outcome model link function (logit in the example below) prevents the marginal interpretation of the conditional PNDE evaluated at $E[\bC]$.
 
 \begin{align*}
   \text{Conditional }PNDE &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc])\\
@@ -1272,8 +1272,7 @@ The argument is similar for the linear mediator, non-linear outcome case as the 
   \text{Marginal }PNDE
   &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}}]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}}])\\
   &= \logit\left(E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] \right]\right) - \logit\left(E \left[ E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\right)\\
-  E[PNDE] &= E \left[ \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC]) \right]\\
-  &\ne E \left[ \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]) \right]\\
+  &\ne E \left[ \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC]) \right]\\
   &\approx E \left[ \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bC + \theta_{2}\sigma^{2}) \right\} (a_{1} - a_{0}) + \frac{1}{2} \theta_{3}^{2}\sigma^{2}(a_{1}^{2} - a_{0}^{2}) \right]\\
   &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}E[\bC] + \theta_{2}\sigma^{2}) \right\} (a_{1} - a_{0}) + \frac{1}{2} \theta_{3}^{2}\sigma^{2}(a_{1}^{2} - a_{0}^{2})\\
 \end{align*}
