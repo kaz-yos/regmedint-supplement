@@ -1271,7 +1271,72 @@ The argument is similar for the linear mediator, non-linear outcome case as the 
 When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of these expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
 
 *** Logistic mediator model
-In the cases with a logistic mediator model with a linear (Section [[* Logistic mediator model, linear outcome model]]) or non-linear (Section [[* Logistic mediator model, non-linear outcome model]]) outcome model, both the PNDE (and also TNDE) expression and the TNIE (and also PNIE) expression are non-linear functions of $\bbeta_{2}^{T}\bc$. Therefore, covariate dependent exists for both PNDE and TNIE. Because of the non-linearity, evaluation at $E[\bC]$ does not give a marginal interpretation. The interpretation the effect evaluated at $E[\bC]$ is the /conditional/ effect for an /average individual/.\\
+In the cases with a logistic mediator model with a linear (Section [[* Logistic mediator model, linear outcome model]]) or non-linear (Section [[* Logistic mediator model, non-linear outcome model]]) outcome model, both the PNDE (and also TNDE) expression and the TNIE (and also PNIE) expression are non-linear functions of $\bbeta_{2}^{T}\bc$. Therefore, covariate dependent exists for both PNDE and TNIE. Because of the non-linearity, evaluation at $E[\bC]$ does not give a marginal interpretation.
+
+\begin{align*}
+  &\text{Logistic mediator, linear outcome case}\\
+  &\text{Conditional effect evaluated at } \bc\\
+  PNDE &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
+  &= \left\{\theta_{1}(a_{1} - a_{0}) \right\} + \left\{\theta_{3}(a_{1} - a_{0}) \right\}
+    \frac
+    {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
+    {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
+  TNIE &= E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc]\\
+  &= (\theta_{2} + \theta_{3}\uwave{a_{1}})\left\{
+    \frac
+    {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+    -
+    \frac
+    {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+    \right\}\\
+  \\
+  &\text{Marginal effect}\\
+  E[PNDE] &= E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\\
+  &= E \left[ \left\{\theta_{1}(a_{1} - a_{0}) \right\} + \left\{\theta_{3}(a_{1} - a_{0}) \right\}
+    \frac
+    {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bC)}
+    {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bC)} \right]\\
+  &= \left\{\theta_{1}(a_{1} - a_{0}) \right\} + \left\{\theta_{3}(a_{1} - a_{0}) \right\}
+    E \left[ \frac
+    {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bC)}
+    {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bC)} \right]\\
+  &\ne \left\{\theta_{1}(a_{1} - a_{0}) \right\} + \left\{\theta_{3}(a_{1} - a_{0}) \right\}
+    \frac
+    {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}E[\bC])}
+    {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}E[\bC])}\\
+  E[TNIE] &= E \left[ E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC] \right]\\
+  &= E \left[ (\theta_{2} + \theta_{3}\uwave{a_{1}})\left\{
+    \frac
+    {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bC)}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bC)}
+    -
+    \frac
+    {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bC)}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bC)}
+    \right\} \right]\\
+  &= (\theta_{2} + \theta_{3}\uwave{a_{1}})\left\{
+    E \left[ \frac
+    {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bC)}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bC)} \right]
+    -
+    E \left[ \frac
+    {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bC)}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bC)} \right]
+    \right\}\\
+  &\ne (\theta_{2} + \theta_{3}\uwave{a_{1}})\left\{
+    \frac
+    {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}E[\bC])}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}E[\bC])}
+    -
+    \frac
+    {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}E[\bC])}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}E[\bC])}
+    \right\}
+\end{align*}
+
+The interpretation the effect evaluated at $E[\bC]$ is the /conditional/ effect for an /average individual/.\\
 
 When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ cancels out of the expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence for PNDE (and also TNDE). However, the TNIE (and also PNIE) expressions remain as non-linear functions of $\bbeta_{2}^{T}\bc$, thus, covariate dependence persists for TNIE.
 
