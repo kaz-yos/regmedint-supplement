@@ -1237,9 +1237,12 @@ The following relationship between the effect estimates and covariate value can 
 | $(\theta_{3} \ne 0)$ | TNIE   | Constant     | Constant         | Varies         | Varies           |
 |                      | TE     | Varies       | Varies           | Varies         | Varies           |
 
-The reasons for these specific covariate dependences can be understood by examing the PNDE and TNIE formulas in Section [[* Implementation of the regression-based causal mediation analysis method]]. Covariate dependence exists when the formula contains the term $\bbeta_{2}^{T}\bc$, which is the covariate part of linear predictor for the mediator model. If either one of PNDE and TNIE contains this term, TE (PNDE + TNIE) is also dependent on the covariates. The implicatitions of this covariate dependence is outlined below.\\
+The reasons for these specific covariate dependences can be understood by examing the PNDE and TNIE formulas in Section [[* Implementation of the regression-based causal mediation analysis method]]. Covariate dependence exists when the formula contains the term $\bbeta_{2}^{T}\bc$, which is the covariate part of linear predictor for the mediator model. If either one of PNDE and TNIE contains this term, TE (PNDE + TNIE) is also dependent on the covariates.\\
 
-*** Linear mediator model
+** Implications for marginal interpretation
+These covariate-dependence of conditional natural effects have implications on whether and how marginal natural effects can be obtained. In summary, only in the case of a linear mediator model and linear outcome model, one can obtain the marginal (population average) natural effects by evaluating the effect estimates at the mean covariate vector $E[\bC]$.
+
+*** Linear mediator model, linear outcome model
 In the cases with a linear mediator model with a linear (Section [[* Linear mediator model, linear outcome model]]) or non-linear (Section [[* Linear mediator model, non-linear outcome model]]) outcome model, the PNDE (and also TNDE) expressions contain the term $\bbeta_{2}^{T}\bc$. Notably these expressions are linear in the covariate vector $\bc$, thus, evaluating these expressions at the mean covariate vector $E[\bC]$ gives the marginal effect. The linear mediator, linear outcome case is shown below.
 
 \begin{align*}
@@ -1255,6 +1258,9 @@ In the cases with a linear mediator model with a linear (Section [[* Linear medi
   &= \text{ Conditional effect formula evaluated at } E[\bC]\\
 \end{align*}
 
+When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of these expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
+
+*** Linear mediator model, non-linear outcome model
 The argument is similar for the linear mediator, non-linear outcome case as the expression is approximately linear in the covariate vector $\bc$ and the extra term does not contain $\bbeta_{2}^{T}\bc$.
 
 \begin{align*}
@@ -1272,7 +1278,7 @@ The argument is similar for the linear mediator, non-linear outcome case as the 
 
 When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of these expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
 
-*** Logistic mediator model
+*** Logistic mediator model, linear outcome model
 In the cases with a logistic mediator model with a linear (Section [[* Logistic mediator model, linear outcome model]]) or non-linear (Section [[* Logistic mediator model, non-linear outcome model]]) outcome model, both the PNDE (and also TNDE) expression and the TNIE (and also PNIE) expression are non-linear functions of $\bbeta_{2}^{T}\bc$. Therefore, covariate dependent exists for both PNDE and TNIE. Because of the non-linearity, evaluation at $E[\bC]$ does not give a marginal interpretation. The interpretation the effect evaluated at $E[\bC]$ is the /conditional/ effect for an /average individual/. The logistic mediator, linear outcome case is shown below.\\
 
 \begin{align*}
@@ -1338,6 +1344,7 @@ In the cases with a logistic mediator model with a linear (Section [[* Logistic 
     \right\}
 \end{align*}
 
+*** Logistic mediator model, non-linear outcome model
 The argument is similar for the logistic mediator, non-linear outcome case.
 
 \begin{align*}
@@ -1382,11 +1389,14 @@ The argument is similar for the logistic mediator, non-linear outcome case.
 When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ cancels out of the PNDE (and also TNDE) expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence for PNDE (and also TNDE). However, the TNIE (and also PNIE) expressions remain as non-linear functions of $\bbeta_{2}^{T}\bc$, thus, covariate dependence persists for TNIE. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal direct effects are the same as the conditional direct effects because the latter do not vary across covariate patterns. However, the same does not hold for the indirect effects.
 
 ** Practical implications for reporting
+*** Linear mediator model, linear outcome model
 For the cases with a /linear mediator model/, evaluation at the mean covariate vector gives the effect estimates marginal (population average) interpretations cite:vanderweeleExplanationCausalInference2015 (p37). Thus, reporting these marginal quantities for a well-defined population (set =c_cond= to the average in that population) is useful. Additionally, if there is no treatment-mediator interaction term in the outcome model, uniform conditional effects are implied and the marginal effects are the same.\\
 
+Please note that it is a linear /mediator model/ that is required for marginal interpretation in this estimation method cite:vanderweeleExplanationCausalInference2015 (p37) although the original paper stated otherwise ("For continuous outcomes, if C were set at its average level we would obtain marginal effects on the entire population." cite:valeriMediationAnalysisAllowing2013 (p139)).
+
+*** Other cases
 For the cases with a /logistic mediator model/, evaluation at the mean covariate level does /not/ gives the effect estimates marginal (population average) interpretations. It is still possible to report the result evaluated at the mean covariate vector, however, the results should be interpreted as /conditional/ effects for an /average individual/. If categorical covariates (e.g., country) are involved, an average individual can be ambiguous or non-existent (e.g., individual residing in the average country). Reporting conditional effects evaluated at several meaningful covariate patterns may be preferred.\\
 
-Please note that it is a linear /mediator model/ that is required for marginal interpretation in this estimation method cite:vanderweeleExplanationCausalInference2015 (p37) although the original paper stated otherwise ("For continuous outcomes, if C were set at its average level we would obtain marginal effects on the entire population." cite:valeriMediationAnalysisAllowing2013 (p139)).
 
 * Bibliography
 \renewcommand{\section}[2]{}
