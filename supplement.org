@@ -1367,20 +1367,15 @@ In the cases with a logistic mediator model with a linear (Section [[* Logistic 
 The argument is similar for the logistic mediator, non-linear outcome case.
 
 \begin{align*}
-  &\text{Logistic mediator, non-linear outcome case}\\
-  &\text{Conditional effect evaluated at } \bc\\
-  PNDE &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc])\\
+  \text{Conditional }PNDE &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc])\\
   &\approx \theta_{1}(a_{1} - a_{0})\\
   &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^T\bc))\\
   &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^T\bc))\\
-  TNIE &= \logit(E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc])\\
-  &\approx \log(1 + \exp(\beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
-  &~~~ - \log(1 + \exp(\beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
-  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
-  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
   \\
-  &\text{Marginal effect}\\
-  E[PNDE] &= E \left[ \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC]) \right]\\
+  \text{Marginal }PNDE
+  &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}}]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}}])\\
+  &= \logit\left(E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] \right]\right) - \logit\left(\left[ E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\right)\\
+  &\ne E \left[ \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC]) \right]\\
   &\approx E[ \theta_{1}(a_{1} - a_{0})\\
   &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^T\bC))\\
   &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^T\bC))]\\
@@ -1390,7 +1385,20 @@ The argument is similar for the logistic mediator, non-linear outcome case.
   &\ne \theta_{1}(a_{1} - a_{0})\\
   &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^TE[\bC]))\\
   &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^TE[\bC]))\\
-  E[TNIE] &= E \left[ \logit(E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC]) - \logit(E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC]) \right]\\
+\end{align*}
+
+
+\begin{align*}
+  \text{Conditional }TNIE &= \logit(E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc])\\
+  &\approx \log(1 + \exp(\beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
+  &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
+  &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
+  \\
+  \text{Marginal }TNIE
+  &= \logit(E[Y_{\uwave{a_{1}},M_{a_{1}}}]) - \logit(E[Y_{\uwave{a_{1}},M_{a_{0}}}])\\
+  &= \logit\left(E\left[E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC]\right]\right) - \logit\left(E\left[E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC]\right]\right)\\
+  &\ne E \left[ \logit(E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC]) - \logit(E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC]) \right]\\
   &\approx E[\log(1 + \exp(\beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bC))\\
   &~~~ - \log(1 + \exp(\beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bC))\\
   &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bC))\\
