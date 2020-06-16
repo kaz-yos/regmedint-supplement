@@ -1246,11 +1246,9 @@ These covariate-dependence of conditional natural effects have implications on w
 In the cases with a linear mediator model with a linear (Section [[* Linear mediator model, linear outcome model]]) or non-linear (Section [[* Linear mediator model, non-linear outcome model]]) outcome model, the PNDE (and also TNDE) expressions contain the term $\bbeta_{2}^{T}\bc$. Notably these expressions are linear in the covariate vector $\bc$, thus, evaluating these expressions at the mean covariate vector $E[\bC]$ gives the marginal effect. The linear mediator, linear outcome case is shown below.
 
 \begin{align*}
-  &\text{Conditional effect evaluated at } \bc\\
   \text{Conditional }PNDE &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
   &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc) \right\} (a_{1} - a_{0})\\
   \\
-  &\text{Marginal effect}\\
   \text{Marginal }PNDE
   &= E[Y_{a_{1},\uwave{M_{a_{0}}}}] - E[Y_{a_{0},\uwave{M_{a_{0}}}}]\\
   &= E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] \right] -
@@ -1262,25 +1260,25 @@ In the cases with a linear mediator model with a linear (Section [[* Linear medi
   &= \text{ Conditional PNDE formula evaluated at } E[\bC]\\
 \end{align*}
 
-When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of these expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
+When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of conditional PNDE expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
 
 *** Linear mediator model, non-linear outcome model
 The argument is similar for the linear mediator, non-linear outcome case as the expression is approximately linear in the covariate vector $\bc$ and the extra term does not contain $\bbeta_{2}^{T}\bc$.
 
 \begin{align*}
-  &\text{Linear mediator, non-linear outcome case}\\
-  &\text{Conditional effect evaluated at } \bc\\
-  PNDE &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc])\\
+  \text{Conditional }PNDE &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc])\\
   &\approx \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc + \theta_{2}\sigma^{2}) \right\} (a_{1} - a_{0}) + \frac{1}{2} \theta_{3}^{2}\sigma^{2}(a_{1}^{2} - a_{0}^{2})\\
   \\
-  &\text{Marginal effect}\\
+  \text{Marginal }PNDE
+  &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}}]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}}])\\
+  &= \logit\left(E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] \right]\right) - \logit\left(E \left[ E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\right)\\
   E[PNDE] &= E \left[ \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC]) \right]\\
+  &\ne E \left[ \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]) \right]\\
   &\approx E \left[ \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bC + \theta_{2}\sigma^{2}) \right\} (a_{1} - a_{0}) + \frac{1}{2} \theta_{3}^{2}\sigma^{2}(a_{1}^{2} - a_{0}^{2}) \right]\\
   &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}E[\bC] + \theta_{2}\sigma^{2}) \right\} (a_{1} - a_{0}) + \frac{1}{2} \theta_{3}^{2}\sigma^{2}(a_{1}^{2} - a_{0}^{2})\\
-  &= \text{ Conditional effect formula evaluated at } E[\bC]\\
 \end{align*}
 
-When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of these expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
+When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of the conditional PNDE expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
 
 *** Logistic mediator model, linear outcome model
 In the cases with a logistic mediator model with a linear (Section [[* Logistic mediator model, linear outcome model]]) or non-linear (Section [[* Logistic mediator model, non-linear outcome model]]) outcome model, both the PNDE (and also TNDE) expression and the TNIE (and also PNIE) expression are non-linear functions of $\bbeta_{2}^{T}\bc$. Therefore, covariate dependent exists for both PNDE and TNIE. Because of the non-linearity, evaluation at $E[\bC]$ does not give a marginal interpretation. The interpretation the effect evaluated at $E[\bC]$ is the /conditional/ effect for an /average individual/. The logistic mediator, linear outcome case is shown below.\\
