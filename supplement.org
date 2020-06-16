@@ -1246,16 +1246,20 @@ These covariate-dependence of conditional natural effects have implications on w
 In the cases with a linear mediator model with a linear (Section [[* Linear mediator model, linear outcome model]]) or non-linear (Section [[* Linear mediator model, non-linear outcome model]]) outcome model, the PNDE (and also TNDE) expressions contain the term $\bbeta_{2}^{T}\bc$. Notably these expressions are linear in the covariate vector $\bc$, thus, evaluating these expressions at the mean covariate vector $E[\bC]$ gives the marginal effect. The linear mediator, linear outcome case is shown below.
 
 \begin{align*}
-  &\text{Linear mediator, linear outcome case}\\
   &\text{Conditional effect evaluated at } \bc\\
-  PNDE &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
+  \text{Conditional }PNDE &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
   &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc) \right\} (a_{1} - a_{0})\\
   \\
   &\text{Marginal effect}\\
-  E[PNDE] &= E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\\
+  \text{Marginal }PNDE
+  &= E[Y_{a_{1},\uwave{M_{a_{0}}}}] - E[Y_{a_{0},\uwave{M_{a_{0}}}}]\\
+  &= E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] \right] -
+     E \left[ E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\\
+  &= E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\\
+  &~~~\text{Inside is conditional PNDE at } \bC\\
   &= E\left[ \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bC) \right\} (a_{1} - a_{0}) \right]\\
   &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}E[\bC]) \right\} (a_{1} - a_{0})\\
-  &= \text{ Conditional effect formula evaluated at } E[\bC]\\
+  &= \text{ Conditional PNDE formula evaluated at } E[\bC]\\
 \end{align*}
 
 When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of these expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
