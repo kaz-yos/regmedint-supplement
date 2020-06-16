@@ -1286,26 +1286,22 @@ When there is no treatment-mediator interaction term in the outcome model $(\the
 In the cases with a logistic mediator model with a linear (Section [[* Logistic mediator model, linear outcome model]]) or non-linear (Section [[* Logistic mediator model, non-linear outcome model]]) outcome model, both the PNDE (and also TNDE) expression and the TNIE (and also PNIE) expression are non-linear functions of $\bbeta_{2}^{T}\bc$. Therefore, covariate dependent exists for both PNDE and TNIE. Because of the non-linearity, evaluation at $E[\bC]$ does not give a marginal interpretation. The interpretation the effect evaluated at $E[\bC]$ is the /conditional/ effect for an /average individual/. The logistic mediator, linear outcome case is shown below.\\
 
 \begin{align*}
-  &\text{Logistic mediator, linear outcome case}\\
-  &\text{Conditional effect evaluated at } \bc\\
-  PNDE &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
+  \text{Conditional }PNDE
+  &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
   &= \left\{\theta_{1}(a_{1} - a_{0}) \right\} + \left\{\theta_{3}(a_{1} - a_{0}) \right\}
     \frac
     {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
     {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
-  TNIE &= E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc]\\
-  &= (\theta_{2} + \theta_{3}\uwave{a_{1}})\left\{
-    \frac
-    {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-    {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
-    -
-    \frac
-    {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-    {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
-    \right\}\\
   \\
-  &\text{Marginal effect}\\
-  E[PNDE] &= E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\\
+  \text{Marginal }PNDE
+  &= E[Y_{a_{1},\uwave{M_{a_{0}}}}] - E[Y_{a_{0},\uwave{M_{a_{0}}}}]\\
+  &= E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] \right] - E \left[ E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\\
+  &= E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\\
+  &~~~\text{Inside is conditional PNDE at }\bC\\
+  &= \left\{\theta_{1}(a_{1} - a_{0}) \right\} + \left\{\theta_{3}(a_{1} - a_{0}) \right\}
+    \frac
+    {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
+    {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
   &= E \left[ \left\{\theta_{1}(a_{1} - a_{0}) \right\} + \left\{\theta_{3}(a_{1} - a_{0}) \right\}
     \frac
     {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bC)}
@@ -1318,7 +1314,28 @@ In the cases with a logistic mediator model with a linear (Section [[* Logistic 
     \frac
     {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}E[\bC])}
     {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}E[\bC])}\\
-  E[TNIE] &= E \left[ E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC] \right]\\
+  &\text{i.e., Not equal not conditional PNDE formula evaluated at }E[\bC]\\
+\end{align*}
+
+
+\begin{align*}
+  \text{Conditional }TNIE
+  &= E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc]\\
+  &= (\theta_{2} + \theta_{3}\uwave{a_{1}})\left\{
+    \frac
+    {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bc)}
+    -
+    \frac
+    {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+    {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bc)}
+    \right\}\\
+  \\
+  \text{Marginal }TNIE
+  &= E[Y_{\uwave{a_{1}},M_{a_{1}}}] - E[Y_{\uwave{a_{1}},M_{a_{0}}}]\\
+  &= E \left[ E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC] \right] - E \left[ E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC] \right]\\
+  &= E \left[ E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC] \right]\\
+  &~~~\text{Inside is conditional TNIE at }\bC\\
   &= E \left[ (\theta_{2} + \theta_{3}\uwave{a_{1}})\left\{
     \frac
     {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}\bC)}
@@ -1345,7 +1362,8 @@ In the cases with a logistic mediator model with a linear (Section [[* Logistic 
     \frac
     {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}E[\bC])}
     {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}E[\bC])}
-    \right\}
+    \right\}\\
+  &\text{i.e., Not equal not conditional TNIE formula evaluated at }E[\bC]\\
 \end{align*}
 
 *** Logistic mediator model, non-linear outcome model
