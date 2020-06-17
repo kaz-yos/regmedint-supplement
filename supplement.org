@@ -1434,13 +1434,31 @@ The TNIE formula is examined below.
 When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ cancels out of the PNDE (and also TNDE) expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence for PNDE (and also TNDE). However, the TNIE (and also PNIE) expressions remain as non-linear functions of $\bbeta_{2}^{T}\bc$, thus, covariate dependence persists for TNIE. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal /direct/ effects are the same as the conditional direct effects because the latter do not vary across covariate patterns. However, the same does not hold for the /indirect/ effects.
 
 ** Practical implications for reporting
+Evaluating the natural direct and indirect effects at the mean covariate level is the default behavior of the SAS macro cite:valeriMediationAnalysisAllowing2013. With the =regmedint= R package, the same can be done via setting the =c_cond= argument to the mean covariate vector.\\
+
+The literature is somewhat confusing regarding when the effect estimates evaluated at the mean covariate vector have marginal interpretation. cite:valeriMediationAnalysisAllowing2013 (p139) states "For continuous outcomes, if C were set at its average level we would obtain marginal effects on the entire population." cite:vanderweeleExplanationCausalInference2015 (p37) states "\dots evaluated at the mean covariate levels are shown. For a continuous mediator, these effects will also be equal to the marginal effects on average for the population."\\
+
+As shown above, both the mediator model and the outcome model have to be linear regression models. We outlined reasonable approaches to reporting in specific models below.
+
 *** Linear mediator model, linear outcome model
-For the cases with a /linear mediator model/, evaluation at the mean covariate vector gives the effect estimates marginal (population average) interpretations cite:vanderweeleExplanationCausalInference2015 (p37). Thus, reporting these marginal quantities for a well-defined population (set =c_cond= to the average in that population) is useful. Additionally, if there is no treatment-mediator interaction term in the outcome model, uniform conditional effects are implied and the marginal effects are the same.\\
+Evaluation at the mean covariate vector gives the effect estimates marginal (population average) interpretation. Thus, reporting these marginal quantities for a well-defined population (set =c_cond= to the average in that population) is useful.\\
 
-Please note that it is a linear /mediator model/ that is required for marginal interpretation in this estimation method cite:vanderweeleExplanationCausalInference2015 (p37) although the original paper stated otherwise ("For continuous outcomes, if C were set at its average level we would obtain marginal effects on the entire population." cite:valeriMediationAnalysisAllowing2013 (p139)).
+If there is no treatment-mediator interaction term in the outcome model, uniform conditional effects are implied and the marginal effects agree with the conditional effects.
 
-*** Other cases
-For the cases with a /logistic mediator model/, evaluation at the mean covariate level does /not/ gives the effect estimates marginal (population average) interpretations. It is still possible to report the result evaluated at the mean covariate vector, however, the results should be interpreted as /conditional/ effects for an /average individual/. If categorical covariates (e.g., country) are involved, an average individual can be ambiguous or non-existent (e.g., individual residing in the average country). Reporting conditional effects evaluated at several meaningful covariate patterns may be preferred.\\
+*** Linear mediator model, non-linear outcome model
+Evaluation at the mean covariate level does /not/ gives the effect estimates marginal (population average) interpretations. It is still possible to report the result evaluated at the mean covariate vector, however, the results should be interpreted as /conditional/ effects for an /average individual/. If categorical covariates (e.g., country) are involved, an average individual can be ambiguous or non-existent (e.g., individual residing in the average country). Reporting conditional effects evaluated at several meaningful covariate patterns may be preferred.\\
+
+If there is no treatment-mediator interaction term in the outcome model, uniform conditional effects are implied and the marginal effects agree with the conditional effects.
+
+*** Logistic mediator model, linear outcome model
+Evaluation at the mean covariate level does /not/ gives the effect estimates marginal (population average) interpretations. It is still possible to report the result evaluated at the mean covariate vector, however, the results should be interpreted as /conditional/ effects for an /average individual/. If categorical covariates (e.g., country) are involved, an average individual can be ambiguous or non-existent (e.g., individual residing in the average country). Reporting conditional effects evaluated at several meaningful covariate patterns may be preferred.\\
+
+The same is true even if there is no treatment-mediator interaction term in the outcome model.
+
+*** Logistic mediator model, non-linear outcome model
+Evaluation at the mean covariate level does /not/ gives the effect estimates marginal (population average) interpretations. It is still possible to report the result evaluated at the mean covariate vector, however, the results should be interpreted as /conditional/ effects for an /average individual/. If categorical covariates (e.g., country) are involved, an average individual can be ambiguous or non-existent (e.g., individual residing in the average country). Reporting conditional effects evaluated at several meaningful covariate patterns may be preferred.\\
+
+The same is true even if there is no treatment-mediator interaction term in the outcome model.
 
 
 * Bibliography
