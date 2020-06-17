@@ -1142,6 +1142,47 @@ We here use the =regmedint= package to describe a somewhat overlooked aspect of 
 
 ** Generating demonstration data
 As explained in Section [[* Implementation of the regression-based causal mediation analysis method]], there are four sets of formulas to cover linear and logistic mediator models as well as linear and non-linear outcome models. Here we generate normal (linear) and Poisson (non-linear) outcomes for demonstration. For simplicity, only one continuous covariate (=c1=) is involved in the simulated data.
+
+\begin{align*}
+  n
+  &= 1000\\
+  \\
+  &\text{Covariates}\\
+  C_{1,i} &\overset{\text{iid}}{\sim} N(0,1)\\
+  \\
+  &\text{Binary treatment}\\
+  \logit(E[A_{i} | C_{1,i}])
+  &= -0.5 + 0.1 C_{1,i}\\
+  A_{i} &\sim Bernoulli(p = E[A_{i} | C_{1,i}])\\
+  \\
+  &\text{Mediator, continuous}\\
+  E[M_{cont,i} | A_{i}, C_{1,i}, C_{2,i}]
+  &= 0 + 0.5 A_{i} + 0.5 C_{1,i}\\
+  M_{cont,i} &\sim N(E[M_{i} | A_{i}, C_{1,i}, C_{2,i}], 0.5^{2})\\
+  &\text{Mediator, binary}\\
+  E[M_{bin,i} | A_{i}, C_{1,i}, C_{2,i}]
+  &= -0.9 + 0.5 A_{i} + 0.5 C_{1,i}\\
+  M_{bin,i} &\sim Bernoulli(E[M_{i} | A_{i}, C_{1,i}, C_{2,i}])\\
+  \\
+  &\text{Outcome, continuous (continuous mediator)}\\
+  E[Y_{cont,Mcont,i} | A_{i}, M_{cont,i}, C_{1,i}]
+  &= 0 + 0.3 A_{i} + 0.15 M_{cont,i} + 0.05 A_{i} M_{cont,i} -0.2 C_{1,i}\\
+  Y_{cont,Mcont,i} &\sim N(E[Y_{cont,Mcont,i} | A_{i}, M_{cont,i}, C_{1,i}], 1)\\
+  &\text{Outcome, continuous (binary mediator)}\\
+  E[Y_{cont,Mbin,i} | A_{i}, M_{bin,i}, C_{1,i}]
+  &= 0 + 0.3 A_{i} + 0.15 M_{bin,i} + 0.05 A_{i} M_{bin,i} -0.2 C_{1,i}\\
+  Y_{cont,Mbin,i} &\sim N(E[Y_{cont,Mbin,i} | A_{i}, M_{bin,i}, C_{1,i}], 1)\\
+  \\
+  &\text{Outcome, Poisson (continuous mediator)}\\
+  \log(E[Y_{pois,Mcont,i} | A_{i}, M_{cont,i}, C_{1,i}])
+  &= 0 + 0.3 A_{i} + 0.15 M_{cont,i} + 0.05 A_{i} M_{cont,i} -0.2 C_{1,i}\\
+  Y_{pois,Mcont,i} &\sim Poisson(E[Y_{pois,Mcont,i} | A_{i}, M_{cont,i}, C_{1,i}])\\
+  &\text{Outcome, Poisson (binary mediator)}\\
+  \log(E[Y_{pois,Mbin,i} | A_{i}, M_{bin,i}, C_{1,i}])
+  &= 0 + 0.3 A_{i} + 0.15 M_{bin,i} + 0.05 A_{i} M_{bin,i} -0.2 C_{1,i}\\
+  Y_{pois,Mbin,i} &\sim Poisson(E[Y_{pois,Mbin,i} | A_{i}, M_{bin,i}, C_{1,i}])\\
+\end{align*}
+
 \scriptsize
 #+BEGIN_SRC R :session *R-org* :results output :exports both
 suppressMessages(library(tidyverse))
