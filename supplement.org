@@ -1286,7 +1286,7 @@ In the case with a linear mediator model with a non-linear (Section [[* Linear m
 When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of the conditional PNDE (and also TNDE) formula. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
 
 *** Logistic mediator model, linear outcome model
-In the cases with a logistic mediator model with a linear (Section [[* Logistic mediator model, linear outcome model]]) or non-linear (Section [[* Logistic mediator model, non-linear outcome model]]) outcome model, both the PNDE (and also TNDE) expression and the TNIE (and also PNIE) expression are non-linear functions of $\bbeta_{2}^{T}\bc$. Therefore, covariate dependent exists for both PNDE and TNIE. Because of the non-linearity, evaluation at $E[\bC]$ does not give a marginal interpretation. The interpretation the effect evaluated at $E[\bC]$ is the /conditional/ effect for an /average individual/. The logistic mediator, linear outcome case is shown below.\\
+In the case with a logistic mediator model with a linear (Section [[* Logistic mediator model, linear outcome model]]) outcome model, both the PNDE (and also TNDE) formula and the TNIE (and also PNIE) formula are non-linear functions of $\bbeta_{2}^{T}\bc$. Therefore, covariate dependent exists for both PNDE and TNIE. This non-linearity comes from the mediator model link function (logit). Because of this non-linearity, evaluation at $E[\bC]$ does not give a marginal interpretation. The interpretation the effect evaluated at $E[\bC]$ is the /conditional/ effect for an /average individual/. The PNDE is examined first.
 
 \begin{align*}
   \text{Conditional }PNDE
@@ -1298,13 +1298,10 @@ In the cases with a logistic mediator model with a linear (Section [[* Logistic 
   \\
   \text{Marginal }PNDE
   &= E[Y_{a_{1},\uwave{M_{a_{0}}}}] - E[Y_{a_{0},\uwave{M_{a_{0}}}}]\\
+  &~~~\text{By iterative expectation}\\
   &= E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] \right] - E \left[ E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\\
   &= E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\\
   &~~~\text{Inside is conditional PNDE at }\bC\\
-  &= \left\{\theta_{1}(a_{1} - a_{0}) \right\} + \left\{\theta_{3}(a_{1} - a_{0}) \right\}
-    \frac
-    {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}
-    {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc)}\\
   &= E \left[ \left\{\theta_{1}(a_{1} - a_{0}) \right\} + \left\{\theta_{3}(a_{1} - a_{0}) \right\}
     \frac
     {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bC)}
@@ -1313,6 +1310,7 @@ In the cases with a logistic mediator model with a linear (Section [[* Logistic 
     E \left[ \frac
     {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bC)}
     {1 + \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bC)} \right]\\
+  &~~~\text{By non-linearity of mediator model link function}\\
   &\ne \left\{\theta_{1}(a_{1} - a_{0}) \right\} + \left\{\theta_{3}(a_{1} - a_{0}) \right\}
     \frac
     {    \exp(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}E[\bC])}
@@ -1320,6 +1318,7 @@ In the cases with a logistic mediator model with a linear (Section [[* Logistic 
   &\text{i.e., Not equal not conditional PNDE formula evaluated at }E[\bC]\\
 \end{align*}
 
+The TNIE formula is examined below.
 
 \begin{align*}
   \text{Conditional }TNIE
@@ -1336,6 +1335,7 @@ In the cases with a logistic mediator model with a linear (Section [[* Logistic 
   \\
   \text{Marginal }TNIE
   &= E[Y_{\uwave{a_{1}},M_{a_{1}}}] - E[Y_{\uwave{a_{1}},M_{a_{0}}}]\\
+  &~~~\text{By iterative expectation}\\
   &= E \left[ E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC] \right] - E \left[ E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC] \right]\\
   &= E \left[ E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC] \right]\\
   &~~~\text{Inside is conditional TNIE at }\bC\\
@@ -1357,6 +1357,7 @@ In the cases with a logistic mediator model with a linear (Section [[* Logistic 
     {    \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bC)}
     {1 + \exp(\beta_{0} + \beta_{1}a_{0} + \bbeta_{2}^{T}\bC)} \right]
     \right\}\\
+  &~~~\text{By non-linearity of mediator model link function}\\
   &\ne (\theta_{2} + \theta_{3}\uwave{a_{1}})\left\{
     \frac
     {    \exp(\beta_{0} + \beta_{1}a_{1} + \bbeta_{2}^{T}E[\bC])}
@@ -1369,18 +1370,23 @@ In the cases with a logistic mediator model with a linear (Section [[* Logistic 
   &\text{i.e., Not equal not conditional TNIE formula evaluated at }E[\bC]\\
 \end{align*}
 
+When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ cancels out of the PNDE (and also TNDE) formulas. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence for PNDE (and also TNDE). However, the TNIE (and also PNIE) formula remain as non-linear functions of $\bbeta_{2}^{T}\bc$, thus, covariate dependence persists for TNIE. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal /direct/ effects are the same as the conditional direct effects because the latter do not vary across covariate patterns. However, the same does not hold for the /indirect/ effects.
+
 *** Logistic mediator model, non-linear outcome model
-The argument is similar for the logistic mediator, non-linear outcome case.
+In the cases with a logistic mediator model with a non-linear (Section [[* Logistic mediator model, non-linear outcome model]]) outcome model, both the PNDE (and also TNDE) formula and the TNIE (and also PNIE) formula are non-linear functions of $\bbeta_{2}^{T}\bc$. Therefore, covariate dependent exists for both PNDE and TNIE. This non-linearity comes from the mediator model link function (logit). Further, the effects are defined on the outcome model link function scale (not linear in counterfactual outcomes). Because of these non-linearity, evaluation at $E[\bC]$ does not give a marginal interpretation. The interpretation the effect evaluated at $E[\bC]$ is the /conditional/ effect for an /average individual/. The PNDE is examined first.
 
 \begin{align*}
-  \text{Conditional }PNDE &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc])\\
+  \text{Conditional }PNDE
+  &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc])\\
   &\approx \theta_{1}(a_{1} - a_{0})\\
   &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^T\bc))\\
   &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^T\bc))\\
   \\
   \text{Marginal }PNDE
   &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}}]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}}])\\
+  &~~~\text{By iterative expectation}\\
   &= \logit\left(E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] \right]\right) - \logit\left(\left[ E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\right)\\
+  &~~~\text{By non-linearity of outcome model link function}\\
   &\ne E \left[ \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC]) \right]\\
   &\approx E[ \theta_{1}(a_{1} - a_{0})\\
   &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^T\bC))\\
@@ -1388,14 +1394,17 @@ The argument is similar for the logistic mediator, non-linear outcome case.
   &= \theta_{1}(a_{1} - a_{0})\\
   &~~~ + E[\log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^T\bC))]\\
   &~~~ - E[\log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^T\bC))]\\
+  &~~~\text{By non-linearity of mediator model link function}\\
   &\ne \theta_{1}(a_{1} - a_{0})\\
   &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^TE[\bC]))\\
   &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^TE[\bC]))\\
 \end{align*}
 
+The TNIE formula is examined below.
 
 \begin{align*}
-  \text{Conditional }TNIE &= \logit(E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc])\\
+  \text{Conditional }TNIE
+  &= \logit(E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc]) - \logit(E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc])\\
   &\approx \log(1 + \exp(\beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bc))\\
   &~~~ - \log(1 + \exp(\beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
   &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bc))\\
@@ -1403,7 +1412,9 @@ The argument is similar for the logistic mediator, non-linear outcome case.
   \\
   \text{Marginal }TNIE
   &= \logit(E[Y_{\uwave{a_{1}},M_{a_{1}}}]) - \logit(E[Y_{\uwave{a_{1}},M_{a_{0}}}])\\
+  &~~~\text{By iterative expectation}\\
   &= \logit\left(E\left[E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC]\right]\right) - \logit\left(E\left[E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC]\right]\right)\\
+  &~~~\text{By non-linearity of outcome model link function}\\
   &\ne E \left[ \logit(E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC]) - \logit(E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC]) \right]\\
   &\approx E[\log(1 + \exp(\beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bC))\\
   &~~~ - \log(1 + \exp(\beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bC))\\
@@ -1413,13 +1424,14 @@ The argument is similar for the logistic mediator, non-linear outcome case.
   &~~~ - E[\log(1 + \exp(\beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bC))]\\
   &~~~ + E[\log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^T\bC))]\\
   &~~~ - E[\log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^T\bC))]\\
+  &~~~\text{By non-linearity of mediator model link function}\\
   &\ne   \log(1 + \exp(\beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^TE[\bC]))\\
   &~~~ - \log(1 + \exp(\beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^TE[\bC]))\\
   &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^TE[\bC]))\\
   &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^TE[\bC]))\\
 \end{align*}
 
-When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ cancels out of the PNDE (and also TNDE) expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence for PNDE (and also TNDE). However, the TNIE (and also PNIE) expressions remain as non-linear functions of $\bbeta_{2}^{T}\bc$, thus, covariate dependence persists for TNIE. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal direct effects are the same as the conditional direct effects because the latter do not vary across covariate patterns. However, the same does not hold for the indirect effects.
+When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ cancels out of the PNDE (and also TNDE) expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence for PNDE (and also TNDE). However, the TNIE (and also PNIE) expressions remain as non-linear functions of $\bbeta_{2}^{T}\bc$, thus, covariate dependence persists for TNIE. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal /direct/ effects are the same as the conditional direct effects because the latter do not vary across covariate patterns. However, the same does not hold for the /indirect/ effects.
 
 ** Practical implications for reporting
 *** Linear mediator model, linear outcome model
