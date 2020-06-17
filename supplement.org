@@ -988,6 +988,38 @@ In the following, we included the minimum code to reproduce the example causal m
 
 ** Generating the example data
 The demonstration data used in the paper was generated as follows in =R= version 4.0.0 on macOS version 10.15.5.
+
+\begin{align*}
+  n
+  &= 1000\\
+  \\
+  &\text{Covariates}\\
+  C_{1,i} &\overset{\text{iid}}{\sim} N(0,1)\\
+  C_{2,i} &\overset{\text{iid}}{\sim} N(0,1)\\
+  \\
+  &\text{Binary treatment}\\
+  \logit(E[A_{i} | C_{1,i}, C_{2,i}])
+  &= -0.5 + 0.1 C_{1,i} + 0.2 C_{2,i}\\
+  A_{i} &\sim Bernoulli(p = E[A_{i} | C_{1,i}, C_{2,i}])\\
+  \\
+  &\text{Continuous mediator}\\
+  E[M_{i} | A_{i}, C_{1,i}, C_{2,i}]
+  &= 0 + 0.5 A_{i} - 0.1 C_{1,i} + 0.3 C_{2,i}\\
+  M_{i} &\sim N(E[M_{i} | A_{i}, C_{1,i}, C_{2,i}], 0.5^{2})\\
+  \\
+  &\text{Exponential event time}\\
+  \lambda_{T_{i}} &= 0 + 0.3 A_{i} + 0.15 M_{i} + 0.05 A_{i}M_{i} -0.2 C_{1,i} - 0.4 C_{2,i}\\
+  T_{i} &\sim Exponential(\lambda_{T_{i}})\\
+  \\
+  &\text{Exponential censoring time}\\
+  C_{i} &\sim Exponential(\exp(-0.5))\\
+  \\
+  &\text{Observed time and event}\\
+  \text{time}_{i} &= \min(T_{i}, C_{i}, 10)\\
+  \text{event}_{i} &= I(T_{i} < C_{i}) I(T_{i} < 10)\\
+\end{align*}
+
+
 \scriptsize
 #+BEGIN_SRC R :session *R-org* :results output :exports both
 suppressMessages(library(tidyverse))
