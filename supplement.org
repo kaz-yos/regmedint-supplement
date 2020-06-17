@@ -1281,6 +1281,7 @@ In the case with a linear mediator model with a non-linear (Section [[* Linear m
   &~~~\text{By the conditional PNDE formula}\\
   &\approx E \left[ \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bC + \theta_{2}\sigma^{2}) \right\} (a_{1} - a_{0}) + \frac{1}{2} \theta_{3}^{2}\sigma^{2}(a_{1}^{2} - a_{0}^{2}) \right]\\
   &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}E[\bC] + \theta_{2}\sigma^{2}) \right\} (a_{1} - a_{0}) + \frac{1}{2} \theta_{3}^{2}\sigma^{2}(a_{1}^{2} - a_{0}^{2})\\
+  &\text{i.e., Not equal not conditional PNDE formula evaluated at }E[\bC]\\
 \end{align*}
 
 When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of the conditional PNDE (and also TNDE) formula. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
@@ -1398,6 +1399,7 @@ In the cases with a logistic mediator model with a non-linear (Section [[* Logis
   &\ne \theta_{1}(a_{1} - a_{0})\\
   &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}a_{1} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^TE[\bC]))\\
   &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}a_{0} + \beta_{0} + \beta_{1} \uwave{a_{0}} + \bbeta_{2}^TE[\bC]))\\
+  &\text{i.e., Not equal not conditional PNDE formula evaluated at }E[\bC]\\
 \end{align*}
 
 The TNIE formula is examined below.
@@ -1429,6 +1431,7 @@ The TNIE formula is examined below.
   &~~~ - \log(1 + \exp(\beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^TE[\bC]))\\
   &~~~ + \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{1} + \bbeta_{2}^TE[\bC]))\\
   &~~~ - \log(1 + \exp(\theta_{2} + \theta_{3}\uwave{a_{1}} + \beta_{0} + \beta_{1} a_{0} + \bbeta_{2}^TE[\bC]))\\
+  &\text{i.e., Not equal not conditional TNIE formula evaluated at }E[\bC]\\
 \end{align*}
 
 When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ cancels out of the PNDE (and also TNDE) expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence for PNDE (and also TNDE). However, the TNIE (and also PNIE) expressions remain as non-linear functions of $\bbeta_{2}^{T}\bc$, thus, covariate dependence persists for TNIE. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal /direct/ effects are the same as the conditional direct effects because the latter do not vary across covariate patterns. However, the same does not hold for the /indirect/ effects.
