@@ -1240,44 +1240,50 @@ The following relationship between the effect estimates and covariate value can 
 The reasons for these specific covariate dependences can be understood by examing the PNDE and TNIE formulas in Section [[* Implementation of the regression-based causal mediation analysis method]]. Covariate dependence exists when the formula contains the term $\bbeta_{2}^{T}\bc$, which is the covariate part of linear predictor for the mediator model. If either one of PNDE and TNIE contains this term, TE (PNDE + TNIE) is also dependent on the covariates.\\
 
 ** Implications for marginal interpretation
-These covariate-dependence of conditional natural effects have implications on whether and how marginal natural effects can be obtained. In summary, only in the case of a linear mediator model and linear outcome model, one can obtain the marginal (population average) natural effects by evaluating the effect estimates at the mean covariate vector $E[\bC]$.
+These covariate-dependence of conditional natural effects have implications on whether and how marginal natural effects can be obtained with =regmedint=. In summary, only in the case of a linear mediator model and linear outcome model, one can obtain the marginal (population average) natural effects by evaluating the effect estimates at the mean covariate vector $E[\bC]$ (mean covariate vector in practice).
 
 *** Linear mediator model, linear outcome model
-In the cases with a linear mediator model with a linear (Section [[* Linear mediator model, linear outcome model]]) or non-linear (Section [[* Linear mediator model, non-linear outcome model]]) outcome model, the PNDE (and also TNDE) expressions contain the term $\bbeta_{2}^{T}\bc$. Notably these expressions are linear in the covariate vector $\bc$, thus, evaluating these expressions at the mean covariate vector $E[\bC]$ gives the marginal effect. The linear mediator, linear outcome case is shown below.
+In the case with a linear mediator model with a linear (Section [[* Linear mediator model, linear outcome model]]) outcome model, the PNDE (and also TNDE) formula contains the term $\bbeta_{2}^{T}\bc$. Notably PNDE (and also TNDE) is linear in the covariate vector $\bc$ as well as the counterfactual outcomes. Thus, evaluating this PNDE (and also TNDE) formula at the mean covariate vector $E[\bC]$ gives the marginal effect.
 
 \begin{align*}
-  \text{Conditional }PNDE &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
+  \text{Conditional }PNDE
+  &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
   &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc) \right\} (a_{1} - a_{0})\\
   \\
   \text{Marginal }PNDE
   &= E[Y_{a_{1},\uwave{M_{a_{0}}}}] - E[Y_{a_{0},\uwave{M_{a_{0}}}}]\\
+  &~~~\text{By iterative expectation}\\
   &= E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] \right] -
      E \left[ E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\\
   &= E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\\
   &~~~\text{Inside is conditional PNDE at } \bC\\
   &= E\left[ \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bC) \right\} (a_{1} - a_{0}) \right]\\
   &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}E[\bC]) \right\} (a_{1} - a_{0})\\
-  &= \text{ Conditional PNDE formula evaluated at } E[\bC]\\
+  &\text{i.e., Equal to conditional PNDE formula evaluated at } E[\bC]\\
 \end{align*}
 
-When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of conditional PNDE expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
+When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of conditional PNDE formula. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
 
 *** Linear mediator model, non-linear outcome model
-The conditional PNDE formula is linear in the covariate vector $\bc$ and the extra term does not contain $\bbeta_{2}^{T}\bc$. However, the non-linearity of the outcome model link function (logit in the example below) prevents the marginal interpretation of the conditional PNDE evaluated at $E[\bC]$.
+In the case with a linear mediator model with a non-linear (Section [[* Linear mediator model, non-linear outcome model]]) outcome model, the PNDE (and also TNDE) formula contain the term $\bbeta_{2}^{T}\bc$. The PNDE (and also TNDE) formula is linear in the covariate vector $\bc$. However, the effect is defined on the outcome model link function scale (not linear in counterfactual outcomes). This non-linearity of the outcome model link function (logit in the example below) prevents the marginal interpretation of the conditional PNDE evaluated at $E[\bC]$. The interpretation the effect evaluated at $E[\bC]$ is the /conditional/ effect for an /average individual/.
 
 \begin{align*}
-  \text{Conditional }PNDE &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc])\\
+  \text{Conditional }PNDE
+  &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc])\\
   &\approx \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bc + \theta_{2}\sigma^{2}) \right\} (a_{1} - a_{0}) + \frac{1}{2} \theta_{3}^{2}\sigma^{2}(a_{1}^{2} - a_{0}^{2})\\
   \\
   \text{Marginal }PNDE
   &= \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}}]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}}])\\
+  &~~~\text{By iterative expectation}\\
   &= \logit\left(E \left[ E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC] \right]\right) - \logit\left(E \left[ E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC] \right]\right)\\
+  &~~~\text{By non-linearity of outcome model link function}\\
   &\ne E \left[ \logit(E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC]) - \logit(E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC]) \right]\\
+  &~~~\text{By the conditional PNDE formula}\\
   &\approx E \left[ \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}\bC + \theta_{2}\sigma^{2}) \right\} (a_{1} - a_{0}) + \frac{1}{2} \theta_{3}^{2}\sigma^{2}(a_{1}^{2} - a_{0}^{2}) \right]\\
   &= \left\{ \theta_{1} + \theta_{3}(\beta_{0} + \beta_{1}\uwave{a_{0}} + \bbeta_{2}^{T}E[\bC] + \theta_{2}\sigma^{2}) \right\} (a_{1} - a_{0}) + \frac{1}{2} \theta_{3}^{2}\sigma^{2}(a_{1}^{2} - a_{0}^{2})\\
 \end{align*}
 
-When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of the conditional PNDE expressions. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
+When there is no treatment-mediator interaction term in the outcome model $(\theta_{3} = 0)$, the term $\bbeta_{2}^{T}\bc$ drops out of the conditional PNDE (and also TNDE) formula. Only $\theta_{1}(a_{1} - a_{0})$ (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
 
 *** Logistic mediator model, linear outcome model
 In the cases with a logistic mediator model with a linear (Section [[* Logistic mediator model, linear outcome model]]) or non-linear (Section [[* Logistic mediator model, non-linear outcome model]]) outcome model, both the PNDE (and also TNDE) expression and the TNIE (and also PNIE) expression are non-linear functions of $\bbeta_{2}^{T}\bc$. Therefore, covariate dependent exists for both PNDE and TNIE. Because of the non-linearity, evaluation at $E[\bC]$ does not give a marginal interpretation. The interpretation the effect evaluated at $E[\bC]$ is the /conditional/ effect for an /average individual/. The logistic mediator, linear outcome case is shown below.\\
