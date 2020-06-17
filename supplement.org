@@ -1019,7 +1019,6 @@ The demonstration data used in the paper was generated as follows in =R= version
   \text{event}_{i} &= I(T_{i} < C_{i}) I(T_{i} < 10)\\
 \end{align*}
 
-
 \scriptsize
 #+BEGIN_SRC R :session *R-org* :results output :exports both
 suppressMessages(library(tidyverse))
