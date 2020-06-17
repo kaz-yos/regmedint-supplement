@@ -1223,7 +1223,6 @@ demo2 <-
 CreateTableOne(vars = setdiff(names(demo2), "id"),
                strata = c("a"),
                data = demo2,
-               factorVars = c("event"),
                test = FALSE,
                addOverall = TRUE) %>%
   print()
