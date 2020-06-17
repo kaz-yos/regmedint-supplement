@@ -1209,7 +1209,7 @@ res %>%
          yreg = if_else(yreg == "linear", "linear", "non-linear")) %>%
   ggplot(mapping = aes(x = c_cond, y = value, group = name, linetype = name)) +
   geom_line() +
-  scale_y_continuous(name = "Effect estimate") +
+  scale_y_continuous(name = "Effect estimate (outcome model link function scale)") +
   scale_x_continuous(name = "Covariate value") +
   scale_linetype(name = "Effect") +
   facet_grid(interaction ~ mreg + yreg, scales = "free_y", labeller = label_both) +
