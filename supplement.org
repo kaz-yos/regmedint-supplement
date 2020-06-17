@@ -1050,7 +1050,7 @@ demo <-
          cens = rexp(n = n, rate = exp(log_rate_cens)),
          admin_cens = 10) %>%
   ## Observed time and event
-  mutate(time = pmin(t, cens),
+  mutate(time = pmin(t, cens, admin_cens),
          event = as.numeric((t < cens) & (t < admin_cens))) %>%
   ## Clean
   select(id, c1, c2, a, m, time, event)
