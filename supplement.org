@@ -173,7 +173,31 @@ Additionally, the identification of the natural effects require identifying the 
 Given these four assumptions, the mean counterfactual with different treatment values indexing the outcome $Y$ and the mediator $M$ can be identified as follows. See cite:vanderweeleExplanationCausalInference2015 (p465) for the proof. For a continuous $M$, the summation is replaced with an integration.
 
 \begin{align*}
-E[Y_{a,M_{a^{*}}} | \bC = \bc] &= \sum_{m} E[Y | A = a, M = m, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc)
+  &~~~\text{By iterative expectation}\\
+  E[Y_{a,M_{a^{*}}} | \bC = \bc]
+  &= E \left[ E[Y_{a,M_{a^{*}}} | M_{a^{*}}, \bC = \bc] | \bC = \bc \right]\\
+  &~~~\text{Rewrite more concretely assuming discrete }M\\
+  &= \sum_{m} E[Y_{a,M_{a^{*}}} | M_{a^{*}} = m, \bC = \bc] p(M_{a^{*}} = m | \bC = \bc) \\
+  &~~~\because~ M_{a^{*}} = m\\
+  &= \sum_{m} E[Y_{a,m} | M_{a^{*}} = m, \bC = \bc] p(M_{a^{*}} = m | \bC = \bc) \\
+  &~~~\because~ \text{A4. } Y_{a,m} \ind M_{a^{*}} |\bC\\
+  &= \sum_{m} E[Y_{a,m} | \bC = \bc] p(M_{a^{*}} = m | \bC = \bc) \\
+  &~~~\because~ \text{A3. } M_{a} \ind A | \bC\\
+  &= \sum_{m} E[Y_{a,m} | \bC = \bc] p(M_{a^{*}} = m | A, \bC = \bc) \\
+  &~~~\because~ \text{Any given $A$ is equivalent, use stratum }a^{*}\\
+  &= \sum_{m} E[Y_{a,m} | \bC = \bc] p(M_{a^{*}} = m | A = a^{*}, \bC = \bc) \\
+  &~~~\text{By causal consistency for }M\\
+  &= \sum_{m} E[Y_{a,m} | \bC = \bc] p(M = m | A = a^{*}, \bC = \bc) \\
+  &~~~\because~ \text{A1. } Y_{a,m} \ind A | \bC\\
+  &= \sum_{m} E[Y_{a,m} | A, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc) \\
+  &~~~\because~ \text{Any given $A$ is equivalent, use stratum }a\\
+  &= \sum_{m} E[Y_{a,m} | A = a, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc) \\
+  &~~~\because~ \text{A3. } Y_{a,m} \ind M | \left\{ A, \bC \right\}\\
+  &= \sum_{m} E[Y_{a,m} | A = a, M, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc) \\
+  &~~~\because~ \text{Any given $M$ is equivalent, use stratum }m\\
+  &= \sum_{m} E[Y_{a,m} | A = a, M = m, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc) \\
+  &~~~\text{By causal consistency for }Y\\
+  &= \sum_{m} E[Y | A = a, M = m, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc)
 \end{align*}
 
 We can observe that the first treatment value $a$ in the counterfactual $Y_{\uwave{a},M_{a^{*}}}$ indexes the outcome model $E[Y | A = \uwave{a}, M = m, \bC = \bc]$, whereas the second treatment value $a^{*}$ in the counterfactual $Y_{a,\uwave{M_{a^{*}}}}$ indexes the mediator model $p(M = m | A = \uwave{a^{*}}, \bC = \bc)$.\\
