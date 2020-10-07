@@ -176,31 +176,35 @@ Given these four assumptions, the mean counterfactual with different treatment v
   &~~~\text{By iterative expectation}\\
   E[Y_{a,M_{a^{*}}} | \bC = \bc]
   &= E \left[ E[Y_{a,M_{a^{*}}} | M_{a^{*}}, \bC = \bc] | \bC = \bc \right]\\
-  &~~~\text{Rewrite more concretely assuming discrete }M\\
-  &= \sum_{m} E[Y_{a,M_{a^{*}}} | M_{a^{*}} = m, \bC = \bc] p(M_{a^{*}} = m | \bC = \bc) \\
+  &~~~\text{Rewrite outer expectation as Riemann-Stieltjes integral}\\
+  &= \int_{m} E[Y_{a,M_{a^{*}}} | M_{a^{*}} = m, \bC = \bc] \mathrm{d}F(M_{a^{*}} = m | \bC = \bc) \\
   &~~~\because~ M_{a^{*}} = m\\
-  &= \sum_{m} E[Y_{a,m} | M_{a^{*}} = m, \bC = \bc] p(M_{a^{*}} = m | \bC = \bc) \\
+  &= \int_{m} E[Y_{a,m} | M_{a^{*}} = m, \bC = \bc] \mathrm{d}F(M_{a^{*}} = m | \bC = \bc) \\
   &~~~\because~ \text{A4. } Y_{a,m} \ind M_{a^{*}} |\bC\\
-  &= \sum_{m} E[Y_{a,m} | \bC = \bc] p(M_{a^{*}} = m | \bC = \bc) \\
+  &= \int_{m} E[Y_{a,m} | \bC = \bc] \mathrm{d}F(M_{a^{*}} = m | \bC = \bc) \\
   &~~~\because~ \text{A3. } M_{a} \ind A | \bC\\
-  &= \sum_{m} E[Y_{a,m} | \bC = \bc] p(M_{a^{*}} = m | A, \bC = \bc) \\
+  &= \int_{m} E[Y_{a,m} | \bC = \bc] \mathrm{d}F(M_{a^{*}} = m | A, \bC = \bc) \\
   &~~~\because~ \text{Any given $A$ is equivalent, use stratum }a^{*}\\
-  &= \sum_{m} E[Y_{a,m} | \bC = \bc] p(M_{a^{*}} = m | A = a^{*}, \bC = \bc) \\
+  &= \int_{m} E[Y_{a,m} | \bC = \bc] \mathrm{d}F(M_{a^{*}} = m | A = a^{*}, \bC = \bc) \\
   &~~~\text{By causal consistency for }M\\
-  &= \sum_{m} E[Y_{a,m} | \bC = \bc] p(M = m | A = a^{*}, \bC = \bc) \\
+  &= \int_{m} E[Y_{a,m} | \bC = \bc] \mathrm{d}F(M = m | A = a^{*}, \bC = \bc) \\
   &~~~\because~ \text{A1. } Y_{a,m} \ind A | \bC\\
-  &= \sum_{m} E[Y_{a,m} | A, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc) \\
+  &= \int_{m} E[Y_{a,m} | A, \bC = \bc] \mathrm{d}F(M = m | A = a^{*}, \bC = \bc) \\
   &~~~\because~ \text{Any given $A$ is equivalent, use stratum }a\\
-  &= \sum_{m} E[Y_{a,m} | A = a, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc) \\
+  &= \int_{m} E[Y_{a,m} | A = a, \bC = \bc] \mathrm{d}F(M = m | A = a^{*}, \bC = \bc) \\
   &~~~\because~ \text{A3. } Y_{a,m} \ind M | \left\{ A, \bC \right\}\\
-  &= \sum_{m} E[Y_{a,m} | A = a, M, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc) \\
+  &= \int_{m} E[Y_{a,m} | A = a, M, \bC = \bc] \mathrm{d}F(M = m | A = a^{*}, \bC = \bc) \\
   &~~~\because~ \text{Any given $M$ is equivalent, use stratum }m\\
-  &= \sum_{m} E[Y_{a,m} | A = a, M = m, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc) \\
+  &= \int_{m} E[Y_{a,m} | A = a, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a^{*}, \bC = \bc) \\
   &~~~\text{By causal consistency for }Y\\
-  &= \sum_{m} E[Y | A = a, M = m, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc)
+  &= \int_{m} E[Y | A = a, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a^{*}, \bC = \bc)\\
+  &~~~\text{Written in terms of expectation}\\
+  &= E \left[ E[Y | A = a, M, \bC = \bc] | A = a^{*}, \bC = \bc \right]\\
 \end{align*}
 
-We can observe that the first treatment value $a$ in the counterfactual $Y_{\uwave{a},M_{a^{*}}}$ indexes the outcome model $E[Y | A = \uwave{a}, M = m, \bC = \bc]$, whereas the second treatment value $a^{*}$ in the counterfactual $Y_{a,\uwave{M_{a^{*}}}}$ indexes the mediator model $p(M = m | A = \uwave{a^{*}}, \bC = \bc)$.\\
+We can observe that the first treatment value $a$ in the counterfactual $Y_{\uwave{a},M_{a^{*}}}$ indexes the outcome model $E[Y | A = \uwave{a}, M = m, \bC = \bc]$, whereas the second treatment value $a^{*}$ in the counterfactual $Y_{a,\uwave{M_{a^{*}}}}$ indexes the mediator model $P(M = m | A = \uwave{a^{*}}, \bC = \bc)$.\\
+
+Thus, this expression takes the expectation of the inner expectation, $Y$ given $(a,m,\bc)$ (seen as a function of $m$ only), using the distribution of $M$ given $(a^{*},\bc)$.\\
 
 The identification formulas for the two natural /direct/ effects are the following. Note the change in the treatment value indexing the /mediator model/ from $a_{0}$ in the PNDE (usual NDE) to $a_{1}$ in the TNDE (annotated with \uwave{~~~~}). Within each effect, only the treatment values indexing the /outcome model/ vary (ones not annotated) because each NDE represent the direct effect of the treatment when the mediator is fixed at the natural value it would take under one treatment value (annotated with \uwave{~~~~}).
 
