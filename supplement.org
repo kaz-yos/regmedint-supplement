@@ -211,17 +211,39 @@ The identification formulas for the two natural /direct/ effects are the followi
 \begin{align*}
   PNDE
   &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
-  &=     \sum_{m} E[Y | A = a_{1}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
-  &~~~ - \sum_{m} E[Y | A = a_{0}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
-  &= \sum_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
-  &~~~ \times p(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  &=     \int_{m} E[Y | A = a_{1}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  &~~~ - \int_{m} E[Y | A = a_{0}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  &= \int_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times \mathrm{d}F(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  &= \left\{
+  \begin{aligned}
+  &~~~\text{For continuous }M\\
+  &\int_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times f(M = m | A = \uwave{a_{0}}, \bC = \bc) \mathrm{d}m\\
+  &\\
+  &~~~\text{For discrete }M\\
+  &\sum_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times P(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  \end{aligned}
+\right .\\
   \\
   TNDE
   &= E[Y_{a_{1},\uwave{M_{a_{1}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{1}}}} | \bC = \bc]\\
-  &=     \sum_{m} E[Y | A = a_{1}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
-  &~~~ - \sum_{m} E[Y | A = a_{0}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
-  &= \sum_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
-  &~~~ \times p(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+  &=     \int_{m} E[Y | A = a_{1}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+  &~~~ - \int_{m} E[Y | A = a_{0}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+  &= \int_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times \mathrm{d}F(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+  &= \left\{
+  \begin{aligned}
+  &~~~\text{For continuous }M\\
+  &\int_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times f(M = m | A = \uwave{a_{1}}, \bC = \bc) \mathrm{d}m\\
+  &\\
+  &~~~\text{For discrete }M\\
+  &\sum_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times f(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+  \end{aligned}
+\right .\\
 \end{align*}
 
 The identification formulas for the two natural /indirect/ effects are the following. Note the change in the treatment value indexing the /outcome model/ from $a_{1}$ in the TNIE (usual NIE) to $a_{0}$ in the PNIE (annotated with \uwave{~~~~}). Within each effect, only the treatment values indexing the /mediator model/ vary (ones not annotated) because each NIE represent the indirect effect of the treatment when its effect on the mediator is "turned on", while the treatment value representing the direct path is fixed at the natural value it would take under one treatment value (annotated with \uwave{~~~~}).
