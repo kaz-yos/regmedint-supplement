@@ -251,17 +251,39 @@ The identification formulas for the two natural /indirect/ effects are the follo
 \begin{align*}
   TNIE
   &= E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc]\\
-  &=     \sum_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc] p(M = m | A = a_{1}, \bC = \bc)\\
-  &~~~ - \sum_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc] p(M = m | A = a_{0}, \bC = \bc)\\
-  &= \sum_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc]\\
-  &~~~ \times \left\{ p(M = m | A = a_{1}, \bC = \bc) - p(M = m | A = a_{0}, \bC = \bc) \right\}
+  &=     \int_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a_{1}, \bC = \bc)\\
+  &~~~ - \int_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a_{0}, \bC = \bc)\\
+  &= \int_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ \mathrm{d}F(M = m | A = a_{1}, \bC = \bc) - \mathrm{d}F(M = m | A = a_{0}, \bC = \bc) \right\}\\
+  &= \left\{
+  \begin{aligned}
+  &~~~\text{For continuous }M\\
+  &\int_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ f(M = m | A = a_{1}, \bC = \bc) - f(M = m | A = a_{0}, \bC = \bc) \right\} \mathrm{d}m\\
+  &\\
+  &~~~\text{For discrete }M\\
+  &\sum_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ P(M = m | A = a_{1}, \bC = \bc) - P(M = m | A = a_{0}, \bC = \bc) \right\}\\
+  \end{aligned}
+\right .\\
   \\
   PNIE
    &= E[Y_{\uwave{a_{0}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{0}},M_{a_{0}}} | \bC = \bc]\\
-  &=     \sum_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc] p(M = m | A = a_{1}, \bC = \bc)\\
-  &~~~ - \sum_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc] p(M = m | A = a_{0}, \bC = \bc)\\
-  &= \sum_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc]\\
-  &~~~ \times \left\{ p(M = m | A = a_{1}, \bC = \bc) - p(M = m | A = a_{0}, \bC = \bc) \right\}
+  &=     \int_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a_{1}, \bC = \bc)\\
+  &~~~ - \int_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a_{0}, \bC = \bc)\\
+  &= \int_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ \mathrm{d}F(M = m | A = a_{1}, \bC = \bc) - \mathrm{d}F(M = m | A = a_{0}, \bC = \bc) \right\}\\
+  &= \left\{
+  \begin{aligned}
+  &~~~\text{For continuous }M\\
+  &\int_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ \mathrm{d}F(M = m | A = a_{1}, \bC = \bc) - \mathrm{d}F(M = m | A = a_{0}, \bC = \bc) \right\}\\
+  &\\
+  &~~~\text{For discrete }M\\
+  &\sum_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ \mathrm{d}F(M = m | A = a_{1}, \bC = \bc) - \mathrm{d}F(M = m | A = a_{0}, \bC = \bc) \right\}\\
+  \end{aligned}
+\right .\\
 \end{align*}
 
 
