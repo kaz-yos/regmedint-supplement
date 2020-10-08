@@ -241,7 +241,7 @@ The identification formulas for the two natural /direct/ effects are the followi
   &\\
   &~~~\text{For discrete }M\\
   &\sum_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
-  &~~~ \times f(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+  &~~~ \times P(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
   \end{aligned}
 \right .\\
 \end{align*}
@@ -277,11 +277,11 @@ The identification formulas for the two natural /indirect/ effects are the follo
   \begin{aligned}
   &~~~\text{For continuous }M\\
   &\int_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc]\\
-  &~~~ \times \left\{ \mathrm{d}F(M = m | A = a_{1}, \bC = \bc) - \mathrm{d}F(M = m | A = a_{0}, \bC = \bc) \right\}\\
+  &~~~ \times \left\{ f(M = m | A = a_{1}, \bC = \bc) - f(M = m | A = a_{0}, \bC = \bc) \right\} \mathrm{d}m\\
   &\\
   &~~~\text{For discrete }M\\
   &\sum_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc]\\
-  &~~~ \times \left\{ \mathrm{d}F(M = m | A = a_{1}, \bC = \bc) - \mathrm{d}F(M = m | A = a_{0}, \bC = \bc) \right\}\\
+  &~~~ \times \left\{ P(M = m | A = a_{1}, \bC = \bc) - P(M = m | A = a_{0}, \bC = \bc) \right\}\\
   \end{aligned}
 \right .\\
 \end{align*}
