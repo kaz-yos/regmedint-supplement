@@ -211,6 +211,8 @@ The identification formulas for the two natural /direct/ effects are the followi
 \begin{align*}
   PNDE
   &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
+  &=     E \left[ E[Y | A = a_{1}, M, \bC = \bc] | A = \uwave{a_{0}}, \bC = \bc \right]\\
+  &~~~ - E \left[ E[Y | A = a_{0}, M, \bC = \bc] | A = \uwave{a_{0}}, \bC = \bc \right]\\
   &=     \int_{m} E[Y | A = a_{1}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
   &~~~ - \int_{m} E[Y | A = a_{0}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
   &= \int_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
@@ -229,6 +231,8 @@ The identification formulas for the two natural /direct/ effects are the followi
   \\
   TNDE
   &= E[Y_{a_{1},\uwave{M_{a_{1}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{1}}}} | \bC = \bc]\\
+  &=     E \left[ E[Y | A = a_{1}, M, \bC = \bc] | A = \uwave{a_{1}}, \bC = \bc \right]\\
+  &~~~ - E \left[ E[Y | A = a_{0}, M, \bC = \bc] | A = \uwave{a_{1}}, \bC = \bc \right]\\
   &=     \int_{m} E[Y | A = a_{1}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
   &~~~ - \int_{m} E[Y | A = a_{0}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
   &= \int_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
@@ -251,6 +255,8 @@ The identification formulas for the two natural /indirect/ effects are the follo
 \begin{align*}
   TNIE
   &= E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc]\\
+  &=     E\left[ E[Y | A = \uwave{a_{1}}, M, \bC = \bc] | A = a_{1}, \bC = \bc \right]\\
+  &~~~ - E\left[ E[Y | A = \uwave{a_{1}}, M, \bC = \bc] | A = a_{0}, \bC = \bc \right]\\
   &=     \int_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a_{1}, \bC = \bc)\\
   &~~~ - \int_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a_{0}, \bC = \bc)\\
   &= \int_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc]\\
@@ -268,7 +274,9 @@ The identification formulas for the two natural /indirect/ effects are the follo
 \right .\\
   \\
   PNIE
-   &= E[Y_{\uwave{a_{0}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{0}},M_{a_{0}}} | \bC = \bc]\\
+  &= E[Y_{\uwave{a_{0}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{0}},M_{a_{0}}} | \bC = \bc]\\
+  &=     E\left[ E[Y | A = \uwave{a_{0}}, M, \bC = \bc] | A = a_{1}, \bC = \bc \right]\\
+  &~~~ - E\left[ E[Y | A = \uwave{a_{0}}, M, \bC = \bc] | A = a_{0}, \bC = \bc \right]\\
   &=     \int_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a_{1}, \bC = \bc)\\
   &~~~ - \int_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a_{0}, \bC = \bc)\\
   &= \int_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc]\\
