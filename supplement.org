@@ -1355,10 +1355,10 @@ res <-
 
 ## Plot
 res %>%
-  filter(name %in% c("te","pnde","tnie")) %>%
+  filter(name %in% c("pnde","tnie")) %>%
   mutate(name = factor(name,
-                       levels = c("te","pnde","tnie"),
-                       labels = c("TE","PNDE","TNIE")),
+                       levels = c("pnde","tnie"),
+                       labels = c("PNDE","TNIE")),
          yreg = if_else(yreg == "linear", "linear", "non-linear")) %>%
   ggplot(mapping = aes(x = c_cond, y = value, group = name, linetype = name)) +
   geom_line() +
@@ -1384,11 +1384,9 @@ The following relationship between the effect estimates and covariate value can 
 |----------------------+--------+--------------+------------------+----------------+------------------|
 | FALSE                | PNDE   | Constant     | Constant         | Constant       | Constant         |
 | $(\theta_{3} = 0)$   | TNIE   | Constant     | Constant         | Varies         | Varies           |
-|                      | TE     | Constant     | Constant         | Varies         | Varies           |
 |                      |        |              |                  |                |                  |
 | TRUE                 | PNDE   | Varies       | Varies           | Varies         | Varies           |
 | $(\theta_{3} \ne 0)$ | TNIE   | Constant     | Constant         | Varies         | Varies           |
-|                      | TE     | Varies       | Varies           | Varies         | Varies           |
 
 The reasons for these specific covariate dependences can be understood by examing the PNDE and TNIE formulas in Section [[* Implementation of the regression-based causal mediation analysis method]]. Covariate dependence exists when the formula contains the term $\bbeta_{2}^{T}\bc$, which is the covariate part of linear predictor for the mediator model. If either one of PNDE and TNIE contains this term, TE (PNDE + TNIE) is also dependent on the covariates.\\
 
