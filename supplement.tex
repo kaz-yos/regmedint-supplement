@@ -1,4 +1,4 @@
-% Created 2020-09-09 Wed 03:51
+% Created 2020-10-22 Thu 14:17
 % Intended LaTeX compiler: pdflatex
 \documentclass[10pt]{article}
 \usepackage[utf8]{inputenc}
@@ -94,7 +94,7 @@
  pdftitle={},
  pdfkeywords={},
  pdfsubject={},
- pdfcreator={Emacs 27.1 (Org mode 9.3.7)}, 
+ pdfcreator={Emacs 27.1 (Org mode 9.4)}, 
  pdflang={English}}
 \begin{document}
 
@@ -105,28 +105,28 @@
 \newpage
 \setcounter{section}{-1}
 \section{Overview of the supplement document}
-\label{sec:org28b65c8}
+\label{sec:orgee7025c}
 
 This supplement document provides additional details for the causal mediation analysis method implemented in the \texttt{R} package \href{https://kaz-yos.github.io/regmedint/}{\texttt{regmedint}} (\url{https://kaz-yos.github.io/regmedint/}). The sections cover the following topics.\\
 
-\ref{sec:orgfed4357}. Definitions of the causal quantities interest and assumptions required for their identification.\\
-\ref{sec:org80dddd1}. Outline of the estimation method implemented in \texttt{regmedint} and mathematical formulas.\\
-\ref{sec:org17f7fa0}. Links to software guide for \texttt{regmedint} and code to reproduce the example.\\
-\ref{sec:orgfe9af71}. Visual demonstration of covariate-dependence of effect estimates.\\
+\ref{sec:orgddc3afe}. Definitions of the causal quantities interest and assumptions required for their identification.\\
+\ref{sec:org5567ee9}. Outline of the estimation method implemented in \texttt{regmedint} and mathematical formulas.\\
+\ref{sec:orgc1ef588}. Links to software guide for \texttt{regmedint} and code to reproduce the example.\\
+\ref{sec:org10f2fac}. Visual demonstration of covariate-dependence of effect estimates.\\
 
-Applied users of the \texttt{regmedint} package should benefit most from the sotware instructions in Section \ref{sec:org17f7fa0} and the causal assumptions stated in Section \ref{sec:orgfed4357}. Section \ref{sec:org80dddd1} is meant for methodologists and developers looking for the implementation details of the \texttt{regmedint} package.\\
+Applied users of the \texttt{regmedint} package should benefit most from the sotware instructions in Section \ref{sec:orgc1ef588} and the causal assumptions stated in Section \ref{sec:orgddc3afe}. Section \ref{sec:org5567ee9} is meant for methodologists and developers looking for the implementation details of the \texttt{regmedint} package.\\
 
-Section \ref{sec:orgfe9af71} visually demonstrate a somewhat overlooked aspect of the regression-based causal mediation analysis using an added functionality of the \texttt{regmedint} package (re-evaluation of effect estimates at various covariate levels without model refitting). Practical implications for reporting are discussed.\\
+Section \ref{sec:org10f2fac} visually demonstrate a somewhat overlooked aspect of the regression-based causal mediation analysis using an added functionality of the \texttt{regmedint} package (re-evaluation of effect estimates at various covariate levels without model refitting). Practical implications for reporting are discussed.\\
 
 The latest version of this supplement document as well as the corresponding \texttt{org-mode} and \LaTeX ~ documents can be found at: \url{https://github.com/kaz-yos/regmedint-supplement}.
 
 
 \section{Brief description of causal mediation analysis}
-\label{sec:orgfed4357}
+\label{sec:orgddc3afe}
 The literature on causal mediation analysis is vast \cite{vanderweeleExplanationCausalInference2015} and is evolving, thus, only the pieces relevant for the current software are reviewed here.
 
 \subsection{Decomposition of total effect}
-\label{sec:org8ebee6b}
+\label{sec:org0966281}
 Let \(Y\) be the outcome variable of interest, \(A\) be the treatment variable of interest, \(M\) be the mediator variable of interest, and \(\bC\) be the potentially vector-valued pre-treatment baseline covariates necessary for exchangeability (See the section on identification). The treatment contrast of interest is \(a_{1}\) vs \(a_{0}\), the second being the reference level. The counterfactual \(Y_{a,m}\) is the value of \(Y\) for an individual when, possibly contrary to the fact, the treatment level \(a\) and mediator level \(m\) are assigned.\\
 
 The total effect (TE), the causal effect of chaning the treatment level from the reference level \(a_{0}\) to the level of interest \(a_{1}\), is defined as follows at the covariate level \(\bC = \bc\).
@@ -177,7 +177,7 @@ More in general, we can consider the effects on the outcome model link function 
 
 
 \subsection{Identification of natural effects}
-\label{sec:org5bb227a}
+\label{sec:org15ab44a}
 Several conditional exchangeabilities must be assumed for identification of effects in the causal mediation framework. See \cite{vanderweeleExplanationCausalInference2015} (p463) for details.
 
 \begin{align*}
@@ -198,27 +198,81 @@ Additionally, the identification of the natural effects require identifying the 
 Given these four assumptions, the mean counterfactual with different treatment values indexing the outcome \(Y\) and the mediator \(M\) can be identified as follows. See \cite{vanderweeleExplanationCausalInference2015} (p465) for the proof. For a continuous \(M\), the summation is replaced with an integration.
 
 \begin{align*}
-E[Y_{a,M_{a^{*}}} | \bC = \bc] &= \sum_{m} E[Y | A = a, M = m, \bC = \bc] p(M = m | A = a^{*}, \bC = \bc)
+  &~~~\text{By iterative expectation}\\
+  E[Y_{a,M_{a^{*}}} | \bC = \bc]
+  &= E \left[ E[Y_{a,M_{a^{*}}} | M_{a^{*}}, \bC = \bc] | \bC = \bc \right]\\
+  &~~~\text{Rewrite outer expectation as Riemann-Stieltjes integral}\\
+  &= \int_{m} E[Y_{a,M_{a^{*}}} | M_{a^{*}} = m, \bC = \bc] \mathrm{d}F(M_{a^{*}} = m | \bC = \bc) \\
+  &~~~\because~ M_{a^{*}} = m\\
+  &= \int_{m} E[Y_{a,m} | M_{a^{*}} = m, \bC = \bc] \mathrm{d}F(M_{a^{*}} = m | \bC = \bc) \\
+  &~~~\because~ \text{A4. } Y_{a,m} \ind M_{a^{*}} |\bC\\
+  &= \int_{m} E[Y_{a,m} | \bC = \bc] \mathrm{d}F(M_{a^{*}} = m | \bC = \bc) \\
+  &~~~\because~ \text{A3. } M_{a} \ind A | \bC\\
+  &= \int_{m} E[Y_{a,m} | \bC = \bc] \mathrm{d}F(M_{a^{*}} = m | A, \bC = \bc) \\
+  &~~~\because~ \text{Any given $A$ is equivalent, use stratum }a^{*}\\
+  &= \int_{m} E[Y_{a,m} | \bC = \bc] \mathrm{d}F(M_{a^{*}} = m | A = a^{*}, \bC = \bc) \\
+  &~~~\text{By causal consistency for }M\\
+  &= \int_{m} E[Y_{a,m} | \bC = \bc] \mathrm{d}F(M = m | A = a^{*}, \bC = \bc) \\
+  &~~~\because~ \text{A1. } Y_{a,m} \ind A | \bC\\
+  &= \int_{m} E[Y_{a,m} | A, \bC = \bc] \mathrm{d}F(M = m | A = a^{*}, \bC = \bc) \\
+  &~~~\because~ \text{Any given $A$ is equivalent, use stratum }a\\
+  &= \int_{m} E[Y_{a,m} | A = a, \bC = \bc] \mathrm{d}F(M = m | A = a^{*}, \bC = \bc) \\
+  &~~~\because~ \text{A3. } Y_{a,m} \ind M | \left\{ A, \bC \right\}\\
+  &= \int_{m} E[Y_{a,m} | A = a, M, \bC = \bc] \mathrm{d}F(M = m | A = a^{*}, \bC = \bc) \\
+  &~~~\because~ \text{Any given $M$ is equivalent, use stratum }m\\
+  &= \int_{m} E[Y_{a,m} | A = a, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a^{*}, \bC = \bc) \\
+  &~~~\text{By causal consistency for }Y\\
+  &= \int_{m} E[Y | A = a, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a^{*}, \bC = \bc)\\
+  &~~~\text{Written in terms of expectation}\\
+  &= E \left[ E[Y | A = a, M, \bC = \bc] | A = a^{*}, \bC = \bc \right]\\
 \end{align*}
 
-We can observe that the first treatment value \(a\) in the counterfactual \(Y_{\uwave{a},M_{a^{*}}}\) indexes the outcome model \(E[Y | A = \uwave{a}, M = m, \bC = \bc]\), whereas the second treatment value \(a^{*}\) in the counterfactual \(Y_{a,\uwave{M_{a^{*}}}}\) indexes the mediator model \(p(M = m | A = \uwave{a^{*}}, \bC = \bc)\).\\
+We can observe that the first treatment value \(a\) in the counterfactual \(Y_{\uwave{a},M_{a^{*}}}\) indexes the outcome model \(E[Y | A = \uwave{a}, M = m, \bC = \bc]\), whereas the second treatment value \(a^{*}\) in the counterfactual \(Y_{a,\uwave{M_{a^{*}}}}\) indexes the mediator model \(P(M = m | A = \uwave{a^{*}}, \bC = \bc)\).\\
+
+Thus, this expression takes the expectation of the inner expectation, \(Y\) given \((a,m,\bc)\) (seen as a function of \(m\) only), using the distribution of \(M\) given \((a^{*},\bc)\).\\
 
 The identification formulas for the two natural \emph{direct} effects are the following. Note the change in the treatment value indexing the \emph{mediator model} from \(a_{0}\) in the PNDE (usual NDE) to \(a_{1}\) in the TNDE (annotated with \uwave{~~~~}). Within each effect, only the treatment values indexing the \emph{outcome model} vary (ones not annotated) because each NDE represent the direct effect of the treatment when the mediator is fixed at the natural value it would take under one treatment value (annotated with \uwave{~~~~}).
 
 \begin{align*}
   PNDE
   &= E[Y_{a_{1},\uwave{M_{a_{0}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{0}}}} | \bC = \bc]\\
-  &=     \sum_{m} E[Y | A = a_{1}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
-  &~~~ - \sum_{m} E[Y | A = a_{0}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
-  &= \sum_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
-  &~~~ \times p(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  &=     E \left[ E[Y | A = a_{1}, M, \bC = \bc] | A = \uwave{a_{0}}, \bC = \bc \right]\\
+  &~~~ - E \left[ E[Y | A = a_{0}, M, \bC = \bc] | A = \uwave{a_{0}}, \bC = \bc \right]\\
+  &=     \int_{m} E[Y | A = a_{1}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  &~~~ - \int_{m} E[Y | A = a_{0}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  &= \int_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times \mathrm{d}F(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  &= \left\{
+  \begin{aligned}
+  &~~~\text{For continuous }M\\
+  &\int_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times f(M = m | A = \uwave{a_{0}}, \bC = \bc) \mathrm{d}m\\
+  &\\
+  &~~~\text{For discrete }M\\
+  &\sum_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times P(M = m | A = \uwave{a_{0}}, \bC = \bc)\\
+  \end{aligned}
+\right .\\
   \\
   TNDE
   &= E[Y_{a_{1},\uwave{M_{a_{1}}}} | \bC = \bc] - E[Y_{a_{0},\uwave{M_{a_{1}}}} | \bC = \bc]\\
-  &=     \sum_{m} E[Y | A = a_{1}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
-  &~~~ - \sum_{m} E[Y | A = a_{0}, M = m, \bC = \bc] p(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
-  &= \sum_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
-  &~~~ \times p(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+  &=     E \left[ E[Y | A = a_{1}, M, \bC = \bc] | A = \uwave{a_{1}}, \bC = \bc \right]\\
+  &~~~ - E \left[ E[Y | A = a_{0}, M, \bC = \bc] | A = \uwave{a_{1}}, \bC = \bc \right]\\
+  &=     \int_{m} E[Y | A = a_{1}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+  &~~~ - \int_{m} E[Y | A = a_{0}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+  &= \int_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times \mathrm{d}F(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+  &= \left\{
+  \begin{aligned}
+  &~~~\text{For continuous }M\\
+  &\int_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times f(M = m | A = \uwave{a_{1}}, \bC = \bc) \mathrm{d}m\\
+  &\\
+  &~~~\text{For discrete }M\\
+  &\sum_{m} \left\{ E[Y | A = a_{1}, M = m, \bC = \bc] - E[Y | A = a_{0}, M = m, \bC = \bc] \right\}\\
+  &~~~ \times P(M = m | A = \uwave{a_{1}}, \bC = \bc)\\
+  \end{aligned}
+\right .\\
 \end{align*}
 
 The identification formulas for the two natural \emph{indirect} effects are the following. Note the change in the treatment value indexing the \emph{outcome model} from \(a_{1}\) in the TNIE (usual NIE) to \(a_{0}\) in the PNIE (annotated with \uwave{~~~~}). Within each effect, only the treatment values indexing the \emph{mediator model} vary (ones not annotated) because each NIE represent the indirect effect of the treatment when its effect on the mediator is "turned on", while the treatment value representing the direct path is fixed at the natural value it would take under one treatment value (annotated with \uwave{~~~~}).
@@ -226,26 +280,52 @@ The identification formulas for the two natural \emph{indirect} effects are the 
 \begin{align*}
   TNIE
   &= E[Y_{\uwave{a_{1}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{1}},M_{a_{0}}} | \bC = \bc]\\
-  &=     \sum_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc] p(M = m | A = a_{1}, \bC = \bc)\\
-  &~~~ - \sum_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc] p(M = m | A = a_{0}, \bC = \bc)\\
-  &= \sum_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc]\\
-  &~~~ \times \left\{ p(M = m | A = a_{1}, \bC = \bc) - p(M = m | A = a_{0}, \bC = \bc) \right\}
+  &=     E\left[ E[Y | A = \uwave{a_{1}}, M, \bC = \bc] | A = a_{1}, \bC = \bc \right]\\
+  &~~~ - E\left[ E[Y | A = \uwave{a_{1}}, M, \bC = \bc] | A = a_{0}, \bC = \bc \right]\\
+  &=     \int_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a_{1}, \bC = \bc)\\
+  &~~~ - \int_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a_{0}, \bC = \bc)\\
+  &= \int_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ \mathrm{d}F(M = m | A = a_{1}, \bC = \bc) - \mathrm{d}F(M = m | A = a_{0}, \bC = \bc) \right\}\\
+  &= \left\{
+  \begin{aligned}
+  &~~~\text{For continuous }M\\
+  &\int_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ f(M = m | A = a_{1}, \bC = \bc) - f(M = m | A = a_{0}, \bC = \bc) \right\} \mathrm{d}m\\
+  &\\
+  &~~~\text{For discrete }M\\
+  &\sum_{m} E[Y | A = \uwave{a_{1}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ P(M = m | A = a_{1}, \bC = \bc) - P(M = m | A = a_{0}, \bC = \bc) \right\}\\
+  \end{aligned}
+\right .\\
   \\
   PNIE
-   &= E[Y_{\uwave{a_{0}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{0}},M_{a_{0}}} | \bC = \bc]\\
-  &=     \sum_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc] p(M = m | A = a_{1}, \bC = \bc)\\
-  &~~~ - \sum_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc] p(M = m | A = a_{0}, \bC = \bc)\\
-  &= \sum_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc]\\
-  &~~~ \times \left\{ p(M = m | A = a_{1}, \bC = \bc) - p(M = m | A = a_{0}, \bC = \bc) \right\}
+  &= E[Y_{\uwave{a_{0}},M_{a_{1}}} | \bC = \bc] - E[Y_{\uwave{a_{0}},M_{a_{0}}} | \bC = \bc]\\
+  &=     E\left[ E[Y | A = \uwave{a_{0}}, M, \bC = \bc] | A = a_{1}, \bC = \bc \right]\\
+  &~~~ - E\left[ E[Y | A = \uwave{a_{0}}, M, \bC = \bc] | A = a_{0}, \bC = \bc \right]\\
+  &=     \int_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a_{1}, \bC = \bc)\\
+  &~~~ - \int_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc] \mathrm{d}F(M = m | A = a_{0}, \bC = \bc)\\
+  &= \int_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ \mathrm{d}F(M = m | A = a_{1}, \bC = \bc) - \mathrm{d}F(M = m | A = a_{0}, \bC = \bc) \right\}\\
+  &= \left\{
+  \begin{aligned}
+  &~~~\text{For continuous }M\\
+  &\int_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ f(M = m | A = a_{1}, \bC = \bc) - f(M = m | A = a_{0}, \bC = \bc) \right\} \mathrm{d}m\\
+  &\\
+  &~~~\text{For discrete }M\\
+  &\sum_{m} E[Y | A = \uwave{a_{0}}, M = m, \bC = \bc]\\
+  &~~~ \times \left\{ P(M = m | A = a_{1}, \bC = \bc) - P(M = m | A = a_{0}, \bC = \bc) \right\}\\
+  \end{aligned}
+\right .\\
 \end{align*}
 
 
 \section{Implementation of the regression-based causal mediation analysis method}
-\label{sec:org80dddd1}
-Here we describe the formulas implemented in \texttt{regmendint}, using the notational convention in \cite{vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015}. In addition to what can be found in the appendix of \cite{vanderweeleExplanationCausalInference2015}, we provide the explicit expressions for the alternative TNDE-PNIE decomposition. The differences are highlighted with \(\uwave{~~~~}\).
+\label{sec:org5567ee9}
+Here we describe the formulas implemented in \texttt{regmedint}, using the notational convention in \cite{vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015}. In addition to what can be found in the appendix of \cite{vanderweeleExplanationCausalInference2015}, we provide the explicit expressions for the alternative TNDE-PNIE decomposition. The differences are highlighted with \(\uwave{~~~~}\).
 
 \subsection{Parametrizing the mediation effect formulas}
-\label{sec:orgb67e48a}
+\label{sec:orgf36c752}
 A seen above, there are two models involved in identification of natural effects: the outcome model (\(E[Y|A=a,M=m,\bC=\bc]\)) and the mediator model (\(p(M|A=a,\bC=\bc)\)). The identification formulas do not specify any particular model structure (non-parametric). In the method described in \cite{valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015}, a simple parametric model is proposed for each.\\
 
 The mediator model with a link function \(g_{M}\) is parametrized as follows.
@@ -261,7 +341,7 @@ The outcome model with a link function \(g_{Y}\) is parametrized as follows.
 Under these parametric modeling assumptions, each effect of interest can be written as a function of the parameters (coefficients) of the the mediator model (\(\beta\) and sometimes \(\sigma^{2}\)) and the outcome model (\(\theta\)). Because of the product configuration (outcome model \texttimes{} mediator model), each natural effect is a non-linear function of the parameters (model coefficients). The maximum likelihood estimates (MLE) of these effects are the ones with these parameters replaced with their respective MLEs from the two models.
 
 \subsection{Obtaining standard errors via multivariate delta method}
-\label{sec:org77dcfdf}
+\label{sec:orga24421a}
 
 Each effect of interest is estimated as a scalar-valued, non-linear function of estiamted coefficients for the mediator model and the outcome model. Thus, we can obtain the standard error of each effect estimate using the variance covariance matrix for the coefficients and multivariate delta method \cite{hoefWhoInventedDelta2012}.\\
 
@@ -296,9 +376,9 @@ By the large sample approximation using the multivariate delta method, the varia
 This expression is abbreviated as \(\Gamma\Sigma\Gamma'\) in \cite{vanderweeleExplanationCausalInference2015,valeriMediationAnalysisAllowing2013,valeriSASMacroCausal2015}. In these references, the treatment contrast (\(a_{1}-a_{0}\)) is factored out from \(\nabla Q \left( (\bbetahat^{T},\bthetahat^{T})^{T} \right)\) when possible. In the following, we define \(\Gamma\) as a column vector to be consistent with the implementation of \texttt{regmedint}, thus, the corresponding expression appears as \(\Gamma^{T}\Sigma\Gamma\).
 
 \subsection{Linear mediator model, linear outcome model}
-\label{sec:org00175f4}
+\label{sec:org03fbd56}
 \subsubsection{Effect formulas}
-\label{sec:org5d539f8}
+\label{sec:orgf34a8de}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p466).
 
 \begin{align*}
@@ -325,7 +405,7 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_est()} implements 
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:orgd888de8}
+\label{sec:org39e4224}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p466).
 
 \begin{align*}
@@ -427,11 +507,11 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_linear\_se()} implements t
 
 
 \subsection{Linear mediator model, non-linear outcome model}
-\label{sec:orgf750e33}
+\label{sec:orgb6204be}
 These formulas are used for all non-linear outcome models, including logistic (rare outcome assumption), log-linear, Poisson, negative binomial \cite{valeriMediationAnalysisAllowing2013}, accelerated failure time, and Cox (rare outcome assumption) \cite{valeriSASMacroCausal2015}.
 
 \subsubsection{Effect formulas}
-\label{sec:org421d962}
+\label{sec:orge2a047d}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p468).
 
 \begin{align*}
@@ -458,7 +538,7 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_est()} implement
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:orgdb70ddf}
+\label{sec:orgaec3b4a}
 The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p468).
 
 \begin{align*}
@@ -567,9 +647,9 @@ The function \texttt{calc\_myreg\_mreg\_linear\_yreg\_logistic\_se()} implements
 
 
 \subsection{Logistic mediator model, linear outcome model}
-\label{sec:orge167dd5}
+\label{sec:org735c217}
 \subsubsection{Effect formulas}
-\label{sec:org74cd680}
+\label{sec:orgc2e99dd}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p471).
 
 \begin{align*}
@@ -618,7 +698,7 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_est()} implement
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:org7ea813d}
+\label{sec:org115b1f6}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p471).
 
 \begin{align*}
@@ -796,11 +876,11 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_linear\_se()} implements
 
 
 \subsection{Logistic mediator model, non-linear outcome model}
-\label{sec:org16a066c}
+\label{sec:org88a698e}
 These formulas are used for all non-linear outcome models, including logistic (rare outcome assumption), log-linear, Poisson, negative binomial \cite{valeriMediationAnalysisAllowing2013}, accelerated failure time, and Cox (rare outcome assumption) \cite{valeriSASMacroCausal2015}.
 
 \subsubsection{Effect formulas}
-\label{sec:orgc88c391}
+\label{sec:org8b56b4c}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_est()} implements the effect formulas in \cite{vanderweeleExplanationCausalInference2015} (p473).
 
 \begin{align*}
@@ -841,7 +921,7 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_est()} impleme
 \end{align*}
 
 \subsubsection{Variance formulas}
-\label{sec:orgd358d64}
+\label{sec:org51cf738}
 The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_se()} implements the standard error formulas in \cite{vanderweeleExplanationCausalInference2015} (p473).
 
 \begin{align*}
@@ -1010,9 +1090,9 @@ The function \texttt{calc\_myreg\_mreg\_logistic\_yreg\_logistic\_se()} implemen
 
 
 \section{Software user guide and reproducible code}
-\label{sec:org17f7fa0}
+\label{sec:orgc1ef588}
 \subsection{Pointers to \texttt{regmedint} online user guide}
-\label{sec:orgf238570}
+\label{sec:org0ebe634}
 Further details of the software \texttt{regmedint} are given on its website (\url{https://kaz-yos.github.io/regmedint/index.html}). In particular, the online vignettes for the package should be useful.
 
 \begin{enumerate}
@@ -1041,7 +1121,7 @@ Further details of the software \texttt{regmedint} are given on its website (\ur
 In the following, we included the minimum code to reproduce the example causal mediation analysis in the paper.
 
 \subsection{Generating the example data}
-\label{sec:org2756cd7}
+\label{sec:orgdd5b194}
 The demonstration data used in the paper was generated as follows in \texttt{R} version 4.0.0 on macOS version 10.15.5.
 
 \begin{align*}
@@ -1135,7 +1215,7 @@ CreateTableOne(vars = c("c1","c2","m","time","event"),
 \normalsize
 
 \subsection{Reproducing the data analysis example}
-\label{sec:orga35a29c}
+\label{sec:orgfdd8924}
 The example data analysis included in the paper was conducted as follows. Please note all variables must be numeric. Multi-category variables must be recoded as multiple dichotomous (0, 1) variables.
 \scriptsize
 \begin{minted}[frame=lines,linenos=false]{r}
@@ -1299,8 +1379,8 @@ tab %>%
   print(include.rownames = FALSE)
 \end{minted}
 
-% latex table generated in R 4.0.2 by xtable 1.8-4 package
-% Wed Sep  9 03:51:29 2020
+% latex table generated in R 4.0.3 by xtable 1.8-4 package
+% Thu Oct 22 14:17:14 2020
 \begin{table}[ht]
 \centering
 \begin{tabular}{lll}
@@ -1323,12 +1403,12 @@ Total Effect (TE) & 0.46 [0.28, 0.63] & 1.58 [1.33, 1.88] \\
 All effect estimates are estimates of conditional effects, conditioning on the covariates in \texttt{c\_var}. Since the outcome model is an accelerated failure time model (Weibull model), the estimates are on the log mean time ratio scale (positive values indicate beneficial effects). The exponentiated estimates are on the mean time ratio scale (values > 1.0 indicate beneficial effects). As the outcome model is a non-linear model, the proportion mediated is calculated using a transformation of the ratio scale \cite{vanderweeleOddsRatiosMediation2010}.
 
 \section{Demonstration of covariate-dependence of natural effect estimates}
-\label{sec:orgfe9af71}
+\label{sec:org10f2fac}
 We here use the \texttt{regmedint} package to describe a somewhat overlooked aspect of the regression-based estimation method, \textit{i.e.}, covariate-dependence of conditional effect estimates. Although neither the mediator model nor the outcome model has interaction terms between the treatment variable and baseline covariates, the resulting conditional effect estimates are dependent on the baseline covariate vector value at which they are evaluated (\texttt{c\_cond} argument). This subtle point regarding the regression-based causal mediation method has previously been mentioned \cite{steenFlexibleMediationAnalysis2017,starkopfComparisonFiveSoftware2017}, but remains relatively unknown. Using simulated data, we visualy demonstrate the issue, clarify their implications on estimation of marginal effects, and then state potential approaches to reporting of the results.
 
 \subsection{Generating demonstration data}
-\label{sec:org3e11eaa}
-As explained in Section \ref{sec:org80dddd1}, there are four sets of formulas to cover linear and logistic mediator models as well as linear and non-linear outcome models. Here we generate normal (linear) and Poisson (non-linear) outcomes for demonstration. For simplicity, only one continuous covariate (\texttt{c1}) is involved in the simulated data.
+\label{sec:org6944360}
+As explained in Section \ref{sec:org5567ee9}, there are four sets of formulas to cover linear and logistic mediator models as well as linear and non-linear outcome models. Here we generate normal (linear) and Poisson (non-linear) outcomes for demonstration. For simplicity, only one continuous covariate (\texttt{c1}) is involved in the simulated data.
 
 \begin{align*}
   n
@@ -1357,7 +1437,7 @@ As explained in Section \ref{sec:org80dddd1}, there are four sets of formulas to
   Y_{cont,Mcont,i} &\sim N(E[Y_{cont,Mcont,i} | A_{i}, M_{cont,i}, C_{1,i}], 1)\\
   &\text{Outcome, continuous (binary mediator)}\\
   E[Y_{cont,Mbin,i} | A_{i}, M_{bin,i}, C_{1,i}]
-  &= 0 + 0.3 A_{i} + 0.15 M_{bin,i} + 0.05 A_{i} M_{bin,i} -0.2 C_{1,i}\\
+  &= 0 + 0.3 A_{i} + 0.15 M_{bin,i} + 0.45 A_{i} M_{bin,i} -0.2 C_{1,i}\\
   Y_{cont,Mbin,i} &\sim N(E[Y_{cont,Mbin,i} | A_{i}, M_{bin,i}, C_{1,i}], 1)\\
   \\
   &\text{Outcome, Poisson (continuous mediator)}\\
@@ -1366,7 +1446,7 @@ As explained in Section \ref{sec:org80dddd1}, there are four sets of formulas to
   Y_{pois,Mcont,i} &\sim Poisson(E[Y_{pois,Mcont,i} | A_{i}, M_{cont,i}, C_{1,i}])\\
   &\text{Outcome, Poisson (binary mediator)}\\
   \log(E[Y_{pois,Mbin,i} | A_{i}, M_{bin,i}, C_{1,i}])
-  &= 0 + 0.3 A_{i} + 0.15 M_{bin,i} + 0.05 A_{i} M_{bin,i} -0.2 C_{1,i}\\
+  &= 0 + 0.3 A_{i} + 0.15 M_{bin,i} + 0.45 A_{i} M_{bin,i} -0.2 C_{1,i}\\
   Y_{pois,Mbin,i} &\sim Poisson(E[Y_{pois,Mbin,i} | A_{i}, M_{bin,i}, C_{1,i}])\\
 \end{align*}
 
@@ -1394,7 +1474,7 @@ demo2 <-
          m_bin = rbinom(n = n, size = 1, prob = p_m_bin)) %>%
   ## Outcomes
   mutate(lp_y_m_cont = 0 + (0.3 * a) + (0.15 * m_cont) + (0.05 * a * m_cont) + (-0.2 * c1),
-         lp_y_m_bin = 0 + (0.3 * a) + (0.15 * m_bin) + (0.05 * a * m_bin) + (-0.2 * c1),
+         lp_y_m_bin = 0 + (0.3 * a) + (0.15 * m_bin) + (0.45 * a * m_bin) + (-0.2 * c1),
          ## Normal continuous outcomes
          y_cont_m_cont = rnorm(n = n, mean = lp_y_m_cont, sd = 1),
          y_cont_m_bin = rnorm(n = n, mean = lp_y_m_bin, sd = 1),
@@ -1424,15 +1504,15 @@ CreateTableOne(vars = setdiff(names(demo2), "id"),
   m_cont (mean (SD))        0.18 (0.75)  0.05 (0.72)  0.45 (0.72)
   m_bin (mean (SD))         0.35 (0.48)  0.29 (0.46)  0.46 (0.50)
   y_cont_m_cont (mean (SD)) 0.12 (1.05) -0.01 (1.06)  0.38 (0.99)
-  y_cont_m_bin (mean (SD))  0.20 (1.02)  0.08 (1.04)  0.43 (0.94)
+  y_cont_m_bin (mean (SD))  0.26 (1.04)  0.08 (1.04)  0.62 (0.95)
   y_pois_m_cont (mean (SD)) 1.15 (1.07)  1.03 (1.00)  1.39 (1.17)
-  y_pois_m_bin (mean (SD))  1.24 (1.17)  1.09 (1.04)  1.54 (1.34)
+  y_pois_m_bin (mean (SD))  1.37 (1.32)  1.09 (1.04)  1.93 (1.61)
 \end{verbatim}
 
 \normalsize
 
 \subsection{Demonstrating covariate dependence visually}
-\label{sec:orgb626407}
+\label{sec:orgdd78a3e}
 Here we fit models 8 times to cover the four patterns stated above with or without an treatment-mediator interaction term in the outcome model. The resulting effect estimates are re-evaluated at various covariate values to reveal their relationship.
 \scriptsize
 \begin{minted}[frame=lines,linenos=false]{r}
@@ -1475,10 +1555,10 @@ res <-
 
 ## Plot
 res %>%
-  filter(name %in% c("te","pnde","tnie")) %>%
+  filter(name %in% c("pnde","tnie")) %>%
   mutate(name = factor(name,
-                       levels = c("te","pnde","tnie"),
-                       labels = c("TE","PNDE","TNIE")),
+                       levels = c("pnde","tnie"),
+                       labels = c("PNDE","TNIE")),
          yreg = if_else(yreg == "linear", "linear", "non-linear")) %>%
   ggplot(mapping = aes(x = c_cond, y = value, group = name, linetype = name)) +
   geom_line() +
@@ -1511,23 +1591,21 @@ Interaction & Effect & yreg: linear & yreg: non-linear & yreg: linear & yreg: no
 \hline
 FALSE & PNDE & Constant & Constant & Constant & Constant\\
 \((\theta_{3} = 0)\) & TNIE & Constant & Constant & Varies & Varies\\
- & TE & Constant & Constant & Varies & Varies\\
  &  &  &  &  & \\
 TRUE & PNDE & Varies & Varies & Varies & Varies\\
 \((\theta_{3} \ne 0)\) & TNIE & Constant & Constant & Varies & Varies\\
- & TE & Varies & Varies & Varies & Varies\\
 \end{tabular}
 \end{center}
 
-The reasons for these specific covariate dependences can be understood by examing the PNDE and TNIE formulas in Section \ref{sec:org80dddd1}. Covariate dependence exists when the formula contains the term \(\bbeta_{2}^{T}\bc\), which is the covariate part of linear predictor for the mediator model. If either one of PNDE and TNIE contains this term, TE (PNDE + TNIE) is also dependent on the covariates.\\
+The reasons for these specific covariate dependences can be understood by examing the PNDE and TNIE formulas in Section \ref{sec:org5567ee9}. Covariate dependence exists when the formula contains the term \(\bbeta_{2}^{T}\bc\), which is the covariate part of linear predictor for the mediator model. If either one of PNDE and TNIE contains this term, TE (PNDE + TNIE) is also dependent on the covariates.\\
 
 \subsection{Implications for marginal interpretation}
-\label{sec:org3eb9c19}
+\label{sec:orgdabaa15}
 These covariate-dependence of conditional natural effects have implications on whether and how marginal natural effects can be obtained with \texttt{regmedint}. In summary, only in the case of a linear mediator model and linear outcome model, one can obtain the marginal (population average) natural effects by evaluating the effect estimates at the mean covariate vector \(E[\bC]\) (mean covariate vector in practice).
 
 \subsubsection{Linear mediator model, linear outcome model}
-\label{sec:org806e7f7}
-In the case with a linear mediator model with a linear (Section \ref{sec:org00175f4}) outcome model, the PNDE (and also TNDE) formula contains the term \(\bbeta_{2}^{T}\bc\). Notably PNDE (and also TNDE) is linear in the covariate vector \(\bc\) as well as the counterfactual outcomes. Thus, evaluating this PNDE (and also TNDE) formula at the mean covariate vector \(E[\bC]\) gives the marginal effect.
+\label{sec:org77cab29}
+In the case with a linear mediator model with a linear (Section \ref{sec:org03fbd56}) outcome model, the PNDE (and also TNDE) formula contains the term \(\bbeta_{2}^{T}\bc\). Notably PNDE (and also TNDE) is linear in the covariate vector \(\bc\) as well as the counterfactual outcomes. Thus, evaluating this PNDE (and also TNDE) formula at the mean covariate vector \(E[\bC]\) gives the marginal effect.
 
 \begin{align*}
   \text{Conditional }PNDE
@@ -1549,8 +1627,8 @@ In the case with a linear mediator model with a linear (Section \ref{sec:org0017
 When there is no treatment-mediator interaction term in the outcome model \((\theta_{3} = 0)\), the term \(\bbeta_{2}^{T}\bc\) drops out of conditional PNDE formula. Only \(\theta_{1}(a_{1} - a_{0})\) (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
 
 \subsubsection{Linear mediator model, non-linear outcome model}
-\label{sec:orga4632cc}
-In the case with a linear mediator model with a non-linear (Section \ref{sec:orgf750e33}) outcome model, the PNDE (and also TNDE) formula contain the term \(\bbeta_{2}^{T}\bc\). The PNDE (and also TNDE) formula is linear in the covariate vector \(\bc\). However, the effect is defined on the outcome model link function scale (not linear in counterfactual outcomes). This non-linearity of the outcome model link function (logit in the example below) prevents the marginal interpretation of the conditional PNDE evaluated at \(E[\bC]\). The interpretation of the effect evaluated at \(E[\bC]\) is the \emph{conditional} effect for an \emph{average individual}.
+\label{sec:org4ab5998}
+In the case with a linear mediator model with a non-linear (Section \ref{sec:orgb6204be}) outcome model, the PNDE (and also TNDE) formula contain the term \(\bbeta_{2}^{T}\bc\). The PNDE (and also TNDE) formula is linear in the covariate vector \(\bc\). However, the effect is defined on the outcome model link function scale (not linear in counterfactual outcomes). This non-linearity of the outcome model link function (logit in the example below) prevents the marginal interpretation of the conditional PNDE evaluated at \(E[\bC]\). The interpretation of the effect evaluated at \(E[\bC]\) is the \emph{conditional} effect for an \emph{average individual}.
 
 \begin{align*}
   \text{Conditional }PNDE
@@ -1572,8 +1650,8 @@ In the case with a linear mediator model with a non-linear (Section \ref{sec:org
 When there is no treatment-mediator interaction term in the outcome model \((\theta_{3} = 0)\), the term \(\bbeta_{2}^{T}\bc\) drops out of the conditional PNDE (and also TNDE) formula. Only \(\theta_{1}(a_{1} - a_{0})\) (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal effects are the same as the conditional effects because the latter do not vary across covariate patterns.
 
 \subsubsection{Logistic mediator model, linear outcome model}
-\label{sec:org91e945f}
-In the case with a logistic mediator model with a linear (Section \ref{sec:orge167dd5}) outcome model, both the PNDE (and also TNDE) formula and the TNIE (and also PNIE) formula are non-linear functions of \(\bbeta_{2}^{T}\bc\). Therefore, covariate dependence exists for both PNDE and TNIE. This non-linearity comes from the mediator model link function (logit). Because of this non-linearity, evaluation at \(E[\bC]\) does not give a marginal interpretation. The interpretation the effect evaluated at \(E[\bC]\) is the \emph{conditional} effect for an \emph{average individual}. The PNDE is examined first.
+\label{sec:orgb89b066}
+In the case with a logistic mediator model with a linear (Section \ref{sec:org735c217}) outcome model, both the PNDE (and also TNDE) formula and the TNIE (and also PNIE) formula are non-linear functions of \(\bbeta_{2}^{T}\bc\). Therefore, covariate dependence exists for both PNDE and TNIE. This non-linearity comes from the mediator model link function (logit). Because of this non-linearity, evaluation at \(E[\bC]\) does not give a marginal interpretation. The interpretation the effect evaluated at \(E[\bC]\) is the \emph{conditional} effect for an \emph{average individual}. The PNDE is examined first.
 
 \begin{align*}
   \text{Conditional }PNDE
@@ -1660,8 +1738,8 @@ The TNIE formula is examined below.
 When there is no treatment-mediator interaction term in the outcome model \((\theta_{3} = 0)\), the term \(\bbeta_{2}^{T}\bc\) cancels out of the PNDE (and also TNDE) formulas. Only \(\theta_{1}(a_{1} - a_{0})\) (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence for PNDE (and also TNDE). However, the TNIE (and also PNIE) formula remain as non-linear functions of \(\bbeta_{2}^{T}\bc\), thus, covariate dependence persists for TNIE. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal \emph{direct} effects are the same as the conditional direct effects because the latter do not vary across covariate patterns. However, the same does not hold for the \emph{indirect} effects.
 
 \subsubsection{Logistic mediator model, non-linear outcome model}
-\label{sec:org9e55f26}
-In the cases with a logistic mediator model with a non-linear (Section \ref{sec:org16a066c}) outcome model, both the PNDE (and also TNDE) formula and the TNIE (and also PNIE) formula are non-linear functions of \(\bbeta_{2}^{T}\bc\). Therefore, covariate dependence exists for both PNDE and TNIE. This non-linearity comes from the mediator model link function (logit). Further, the effects are defined on the outcome model link function scale (not linear in counterfactual outcomes). Because of these non-linearity, evaluation at \(E[\bC]\) does not give a marginal interpretation. The interpretation the effect evaluated at \(E[\bC]\) is the \emph{conditional} effect for an \emph{average individual}. The PNDE is examined first.
+\label{sec:org290f786}
+In the cases with a logistic mediator model with a non-linear (Section \ref{sec:org88a698e}) outcome model, both the PNDE (and also TNDE) formula and the TNIE (and also PNIE) formula are non-linear functions of \(\bbeta_{2}^{T}\bc\). Therefore, covariate dependence exists for both PNDE and TNIE. This non-linearity comes from the mediator model link function (logit). Further, the effects are defined on the outcome model link function scale (not linear in counterfactual outcomes). Because of these non-linearity, evaluation at \(E[\bC]\) does not give a marginal interpretation. The interpretation the effect evaluated at \(E[\bC]\) is the \emph{conditional} effect for an \emph{average individual}. The PNDE is examined first.
 
 \begin{align*}
   \text{Conditional }PNDE
@@ -1724,7 +1802,7 @@ The TNIE formula is examined below.
 When there is no treatment-mediator interaction term in the outcome model \((\theta_{3} = 0)\), the term \(\bbeta_{2}^{T}\bc\) cancels out of the PNDE (and also TNDE) expressions. Only \(\theta_{1}(a_{1} - a_{0})\) (treatment coefficient in the outcome model; also agrees with CDE) remains as the direct effect, thus, eliminating the covariate dependence for PNDE (and also TNDE). However, the TNIE (and also PNIE) expressions remain as non-linear functions of \(\bbeta_{2}^{T}\bc\), thus, covariate dependence persists for TNIE. Under this modeling assumption of no treatment-mediator interaction term in the outcome model, the marginal \emph{direct} effects are the same as the conditional direct effects because the latter do not vary across covariate patterns. However, the same does not hold for the \emph{indirect} effects.
 
 \subsection{Practical implications for reporting}
-\label{sec:org3b9e15e}
+\label{sec:orgb2b170d}
 Evaluating the natural direct and indirect effects at the mean covariate level is the default behavior of the SAS macro \cite{valeriMediationAnalysisAllowing2013}. With the \texttt{regmedint} R package, the same can be done via setting the \texttt{c\_cond} argument to the mean covariate vector.\\
 
 The literature is somewhat confusing regarding when the effect estimates evaluated at the mean covariate vector have marginal interpretation. \cite{valeriMediationAnalysisAllowing2013} (p139) states "For continuous outcomes, if C were set at its average level we would obtain marginal effects on the entire population." \cite{vanderweeleExplanationCausalInference2015} (p37) states "\dots{} evaluated at the mean covariate levels are shown. For a continuous mediator, these effects will also be equal to the marginal effects on average for the population."\\
@@ -1732,34 +1810,34 @@ The literature is somewhat confusing regarding when the effect estimates evaluat
 As shown above, both the mediator model and the outcome model have to be linear regression models. We outlined reasonable approaches to reporting in specific models below.
 
 \subsubsection{Linear mediator model, linear outcome model}
-\label{sec:org3e63f40}
+\label{sec:org692f68d}
 Evaluation at the mean covariate vector gives the effect estimates marginal (population average) interpretation. Thus, reporting these marginal quantities for a well-defined population (set \texttt{c\_cond} to the average in that population) is useful.\\
 
 If there is no treatment-mediator interaction term in the outcome model, uniform conditional effects are implied and the marginal effects agree with the conditional effects.
 
 \subsubsection{Linear mediator model, non-linear outcome model}
-\label{sec:orgf785483}
+\label{sec:orgb4c618e}
 Evaluation at the mean covariate level does \emph{not} gives the effect estimates marginal (population average) interpretations. It is still possible to report the result evaluated at the mean covariate vector, however, the results should be interpreted as \emph{conditional} effects for an \emph{average individual}. If categorical covariates (e.g., country) are involved, an average individual can be ambiguous or non-existent (e.g., individual residing in the average country). Reporting conditional effects evaluated at several meaningful covariate patterns may be preferred.\\
 
 If there is no treatment-mediator interaction term in the outcome model, uniform conditional effects are implied and the marginal effects agree with the conditional effects.
 
 \subsubsection{Logistic mediator model, linear outcome model}
-\label{sec:org5504c26}
+\label{sec:org82fc0a2}
 Evaluation at the mean covariate level does \emph{not} gives the effect estimates marginal (population average) interpretations. It is still possible to report the result evaluated at the mean covariate vector, however, the results should be interpreted as \emph{conditional} effects for an \emph{average individual}. If categorical covariates (e.g., country) are involved, an average individual can be ambiguous or non-existent (e.g., individual residing in the average country). Reporting conditional effects evaluated at several meaningful covariate patterns may be preferred.\\
 
 The same is true even if there is no treatment-mediator interaction term in the outcome model.
 
 \subsubsection{Logistic mediator model, non-linear outcome model}
-\label{sec:orgdd70663}
+\label{sec:org32d16fc}
 Evaluation at the mean covariate level does \emph{not} gives the effect estimates marginal (population average) interpretations. It is still possible to report the result evaluated at the mean covariate vector, however, the results should be interpreted as \emph{conditional} effects for an \emph{average individual}. If categorical covariates (e.g., country) are involved, an average individual can be ambiguous or non-existent (e.g., individual residing in the average country). Reporting conditional effects evaluated at several meaningful covariate patterns may be preferred.\\
 
 The same is true even if there is no treatment-mediator interaction term in the outcome model.
 
 
 \section{Bibliography}
-\label{sec:org3760766}
+\label{sec:orgba2b47e}
 \renewcommand{\section}[2]{}
 
 \bibliographystyle{apalike}
-\bibliography{../../../../.emacs.d/misc/zotero}
+\bibliography{../../../../../.emacs.d/misc/zotero}
 \end{document}
