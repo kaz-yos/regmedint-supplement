@@ -1252,7 +1252,7 @@ As explained in Section [[* Implementation of the regression-based causal mediat
   Y_{cont,Mcont,i} &\sim N(E[Y_{cont,Mcont,i} | A_{i}, M_{cont,i}, C_{1,i}], 1)\\
   &\text{Outcome, continuous (binary mediator)}\\
   E[Y_{cont,Mbin,i} | A_{i}, M_{bin,i}, C_{1,i}]
-  &= 0 + 0.3 A_{i} + 0.15 M_{bin,i} + 0.05 A_{i} M_{bin,i} -0.2 C_{1,i}\\
+  &= 0 + 0.3 A_{i} + 0.15 M_{bin,i} + 0.45 A_{i} M_{bin,i} -0.2 C_{1,i}\\
   Y_{cont,Mbin,i} &\sim N(E[Y_{cont,Mbin,i} | A_{i}, M_{bin,i}, C_{1,i}], 1)\\
   \\
   &\text{Outcome, Poisson (continuous mediator)}\\
@@ -1261,7 +1261,7 @@ As explained in Section [[* Implementation of the regression-based causal mediat
   Y_{pois,Mcont,i} &\sim Poisson(E[Y_{pois,Mcont,i} | A_{i}, M_{cont,i}, C_{1,i}])\\
   &\text{Outcome, Poisson (binary mediator)}\\
   \log(E[Y_{pois,Mbin,i} | A_{i}, M_{bin,i}, C_{1,i}])
-  &= 0 + 0.3 A_{i} + 0.15 M_{bin,i} + 0.05 A_{i} M_{bin,i} -0.2 C_{1,i}\\
+  &= 0 + 0.3 A_{i} + 0.15 M_{bin,i} + 0.45 A_{i} M_{bin,i} -0.2 C_{1,i}\\
   Y_{pois,Mbin,i} &\sim Poisson(E[Y_{pois,Mbin,i} | A_{i}, M_{bin,i}, C_{1,i}])\\
 \end{align*}
 
@@ -1289,7 +1289,7 @@ demo2 <-
          m_bin = rbinom(n = n, size = 1, prob = p_m_bin)) %>%
   ## Outcomes
   mutate(lp_y_m_cont = 0 + (0.3 * a) + (0.15 * m_cont) + (0.05 * a * m_cont) + (-0.2 * c1),
-         lp_y_m_bin = 0 + (0.3 * a) + (0.15 * m_bin) + (0.05 * a * m_bin) + (-0.2 * c1),
+         lp_y_m_bin = 0 + (0.3 * a) + (0.15 * m_bin) + (0.45 * a * m_bin) + (-0.2 * c1),
          ## Normal continuous outcomes
          y_cont_m_cont = rnorm(n = n, mean = lp_y_m_cont, sd = 1),
          y_cont_m_bin = rnorm(n = n, mean = lp_y_m_bin, sd = 1),
